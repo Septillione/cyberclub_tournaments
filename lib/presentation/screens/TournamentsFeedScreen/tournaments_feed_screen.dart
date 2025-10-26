@@ -23,7 +23,7 @@ final List<String> disciplineFilterChips = [
   'Mortal Kombat',
   'Тетрис',
   'Clash Royale',
-  'Brawl Stars'
+  'Brawl Stars',
 ];
 
 final List<TournamentModel> mockTournaments = [

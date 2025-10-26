@@ -16,7 +16,10 @@ class TournamentCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => TournamentDetailScreen()),
+          MaterialPageRoute(
+            builder: (context) =>
+                TournamentDetailScreen(tournament: tournament),
+          ),
         );
       },
       borderRadius: BorderRadius.circular(16.0),
@@ -102,7 +105,7 @@ class TournamentCard extends StatelessWidget {
     switch (status) {
       case TournamentStatus.announced:
         text = 'Анонс';
-        color = AppColors.accentPrimary.withOpacity(0.5);
+        color = AppColors.accentPrimary.withValues(alpha: 0.5);
         break;
       case TournamentStatus.registrationOpened:
         text = 'Регистрация открыта';
@@ -122,7 +125,7 @@ class TournamentCard extends StatelessWidget {
         break;
       case TournamentStatus.cancelled:
         text = 'Отменен';
-        color = AppColors.statusArchived.withOpacity(0.5);
+        color = AppColors.statusArchived.withValues(alpha: 0.5);
         break;
     }
 

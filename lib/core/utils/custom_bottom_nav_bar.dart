@@ -111,7 +111,7 @@ class GlassmorphismBottomNavigationBar extends StatelessWidget {
           currentIndex: currentIndex,
           onTap: onTap,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.bgMain.withOpacity(0.5),
+          backgroundColor: AppColors.bgMain.withValues(alpha: 0.5),
           elevation: 0,
           unselectedItemColor: AppColors.textSecondary,
           selectedItemColor: AppColors.accentPrimary,
@@ -153,7 +153,7 @@ class GoogleNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: AppColors.bgMain.withOpacity(0.8)),
+      decoration: BoxDecoration(color: AppColors.bgMain.withValues(alpha: 0.8)),
       child: ClipRRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
@@ -170,8 +170,10 @@ class GoogleNavBar extends StatelessWidget {
               backgroundColor: Colors.transparent,
               color: AppColors.textSecondary,
               activeColor: AppColors.accentPrimary,
-              tabBackgroundColor: AppColors.accentPrimary.withOpacity(0.1),
-              hoverColor: AppColors.accentPrimary.withOpacity(0.3),
+              tabBackgroundColor: AppColors.accentPrimary.withValues(
+                alpha: 0.1,
+              ),
+              hoverColor: AppColors.accentPrimary.withValues(alpha: 0.3),
               gap: 8,
               padding: const EdgeInsets.all(16),
 
