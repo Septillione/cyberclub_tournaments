@@ -78,11 +78,6 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.textPrimary,
   );
-  static final TextStyle bodyStatus = GoogleFonts.inter(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textSecondary,
-  );
   static final TextStyle bodyM = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.normal,

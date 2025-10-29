@@ -19,6 +19,7 @@ class AppColors {
   // Семантические цвета (статусы)
   static const Color statusSuccess = Color(0xFF28A745);
   static const Color statusWarning = Color(0xFFFFC107);
+  static const Color medalBronza = Color(0xFFC05A00);
   static const Color statusError = Color(0xFFDC3545);
   static const Color statusLive = Color(0xFFDC3545); // Используем тот же, что и для ошибки
   static const Color statusArchived = Color(0xFFA9A9A9);

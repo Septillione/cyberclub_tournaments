@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/general_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -21,34 +22,32 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: _buildCustomBackButton(),
-        titleSpacing: 0,
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeaderImage(),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SegmentedButtonDetails(
-                    segments: const ['Общее', 'Участники', 'Сетка'],
-                    initialIndex: _selectedSegmentIndex,
-                    onSegmentTapped: (index) {
-                      setState(() {
-                        _selectedSegmentIndex = index;
-                      });
-                    },
-                  ),
-                  _buildSegmentContent(),
-                ],
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SegmentedButtonDetails(
+                      segments: const ['Общее', 'Участники', 'Сетка'],
+                      initialIndex: _selectedSegmentIndex,
+                      onSegmentTapped: (index) {
+                        setState(() {
+                          _selectedSegmentIndex = index;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 24),
+                    _buildSegmentContent(),
+                    
+                  ],
+                ),
               ),
             ),
           ],
@@ -103,6 +102,13 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
               ),
             ),
           ),
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [_buildCustomBackButton()],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               bottom: 16.0,
@@ -129,7 +135,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
 
   Widget _buildSegmentContent() {
     final List<Widget> segmentContents = [
-      const Center(child: Text('General')),
+      GeneralDetails(tournament: widget.tournament),
       const Center(child: Text('Participants')),
       const Center(child: Text('Grid')),
     ];
