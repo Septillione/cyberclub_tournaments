@@ -105,7 +105,7 @@ class TournamentsFeedScreen extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

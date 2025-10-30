@@ -1,7 +1,8 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/general_details.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/subscreens/general_details.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/subscreens/participants_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -45,7 +46,6 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                     ),
                     SizedBox(height: 24),
                     _buildSegmentContent(),
-                    
                   ],
                 ),
               ),
@@ -136,7 +136,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   Widget _buildSegmentContent() {
     final List<Widget> segmentContents = [
       GeneralDetails(tournament: widget.tournament),
-      const Center(child: Text('Participants')),
+      ParticipantsDetails(tournament: widget.tournament),
       const Center(child: Text('Grid')),
     ];
 
