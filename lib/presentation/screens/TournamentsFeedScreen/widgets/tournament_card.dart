@@ -1,8 +1,9 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/subscreens/tournament_detail_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/tournament_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -14,14 +15,7 @@ class TournamentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) =>
-                TournamentDetailScreen(tournament: tournament),
-          ),
-        );
-      },
+      onTap: () => context.push('/tournaments/${tournament.id}'),
       borderRadius: BorderRadius.circular(16.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
@@ -113,7 +107,7 @@ class TournamentCard extends StatelessWidget {
         break;
       case TournamentStatus.registrationClosed:
         text = 'Регистрация закрыта';
-        color = AppColors.statusWarning;
+        color = AppColors.statusFullUsers;
         break;
       case TournamentStatus.live:
         text = 'Идет';
@@ -132,7 +126,7 @@ class TournamentCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

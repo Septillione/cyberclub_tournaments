@@ -23,4 +23,5 @@ class AppColors {
   static const Color statusError = Color(0xFFDC3545);
   static const Color statusLive = Color(0xFFDC3545); // Используем тот же, что и для ошибки
   static const Color statusArchived = Color(0xFFA9A9A9);
+  static const Color statusFullUsers = Color(0xFF002CCA);
 }

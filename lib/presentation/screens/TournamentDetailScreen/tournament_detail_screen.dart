@@ -1,10 +1,11 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/subscreens/general_details.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/subscreens/participants_details.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/segmented_button_details.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/general_details.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/participants_details.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
@@ -31,7 +32,11 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
             SafeArea(
               top: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                  left: 16.0,
+                  right: 16.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -64,7 +69,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => context.pop(),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
               decoration: BoxDecoration(
