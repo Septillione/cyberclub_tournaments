@@ -2,7 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class Participant {
   final String id;
@@ -70,7 +70,7 @@ class ParticipantsDetails extends StatelessWidget {
                 ? NetworkImage(participant.avatarUrl!)
                 : null,
             child: participant.avatarUrl == null
-                ? const Icon(LucideIcons.user, color: AppColors.textSecondary)
+                ? const Icon(LucideIcons.userRound, color: AppColors.textSecondary)
                 : null,
           ),
           const SizedBox(width: 12),

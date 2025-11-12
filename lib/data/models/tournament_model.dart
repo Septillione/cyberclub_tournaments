@@ -23,6 +23,7 @@ class TournamentModel {
   final TournamentStatus status;
   final int currentParticipants;
   final int maxParticipants;
+  final List<String> registeredPlayerIds;
   final String? firstPlace;
   final String? secondPlace;
   final String? thirdPlace;
@@ -43,6 +44,7 @@ class TournamentModel {
     required this.status,
     required this.currentParticipants,
     required this.maxParticipants,
+    this.registeredPlayerIds = const [],
     required this.firstPlace,
     required this.secondPlace,
     required this.thirdPlace,

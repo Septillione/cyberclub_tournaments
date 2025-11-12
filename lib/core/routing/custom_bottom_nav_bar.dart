@@ -4,7 +4,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class NavItem {
   final IconData icon;
@@ -126,11 +126,11 @@ class GlassmorphismBottomNavigationBar extends StatelessWidget {
               label: 'Мои турниры',
             ),
             BottomNavigationBarItem(
-              icon: Icon(LucideIcons.users2),
+              icon: Icon(LucideIcons.usersRound),
               label: 'Команды',
             ),
             BottomNavigationBarItem(
-              icon: Icon(LucideIcons.user2),
+              icon: Icon(LucideIcons.userRound),
               label: 'Профиль',
             ),
           ],
@@ -180,8 +180,8 @@ class GoogleNavBar extends StatelessWidget {
               tabs: const [
                 GButton(icon: LucideIcons.gamepad2, text: 'Турниры'),
                 GButton(icon: LucideIcons.swords, text: 'Мои турниры'),
-                GButton(icon: LucideIcons.users2, text: 'Команды'),
-                GButton(icon: LucideIcons.user2, text: 'Профиль'),
+                GButton(icon: LucideIcons.usersRound, text: 'Команды'),
+                GButton(icon: LucideIcons.userRound, text: 'Профиль'),
               ],
             ),
           ),

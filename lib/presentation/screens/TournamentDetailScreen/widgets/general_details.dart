@@ -4,7 +4,7 @@ import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/tournament_infoblock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class GeneralDetails extends StatelessWidget {
   final TournamentModel tournament;
@@ -44,7 +44,7 @@ class GeneralDetails extends StatelessWidget {
       ),
       TournamentInfoItem(
         title: 'Участников',
-        icon: LucideIcons.users2,
+        icon: LucideIcons.usersRound,
         colorIcon: AppColors.statusSuccess,
         bodyText: participants,
       ),
@@ -160,7 +160,7 @@ class GeneralDetails extends StatelessWidget {
               ],
             ),
           ),
-        SizedBox(height: 32),
+        SizedBox(height: 16),
       ],
     );
   }

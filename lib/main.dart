@@ -1,6 +1,6 @@
-import 'package:cyberclub_tournaments/app.dart';
 import 'package:cyberclub_tournaments/core/routing/app_router.dart';
 import 'package:cyberclub_tournaments/core/theme/app_theme.dart';
+import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +20,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => TournamentRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => TournamentRepository()),
+        RepositoryProvider(create: (context) => TeamRepository()),
+      ],
       child: MaterialApp.router(
         routerConfig: goRouter,
 
@@ -34,7 +37,6 @@ class MainApp extends StatelessWidget {
 
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),
-        // home: const MyApp(),
       ),
     );
   }

@@ -1,10 +1,9 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/tournament_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FinishedTournamentCard extends StatelessWidget {
   final TournamentModel tournament;
@@ -70,13 +69,13 @@ class FinishedTournamentCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text('Ваше место: ', style: AppTextStyles.bodyL),
                     Text(
-                      place,
+                      'Ваше место:  ',
                       style: AppTextStyles.bodyL.copyWith(
-                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
                       ),
                     ),
+                    Text(place, style: AppTextStyles.h3),
                     const SizedBox(width: 8),
                     const Icon(
                       LucideIcons.trophy,

@@ -8,7 +8,7 @@ import 'package:cyberclub_tournaments/presentation/screens/UserTournamentsScreen
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 enum CardType { active, upcoming, finished }
 
@@ -31,17 +31,7 @@ class _UserTournamentsScreenState extends State<UserTournamentsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Мои турниры', style: AppTextStyles.h2),
-              SizedBox(height: 16),
-              SegmentedButtonDetails(
-                segments: const ['Активные', 'Предстоящие', 'Завершенные'],
-                initialIndex: _selectedSegmentIndex,
-                onSegmentTapped: (index) {
-                  setState(() {
-                    _selectedSegmentIndex = index;
-                  });
-                },
-              ),
+              _buildHeader(),
               SizedBox(height: 24),
               Expanded(
                 child: BlocBuilder<UserTournamentsBloc, UserTournamentsState>(
@@ -82,6 +72,25 @@ class _UserTournamentsScreenState extends State<UserTournamentsScreen> {
     );
   }
 
+  Column _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Мои турниры', style: AppTextStyles.h2),
+        SizedBox(height: 16),
+        SegmentedButtonDetails(
+          segments: const ['Активные', 'Предстоящие', 'Завершенные'],
+          initialIndex: _selectedSegmentIndex,
+          onSegmentTapped: (index) {
+            setState(() {
+              _selectedSegmentIndex = index;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildTournamentList(
     List<TournamentModel> tournaments,
     CardType cardType,
@@ -93,7 +102,7 @@ class _UserTournamentsScreenState extends State<UserTournamentsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              LucideIcons.heartCrack,
+              LucideIcons.heartCrack200,
               color: AppColors.textDisabled,
               size: 64,
             ),

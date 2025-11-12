@@ -5,7 +5,7 @@ import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TournamentsFeedScreen extends StatelessWidget {
   const TournamentsFeedScreen({super.key});
@@ -135,7 +135,7 @@ class TournamentsFeedScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              LucideIcons.searchX,
+              LucideIcons.searchX300,
               color: AppColors.textDisabled,
               size: 48,
             ),

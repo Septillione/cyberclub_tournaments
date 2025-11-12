@@ -21,7 +21,7 @@ final List<String> _disciplineFilterChips = [
   'Тетрис',
 ];
 
-final List<TournamentModel> _mockTournaments = [
+final List<TournamentModel> mockTournaments = [
   TournamentModel(
     id: '1',
     title: 'Dota 2 Champions League: Season 18',
@@ -33,6 +33,7 @@ final List<TournamentModel> _mockTournaments = [
     prizePool: '50 000 ₽',
     currentParticipants: 16,
     maxParticipants: 32,
+    registeredPlayerIds: ['p0', 'p1', 'p2', 'p3', 'p4'],
     type: 'Онлайн',
     format: 'Single Elimination',
     formatVersus: '5v5',
@@ -55,6 +56,7 @@ final List<TournamentModel> _mockTournaments = [
     prizePool: '100 000 ₽',
     currentParticipants: 8,
     maxParticipants: 8,
+    registeredPlayerIds: ['p0', 'p1', 'p5', 'b0', 'b1'],
     type: 'Офлайн (LAN)',
     format: 'Double Elimination',
     formatVersus: '5v5',
@@ -77,6 +79,7 @@ final List<TournamentModel> _mockTournaments = [
     status: TournamentStatus.finished,
     currentParticipants: 28,
     maxParticipants: 28,
+    registeredPlayerIds: ['b0', 'b1', 'b2', 'b3', 'b4'],
     type: 'Офлайн (LAN)',
     format: 'Single Elimination',
     formatVersus: '5v5',
@@ -113,7 +116,7 @@ final List<TournamentModel> _mockTournaments = [
 
 class TournamentRepository {
   Future<List<TournamentModel>> fetchTournaments() async {
-    return _mockTournaments;
+    return mockTournaments;
   }
 
   Future<List<String>> fetchDisciplines() async {
@@ -127,17 +130,17 @@ class TournamentRepository {
 
   Future<List<TournamentModel>> fetchUserTournaments(String userId) async {
     return [
-      _mockTournaments.firstWhere((t) => t.id == '1'),
-      _mockTournaments.firstWhere((t) => t.id == '2'),
-      _mockTournaments.firstWhere((t) => t.id == '3'),
-      _mockTournaments.firstWhere((t) => t.id == '4'),
+      mockTournaments.firstWhere((t) => t.id == '1'),
+      mockTournaments.firstWhere((t) => t.id == '2'),
+      mockTournaments.firstWhere((t) => t.id == '3'),
+      mockTournaments.firstWhere((t) => t.id == '4'),
     ];
     // return [_mockTournaments[0], _mockTournaments[2]];
   }
 
   TournamentModel? findTournamentById(String id) {
     try {
-      return _mockTournaments.firstWhere((t) => t.id == id);
+      return mockTournaments.firstWhere((t) => t.id == id);
     } catch (e) {
       return null;
     }

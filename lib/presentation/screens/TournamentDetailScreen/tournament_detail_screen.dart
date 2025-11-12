@@ -3,10 +3,9 @@ import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/general_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/participants_details.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
   final TournamentModel tournament;
@@ -61,33 +60,6 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
     );
   }
 
-  Widget _buildCustomBackButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0, left: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => context.pop(),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-              decoration: BoxDecoration(
-                color: AppColors.bgSurface.withValues(alpha: 0.8),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: const Icon(
-                LucideIcons.arrowLeft,
-                size: 24,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildHeaderImage() {
     return AspectRatio(
       aspectRatio: 1.4 / 1,
@@ -111,7 +83,12 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [_buildCustomBackButton()],
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+                  child: CustomBackButton(),
+                ),
+              ],
             ),
           ),
           Padding(
