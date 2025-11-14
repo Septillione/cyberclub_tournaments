@@ -74,15 +74,6 @@ final goRouter = GoRouter(
                         ..add(TeamDetailStarted(teamId: teamId)),
                   child: const TeamsDetailScreen(),
                 );
-                // final team = context.read<TeamRepository>().findTeamById(
-                //   teamId,
-                // );
-
-                // if (team != null) {
-                //   return TeamsDetailScreen(team: team);
-                // } else {
-                //   return const Text('Команда не найдена');
-                // }
               },
             ),
           ],

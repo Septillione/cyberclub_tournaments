@@ -85,6 +85,36 @@ class TeamDetailModel {
     required this.inviteLink,
   });
 
+  TeamDetailModel copyWith({
+    String? id,
+    String? name,
+    String? tag,
+    String? avatarUrl,
+    int? tournamentsCount,
+    int? winsCount,
+    double? winrate,
+    bool? isCurrentUserCaptain,
+    List<TeammateModel>? teammates,
+    List<TournamentModel>? tournaments,
+    List<TeamApplicationModel>? applications,
+    String? inviteLink,
+  }) {
+    return TeamDetailModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      tag: tag ?? this.tag,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      tournamentsCount: tournamentsCount ?? this.tournamentsCount,
+      winsCount: winsCount ?? this.winsCount,
+      winrate: winrate ?? this.winrate,
+      isCurrentUserCaptain: isCurrentUserCaptain ?? this.isCurrentUserCaptain,
+      teammates: teammates ?? this.teammates,
+      tournaments: tournaments ?? this.tournaments,
+      applications: applications ?? this.applications,
+      inviteLink: inviteLink ?? this.inviteLink,
+    );
+  }
+
   @override
   List<Object> get props => [id, name, tag, teammates, tournaments];
 }

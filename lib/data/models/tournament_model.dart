@@ -49,4 +49,28 @@ class TournamentModel {
     required this.secondPlace,
     required this.thirdPlace,
   });
+
+  TournamentModel copyWith({List<String>? registeredPlayerIds}) {
+    return TournamentModel(
+      id: id,
+      title: title,
+      imageUrl: imageUrl,
+      discipline: discipline,
+      prizePool: prizePool,
+      type: type,
+      address: address,
+      format: format,
+      formatVersus: formatVersus,
+      description: description,
+      rules: rules,
+      startDate: startDate,
+      status: status,
+      currentParticipants: currentParticipants,
+      maxParticipants: maxParticipants,
+      registeredPlayerIds: registeredPlayerIds ?? this.registeredPlayerIds,
+      firstPlace: firstPlace,
+      secondPlace: secondPlace,
+      thirdPlace: thirdPlace,
+    );
+  }
 }

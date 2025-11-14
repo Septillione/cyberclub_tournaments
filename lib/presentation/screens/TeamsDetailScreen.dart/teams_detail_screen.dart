@@ -2,11 +2,14 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_application.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_statistics.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/team_tournament_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -140,12 +143,12 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
   Widget _buildSegmentContent(TeamDetailModel team, int index) {
     List<Widget> captainWidgets = [
       _buildRosterTab(team.teammates, team.isCurrentUserCaptain),
-      _buildTournamentsTab(),
-      _buildApplicationsTab(),
+      _buildTournamentsTab(team),
+      _buildApplicationsTab(team),
     ];
     List<Widget> playerWidgets = [
       _buildRosterTab(team.teammates, team.isCurrentUserCaptain),
-      _buildTournamentsTab(),
+      _buildTournamentsTab(team),
     ];
 
     return team.isCurrentUserCaptain
@@ -173,11 +176,82 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  Widget _buildTournamentsTab() {
-    return Text('tournaments');
+  Widget _buildTournamentsTab(TeamDetailModel team) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: team.tournaments.length,
+      itemBuilder: (context, index) {
+        final tournament = team.tournaments[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: TeamTournamentCard(tournament: tournament, team: team),
+        );
+      },
+    );
   }
 
-  Widget _buildApplicationsTab() {
-    return Text('applications');
+  Widget _buildApplicationsTab(TeamDetailModel team) {
+    final bool hasApplications = team.applications.isNotEmpty;
+
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      // itemCount: 1 + (hasApplications ? 1 + team.applications.length : 0),
+      itemCount: team.applications.length,
+      itemBuilder: (context, index) {
+        // if (index == 0) {
+        //   return Container(
+        //     padding: EdgeInsets.all(16.0),
+        //     decoration: BoxDecoration(
+        //       color: AppColors.bgSurface,
+        //       borderRadius: BorderRadius.circular(16.0),
+        //     ),
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Text('Ссылка приглашение', style: AppTextStyles.h3),
+        //         const SizedBox(height: 16),
+        //         Row(
+        //           children: [
+        //             Text(team.inviteLink, style: AppTextStyles.caption),
+        //             const SizedBox(width: 12),
+        //             GestureDetector(
+        //               onTap: () {
+        //                 Clipboard.setData(ClipboardData(text: team.inviteLink));
+        //                 ScaffoldMessenger.of(context).showSnackBar(
+        //                   const SnackBar(content: Text('Ссылка скопирована')),
+        //                 );
+        //               },
+        //               child: Icon(
+        //                 LucideIcons.copy,
+        //                 size: 24,
+        //                 color: AppColors.textSecondary,
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ],
+        //     ),
+        //   );
+        // }
+
+        // if (index == 1) {
+        //   return Padding(
+        //     padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+        //     child: Text(
+        //       'Заявки на вступление (${team.applications.length})',
+        //       style: AppTextStyles.h3,
+        //     ),
+        //   );
+        // }
+
+        // final applicationIndex = index - 2;
+        final application = team.applications[index];
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: CardApplication(teamApplication: application),
+        );
+      },
+    );
   }
 }

@@ -1,7 +1,32 @@
+import 'package:cyberclub_tournaments/data/models/entry_model.dart';
 import 'package:cyberclub_tournaments/data/models/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 
 class TeamRepository {
+  final List<EntryModel> _mockEntries = [
+    const EntryModel(
+      id: 'entry-alpha-dota',
+      tournamentId: 't-dota-1',
+      teamId: 'team-alpha',
+      playerIds: ['p0', 'p1', 'p2', 'p3', 'p4'],
+      status: EntryStatus.accepted,
+    ),
+    const EntryModel(
+      id: 'entry-alpha-cs',
+      tournamentId: 't-cs-1',
+      teamId: 'team-alpha',
+      playerIds: ['p0', 'p1', 'p2', 'p3', 'p4'],
+      status: EntryStatus.accepted,
+    ),
+    const EntryModel(
+      id: 'entry-navi-valorant',
+      tournamentId: 't-valorant-1',
+      teamId: 'team-navi',
+      playerIds: ['b0', 'b1', 'b2', 'b3', 'b4'],
+      status: EntryStatus.accepted,
+    ),
+  ];
+
   final List<TeamDetailModel> _mockTeamDetails = [
     TeamDetailModel(
       id: 'team-alpha',
@@ -64,8 +89,6 @@ class TeamRepository {
 
   Future<List<TeamListItemModel>> fetchUserTeams(String userId) async {
     return _mockTeamDetails.map((detail) {
-      final avatarUrls = detail.teammates.map((m) => m.avatarUrl).toList();
-
       return TeamListItemModel(
         id: detail.id,
         name: detail.name,
@@ -73,23 +96,39 @@ class TeamRepository {
         avatarUrl: detail.avatarUrl,
         isCurrentUserCaptain: detail.isCurrentUserCaptain,
         teammatesCount: detail.teammates.length,
-        teammatesAvatarUrls: avatarUrls,
+        teammatesAvatarUrls: detail.teammates.map((m) => m.avatarUrl).toList(),
       );
     }).toList();
   }
 
   Future<TeamDetailModel> fetchTeamDetails(String teamId) async {
-    return _mockTeamDetails.firstWhere(
-      (t) => t.id == teamId,
+    final originalTeamDetail = _mockTeamDetails.firstWhere(
+      (team) => team.id == teamId,
       orElse: () => throw Exception('Команда не найдена'),
     );
-  }
 
-  // TeamModel? findTeamById(String id) {
-  //   try {
-  //     return _mockTeams.firstWhere((t) => t.id == id);
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
+    final acceptedEntries = _mockEntries
+        .where(
+          (entry) =>
+              entry.teamId == teamId && entry.status == EntryStatus.accepted,
+        )
+        .toList();
+
+    final tournamentIds = acceptedEntries
+        .map((entry) => entry.tournamentId)
+        .toSet();
+
+    final teamTournaments = mockTournaments
+        .where((tournament) => tournamentIds.contains(tournament.id))
+        .toList();
+
+    final updatedTeamTournaments = teamTournaments.map((tournament) {
+      final entry = acceptedEntries.firstWhere(
+        (e) => e.tournamentId == tournament.id,
+      );
+      return tournament.copyWith(registeredPlayerIds: entry.playerIds);
+    }).toList();
+
+    return originalTeamDetail.copyWith(tournaments: updatedTeamTournaments);
+  }
 }

@@ -23,7 +23,7 @@ final List<String> _disciplineFilterChips = [
 
 final List<TournamentModel> mockTournaments = [
   TournamentModel(
-    id: '1',
+    id: 't-dota-1',
     title: 'Dota 2 Champions League: Season 18',
     imageUrl:
         'https://cs11.pikabu.ru/post_img/2019/04/29/5/og_og_1556521295259832113.jpg',
@@ -46,7 +46,7 @@ final List<TournamentModel> mockTournaments = [
     thirdPlace: '5000',
   ),
   TournamentModel(
-    id: '2',
+    id: 't-cs-1',
     title: 'CS 2 Masters Cup',
     imageUrl:
         'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1HH29y.img?w=2200&h=1100&m=4&q=79',
@@ -69,7 +69,7 @@ final List<TournamentModel> mockTournaments = [
     thirdPlace: '10000',
   ),
   TournamentModel(
-    id: '3',
+    id: 't-valorant-1',
     title: 'Valorant Rising Stars',
     imageUrl:
         'https://avatars.mds.yandex.net/i?id=8d69330865cffb4f83e497a2f07381d1_l-5347442-images-thumbs&n=13',
@@ -92,7 +92,7 @@ final List<TournamentModel> mockTournaments = [
     thirdPlace: null,
   ),
   TournamentModel(
-    id: '4',
+    id: 't-mortalkombat-1',
     title: 'Mortal Kombat Tournament',
     imageUrl:
         'https://files.vgtimes.ru/gallery/thumb/185635/2005281888_default.webp',
@@ -120,22 +120,16 @@ class TournamentRepository {
   }
 
   Future<List<String>> fetchDisciplines() async {
-    // final discipline = [
-    //   'Все игры',
-    //   ..._mockTournaments.map((t) => t.discipline).toSet(),
-    // ];
-    // return discipline;
     return _disciplineFilterChips;
   }
 
   Future<List<TournamentModel>> fetchUserTournaments(String userId) async {
     return [
-      mockTournaments.firstWhere((t) => t.id == '1'),
-      mockTournaments.firstWhere((t) => t.id == '2'),
-      mockTournaments.firstWhere((t) => t.id == '3'),
-      mockTournaments.firstWhere((t) => t.id == '4'),
+      mockTournaments.firstWhere((t) => t.id == 't-dota-1'),
+      mockTournaments.firstWhere((t) => t.id == 't-cs-1'),
+      mockTournaments.firstWhere((t) => t.id == 't-valorant-1'),
+      mockTournaments.firstWhere((t) => t.id == 't-mortalkombat-1'),
     ];
-    // return [_mockTournaments[0], _mockTournaments[2]];
   }
 
   TournamentModel? findTournamentById(String id) {

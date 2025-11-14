@@ -20,14 +20,6 @@ class UpcomingTournamentCard extends StatelessWidget {
 
     return InkWell(
       onTap: () => context.push('/tournaments/${tournament.id}'),
-      // onTap: () {
-      //   Navigator.of(context).push(
-      //     MaterialPageRoute(
-      //       builder: (context) =>
-      //           TournamentDetailScreen(tournament: tournament),
-      //     ),
-      //   );
-      // },
       borderRadius: BorderRadius.circular(16.0),
       child: Container(
         padding: EdgeInsets.all(16.0),

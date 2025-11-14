@@ -10,6 +10,7 @@ final class TeamDetailLoading extends TeamDetailState {}
 
 final class TeamDetailLoaded extends TeamDetailState {
   final TeamDetailModel team;
+  
   const TeamDetailLoaded({required this.team});
 
   @override
@@ -18,6 +19,7 @@ final class TeamDetailLoaded extends TeamDetailState {
 
 final class TeamDetailError extends TeamDetailState {
   final String errorMessage;
+
   const TeamDetailError({required this.errorMessage});
 
   @override
