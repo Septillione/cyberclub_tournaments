@@ -3,7 +3,7 @@ import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_application.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_statistics.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/team_tournament_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
@@ -116,23 +116,31 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
         ),
         const SizedBox(height: 16),
         Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisSize: MainAxisSize.max,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CardStatistics(
-              title: 'Турниров',
-              value: '${team.tournamentsCount}',
-              color: AppColors.textPrimary,
+            Expanded(
+              child: CardStatistics(
+                title: 'Турниров',
+                value: '${team.tournamentsCount}',
+                color: AppColors.textPrimary,
+              ),
             ),
-            CardStatistics(
-              title: 'Побед',
-              value: '${team.winsCount}',
-              color: AppColors.accentPrimary,
+            SizedBox(width: 8,),
+            Expanded(
+              child: CardStatistics(
+                title: 'Побед',
+                value: '${team.winsCount}',
+                color: AppColors.accentPrimary,
+              ),
             ),
-            CardStatistics(
-              title: 'Winrate',
-              value: '${team.winrate}%',
-              color: AppColors.statusSuccess,
+            SizedBox(width: 8,),
+            Expanded(
+              child: CardStatistics(
+                title: 'Winrate',
+                value: '${team.winrate}%',
+                color: AppColors.statusSuccess,
+              ),
             ),
           ],
         ),
@@ -195,57 +203,56 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
 
     return ListView.builder(
       padding: EdgeInsets.zero,
-      // itemCount: 1 + (hasApplications ? 1 + team.applications.length : 0),
-      itemCount: team.applications.length,
+      itemCount: 1 + (hasApplications ? 1 + team.applications.length : 0),
       itemBuilder: (context, index) {
-        // if (index == 0) {
-        //   return Container(
-        //     padding: EdgeInsets.all(16.0),
-        //     decoration: BoxDecoration(
-        //       color: AppColors.bgSurface,
-        //       borderRadius: BorderRadius.circular(16.0),
-        //     ),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Text('Ссылка приглашение', style: AppTextStyles.h3),
-        //         const SizedBox(height: 16),
-        //         Row(
-        //           children: [
-        //             Text(team.inviteLink, style: AppTextStyles.caption),
-        //             const SizedBox(width: 12),
-        //             GestureDetector(
-        //               onTap: () {
-        //                 Clipboard.setData(ClipboardData(text: team.inviteLink));
-        //                 ScaffoldMessenger.of(context).showSnackBar(
-        //                   const SnackBar(content: Text('Ссылка скопирована')),
-        //                 );
-        //               },
-        //               child: Icon(
-        //                 LucideIcons.copy,
-        //                 size: 24,
-        //                 color: AppColors.textSecondary,
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ],
-        //     ),
-        //   );
-        // }
+        if (index == 0) {
+          return Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: AppColors.bgSurface,
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Ссылка приглашение', style: AppTextStyles.h3),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Text(team.inviteLink, style: AppTextStyles.caption),
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: team.inviteLink));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Ссылка скопирована')),
+                        );
+                      },
+                      child: Icon(
+                        LucideIcons.copy,
+                        size: 24,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }
 
-        // if (index == 1) {
-        //   return Padding(
-        //     padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-        //     child: Text(
-        //       'Заявки на вступление (${team.applications.length})',
-        //       style: AppTextStyles.h3,
-        //     ),
-        //   );
-        // }
+        if (index == 1) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+            child: Text(
+              'Заявки на вступление (${team.applications.length})',
+              style: AppTextStyles.h3,
+            ),
+          );
+        }
 
-        // final applicationIndex = index - 2;
-        final application = team.applications[index];
+        final applicationIndex = index - 2;
+        final application = team.applications[applicationIndex];
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 16.0),

@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/bloc/tournaments_feed_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTournamentsScreen/bloc/user_tournaments_bloc.dart';
@@ -64,6 +65,11 @@ class MainNavigation extends StatelessWidget {
           create: (context) =>
               UserTeamsBloc(teamRepository: teamRepository)
                 ..add(UserTeamsStarted()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              ProfileBloc(userRepository: userRepository)
+                ..add(ProfileStarted()),
         ),
       ],
       child: Scaffold(

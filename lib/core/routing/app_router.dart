@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/app.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
@@ -17,6 +18,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final tournamentsRepository = TournamentRepository();
 final teamRepository = TeamRepository();
+final userRepository = UserRepository();
 
 final goRouter = GoRouter(
   initialLocation: '/tournaments',

@@ -17,7 +17,6 @@ class CardStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: AppColors.bgSurface,
@@ -25,7 +24,7 @@ class CardStatistics extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('$title:', style: AppTextStyles.button),
+          Text('$title:', style: AppTextStyles.bodyL),
           const SizedBox(height: 8),
           Text(value, style: AppTextStyles.h3.copyWith(color: color)),
         ],
