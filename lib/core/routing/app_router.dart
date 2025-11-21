@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/app.dart';
+import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
@@ -16,9 +17,11 @@ import 'package:go_router/go_router.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-final tournamentsRepository = TournamentRepository();
-final teamRepository = TeamRepository();
-final userRepository = UserRepository();
+final apiClient = ApiClient();
+
+final tournamentsRepository = TournamentRepository(apiClient: apiClient);
+final teamRepository = TeamRepository(apiClient: apiClient);
+final userRepository = UserRepository(apiClient: apiClient);
 
 final goRouter = GoRouter(
   initialLocation: '/tournaments',

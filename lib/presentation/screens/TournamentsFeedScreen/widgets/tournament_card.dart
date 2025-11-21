@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -156,7 +156,7 @@ class TournamentCard extends StatelessWidget {
         Icon(LucideIcons.trophy, color: AppColors.textSecondary, size: 16),
         SizedBox(width: 8),
         Text(
-          tournament.prizePool,
+          '${tournament.prizePool} ₽',
           style: AppTextStyles.bodyM.copyWith(color: AppColors.textSecondary),
         ),
       ],
@@ -165,7 +165,8 @@ class TournamentCard extends StatelessWidget {
 
   Widget _buildLineParticipants() {
     final double progress =
-        tournament.currentParticipants / tournament.maxParticipants;
+        tournament.participants.currentParticipants /
+        tournament.participants.maxParticipants;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +176,7 @@ class TournamentCard extends StatelessWidget {
           children: [
             Text('Участники', style: AppTextStyles.caption),
             Text(
-              '${tournament.currentParticipants}/${tournament.maxParticipants}',
+              '${tournament.participants.currentParticipants}/${tournament.participants.maxParticipants}',
               style: AppTextStyles.caption.copyWith(
                 color: AppColors.textPrimary,
               ),

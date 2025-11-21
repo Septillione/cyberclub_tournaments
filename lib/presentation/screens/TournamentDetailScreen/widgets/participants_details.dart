@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -20,7 +20,7 @@ class ParticipantsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Participant> mockParticipants = List.generate(
-      tournament.currentParticipants,
+      tournament.participants.currentParticipants,
       (index) {
         return Participant(
           id: '$index',
@@ -33,10 +33,10 @@ class ParticipantsDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Участники: ${tournament.currentParticipants}/${tournament.maxParticipants}',
+          'Участники: ${tournament.participants.currentParticipants}/${tournament.participants.maxParticipants}',
           style: AppTextStyles.h3,
         ),
-        SizedBox(height: 24,),
+        SizedBox(height: 24),
         ListView.separated(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
@@ -70,7 +70,10 @@ class ParticipantsDetails extends StatelessWidget {
                 ? NetworkImage(participant.avatarUrl!)
                 : null,
             child: participant.avatarUrl == null
-                ? const Icon(LucideIcons.userRound, color: AppColors.textSecondary)
+                ? const Icon(
+                    LucideIcons.userRound,
+                    color: AppColors.textSecondary,
+                  )
                 : null,
           ),
           const SizedBox(width: 12),

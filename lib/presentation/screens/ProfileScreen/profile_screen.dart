@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/user_profile_model.dart';
+import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/card_setting.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';

@@ -1,8 +1,13 @@
-import 'package:cyberclub_tournaments/data/models/entry_model.dart';
-import 'package:cyberclub_tournaments/data/models/team_model.dart';
-import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/core/routing/app_router.dart';
+import 'package:cyberclub_tournaments/data/models/EntryModel/entry_model.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 
 class TeamRepository {
+  final ApiClient _apiClient;
+
+  TeamRepository({required ApiClient apiClient}) : _apiClient = apiClient;
+
   final List<EntryModel> _mockEntries = [
     const EntryModel(
       id: 'entry-alpha-dota',
@@ -47,7 +52,7 @@ class TeamRepository {
           isCaptain: i == 0,
         ),
       ),
-      tournaments: mockTournaments
+      tournaments: tournamentsRepository.mockTournaments
           .where((t) => t.id == 't-dota-1' || t.id == 't-cs-1')
           .toList(),
       applications: List.generate(
@@ -79,7 +84,7 @@ class TeamRepository {
           isCaptain: i == 0,
         ),
       ),
-      tournaments: mockTournaments
+      tournaments: tournamentsRepository.mockTournaments
           .where((t) => t.id == 't-valorant-1' || t.id == 't-cs-1')
           .toList(),
       applications: [],
@@ -118,7 +123,7 @@ class TeamRepository {
         .map((entry) => entry.tournamentId)
         .toSet();
 
-    final teamTournaments = mockTournaments
+    final teamTournaments = tournamentsRepository.mockTournaments
         .where((tournament) => tournamentIds.contains(tournament.id))
         .toList();
 

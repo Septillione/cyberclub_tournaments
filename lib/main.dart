@@ -1,5 +1,6 @@
 import 'package:cyberclub_tournaments/core/routing/app_router.dart';
 import 'package:cyberclub_tournaments/core/theme/app_theme.dart';
+import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final apiClient = ApiClient();
+
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => TournamentRepository()),
-        RepositoryProvider(create: (context) => TeamRepository()),
+        RepositoryProvider(
+          create: (context) => TournamentRepository(apiClient: apiClient),
+        ),
+        RepositoryProvider(
+          create: (context) => TeamRepository(apiClient: apiClient),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: goRouter,

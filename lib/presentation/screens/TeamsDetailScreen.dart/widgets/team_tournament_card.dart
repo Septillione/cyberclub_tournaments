@@ -1,7 +1,7 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/team_model.dart';
-import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';

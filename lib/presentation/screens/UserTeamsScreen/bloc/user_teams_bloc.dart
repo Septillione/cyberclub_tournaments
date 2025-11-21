@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/data/models/team_model.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/tournament_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/tournament_infoblock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +19,7 @@ class GeneralDetails extends StatelessWidget {
     ).format(tournament.startDate);
 
     final participants =
-        '${tournament.currentParticipants ?? 0}/${tournament.maxParticipants ?? 0}';
+        '${tournament.participants.currentParticipants ?? 0}/${tournament.participants.maxParticipants ?? 0}';
 
     final tournamentFormat = '${tournament.formatVersus}\n${tournament.format}';
 
@@ -112,9 +112,9 @@ class GeneralDetails extends StatelessWidget {
         ),
         const SizedBox(height: 32),
 
-        if (tournament.firstPlace != null ||
-            tournament.secondPlace != null ||
-            tournament.thirdPlace != null)
+        if (tournament.prizes.firstPlace != null ||
+            tournament.prizes.secondPlace != null ||
+            tournament.prizes.thirdPlace != null)
           Container(
             padding: EdgeInsets.all(16),
             width: double.infinity,
@@ -128,33 +128,33 @@ class GeneralDetails extends StatelessWidget {
                 Text('Призы и награды', style: AppTextStyles.h3),
                 const SizedBox(height: 4),
 
-                if (tournament.firstPlace != null) ...[
+                if (tournament.prizes.firstPlace != null) ...[
                   const SizedBox(height: 12),
                   _buildPrizeItem(
                     LucideIcons.medal,
                     AppColors.statusWarning,
                     '1 место:',
-                    tournament.firstPlace!,
+                    tournament.prizes.firstPlace!,
                   ),
                 ],
 
-                if (tournament.secondPlace != null) ...[
+                if (tournament.prizes.secondPlace != null) ...[
                   const SizedBox(height: 12),
                   _buildPrizeItem(
                     LucideIcons.medal,
                     AppColors.textSecondary,
                     '2 место:',
-                    tournament.secondPlace!,
+                    tournament.prizes.secondPlace!,
                   ),
                 ],
 
-                if (tournament.thirdPlace != null) ...[
+                if (tournament.prizes.thirdPlace != null) ...[
                   const SizedBox(height: 12),
                   _buildPrizeItem(
                     LucideIcons.medal,
                     AppColors.medalBronza,
                     '3 место:',
-                    tournament.thirdPlace!,
+                    tournament.prizes.thirdPlace!,
                   ),
                 ],
               ],
