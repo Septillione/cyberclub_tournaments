@@ -68,40 +68,6 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // Column(
-                      //   children: [
-                      //     CardSetting(
-                      //       icon: LucideIcons.bell,
-                      //       title: 'Уведомления',
-                      //       onTap: () {},
-                      //     ),
-                      //     const SizedBox(height: 16),
-                      //     CardSetting(
-                      //       icon: LucideIcons.shieldCheck,
-                      //       title: 'Приватность',
-                      //       onTap: () {},
-                      //     ),
-                      //     const SizedBox(height: 16),
-                      //     CardSetting(
-                      //       icon: LucideIcons.keyRound,
-                      //       title: 'Сменить пароль',
-                      //       onTap: () {},
-                      //     ),
-                      //     const SizedBox(height: 16),
-                      //     CardSetting(
-                      //       icon: LucideIcons.heartHandshake,
-                      //       title: 'Служба поддержки',
-                      //       onTap: () {},
-                      //     ),
-                      //     const SizedBox(height: 16),
-                      //     CardSetting(
-                      //       icon: LucideIcons.info,
-                      //       title: 'О приложениее',
-                      //       onTap: () {},
-                      //     ),
-                      //     const SizedBox(height: 16),
-                      //   ],
-                      // ),
                     ],
                   );
               }

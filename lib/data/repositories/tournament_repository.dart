@@ -134,7 +134,23 @@ class TournamentRepository {
   ];
 
   Future<List<TournamentModel>> fetchTournaments() async {
-    return mockTournaments;
+    try {
+      final response = await _apiClient.dio.get('/tournaments');
+
+      final List<dynamic> dataList = response.data['items'];
+
+      final tournaments = dataList.map((json) {
+        return TournamentModel.fromJson(json);
+      }).toList();
+
+      print('УСПЕХ: Загружено ${tournaments.length} турниров с сервера!');
+      return tournaments;
+    } catch (e) {
+      print('ОШИБКА СЕТИ: $e');
+      print('Возвращаем моковые данные...');
+
+      return mockTournaments;
+    }
   }
 
   Future<List<String>> fetchDisciplines() async {

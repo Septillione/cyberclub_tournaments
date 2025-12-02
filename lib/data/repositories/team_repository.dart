@@ -1,12 +1,17 @@
-import 'package:cyberclub_tournaments/core/routing/app_router.dart';
 import 'package:cyberclub_tournaments/data/models/EntryModel/entry_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
+import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 
 class TeamRepository {
   final ApiClient _apiClient;
+  final TournamentRepository _tournamentsRepository;
 
-  TeamRepository({required ApiClient apiClient}) : _apiClient = apiClient;
+  TeamRepository({
+    required ApiClient apiClient,
+    required TournamentRepository tournamentsRepository,
+  }) : _apiClient = apiClient,
+       _tournamentsRepository = tournamentsRepository;
 
   final List<EntryModel> _mockEntries = [
     const EntryModel(
@@ -32,65 +37,67 @@ class TeamRepository {
     ),
   ];
 
-  final List<TeamDetailModel> _mockTeamDetails = [
-    TeamDetailModel(
-      id: 'team-alpha',
-      name: 'Team Alpha',
-      tag: 'AW',
-      avatarUrl:
-          'https://liquipedia.net/commons/images/c/cd/Team_Alpha_darkmode.png',
-      tournamentsCount: 12,
-      winsCount: 8,
-      winrate: 66.0,
-      isCurrentUserCaptain: true,
-      teammates: List.generate(
-        5,
-        (i) => TeammateModel(
-          id: 'p$i',
-          name: 'Alpha Player ${i + 1}',
-          avatarUrl: 'https://i.pravatar.cc/150?u=$i',
-          isCaptain: i == 0,
+  List<TeamDetailModel> get _mockTeamDetails {
+    return [
+      TeamDetailModel(
+        id: 'team-alpha',
+        name: 'Team Alpha',
+        tag: 'AW',
+        avatarUrl:
+            'https://liquipedia.net/commons/images/c/cd/Team_Alpha_darkmode.png',
+        tournamentsCount: 12,
+        winsCount: 8,
+        winrate: 66.0,
+        isCurrentUserCaptain: true,
+        teammates: List.generate(
+          5,
+          (i) => TeammateModel(
+            id: 'p$i',
+            name: 'Alpha Player ${i + 1}',
+            avatarUrl: 'https://i.pravatar.cc/150?u=$i',
+            isCaptain: i == 0,
+          ),
         ),
-      ),
-      tournaments: tournamentsRepository.mockTournaments
-          .where((t) => t.id == 't-dota-1' || t.id == 't-cs-1')
-          .toList(),
-      applications: List.generate(
-        3,
-        (i) => TeamApplicationModel(
-          id: 'app$i',
-          playerName: 'Newbie$i',
-          playerAvatarUrl: 'https://i.pravatar.cc/150?u=newbie$i',
+        tournaments: _tournamentsRepository.mockTournaments
+            .where((t) => t.id == 't-dota-1' || t.id == 't-cs-1')
+            .toList(),
+        applications: List.generate(
+          3,
+          (i) => TeamApplicationModel(
+            id: 'app$i',
+            playerName: 'Newbie$i',
+            playerAvatarUrl: 'https://i.pravatar.cc/150?u=newbie$i',
+          ),
         ),
+        inviteLink: 'cyber.club/join/alpha',
       ),
-      inviteLink: 'cyber.club/join/alpha',
-    ),
-    TeamDetailModel(
-      id: 'team-navi',
-      name: 'NAVI',
-      tag: 'NV',
-      avatarUrl:
-          'https://avatars.mds.yandex.net/i?id=4445e9d8d23dc7f5c99ed26c0b5f8949_l-4120615-images-thumbs&n=13',
-      tournamentsCount: 34,
-      winsCount: 26,
-      winrate: 76.0,
-      isCurrentUserCaptain: false,
-      teammates: List.generate(
-        5,
-        (i) => TeammateModel(
-          id: 'b$i',
-          name: 'NAVI Player ${i + 1}',
-          avatarUrl: 'https://i.pravatar.cc/150?u=bravo$i',
-          isCaptain: i == 0,
+      TeamDetailModel(
+        id: 'team-navi',
+        name: 'NAVI',
+        tag: 'NV',
+        avatarUrl:
+            'https://avatars.mds.yandex.net/i?id=4445e9d8d23dc7f5c99ed26c0b5f8949_l-4120615-images-thumbs&n=13',
+        tournamentsCount: 34,
+        winsCount: 26,
+        winrate: 76.0,
+        isCurrentUserCaptain: false,
+        teammates: List.generate(
+          5,
+          (i) => TeammateModel(
+            id: 'b$i',
+            name: 'NAVI Player ${i + 1}',
+            avatarUrl: 'https://i.pravatar.cc/150?u=bravo$i',
+            isCaptain: i == 0,
+          ),
         ),
+        tournaments: _tournamentsRepository.mockTournaments
+            .where((t) => t.id == 't-valorant-1' || t.id == 't-cs-1')
+            .toList(),
+        applications: [],
+        inviteLink: 'cyber.club/join/navi',
       ),
-      tournaments: tournamentsRepository.mockTournaments
-          .where((t) => t.id == 't-valorant-1' || t.id == 't-cs-1')
-          .toList(),
-      applications: [],
-      inviteLink: 'cyber.club/join/navi',
-    ),
-  ];
+    ];
+  }
 
   Future<List<TeamListItemModel>> fetchUserTeams(String userId) async {
     return _mockTeamDetails.map((detail) {
@@ -123,7 +130,7 @@ class TeamRepository {
         .map((entry) => entry.tournamentId)
         .toSet();
 
-    final teamTournaments = tournamentsRepository.mockTournaments
+    final teamTournaments = _tournamentsRepository.mockTournaments
         .where((tournament) => tournamentIds.contains(tournament.id))
         .toList();
 

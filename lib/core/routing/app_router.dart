@@ -1,8 +1,7 @@
-import 'package:cyberclub_tournaments/app.dart';
-import 'package:cyberclub_tournaments/data/providers/api_client.dart';
+import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
-import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
+import 'package:cyberclub_tournaments/presentation/screens/AuthScreen/auth_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
@@ -14,87 +13,85 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+class AppRouter {
+  // Приватные ключи навигации
+  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-final apiClient = ApiClient();
+  static final GoRouter router = GoRouter(
+    initialLocation: '/login',
+    navigatorKey: _rootNavigatorKey,
+    routes: [
+      GoRoute(path: '/login', builder: (context, state) => const AuthScreen()),
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) {
+          return MainNavigation(child: child);
+        },
+        routes: [
+          // Лента турниров
+          GoRoute(
+            path: '/tournaments',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: TournamentsFeedScreen()),
+            routes: [
+              GoRoute(
+                path: ':tournamentId',
+                parentNavigatorKey: _rootNavigatorKey,
+                builder: (context, state) {
+                  final tournamentId = state.pathParameters['tournamentId']!;
 
-final tournamentsRepository = TournamentRepository(apiClient: apiClient);
-final teamRepository = TeamRepository(apiClient: apiClient);
-final userRepository = UserRepository(apiClient: apiClient);
+                  final repo = context.read<TournamentRepository>();
+                  final tournament = repo.findTournamentById(tournamentId);
 
-final goRouter = GoRouter(
-  initialLocation: '/tournaments',
-  navigatorKey: _rootNavigatorKey,
-  routes: [
-    ShellRoute(
-      routes: [
-        // Лента турниров
-        GoRoute(
-          path: '/tournaments',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: TournamentsFeedScreen()),
-          routes: [
-            GoRoute(
-              path: ':tournamentId',
-              parentNavigatorKey: _rootNavigatorKey,
-              builder: (context, state) {
-                final tournamentId = state.pathParameters['tournamentId']!;
-                final tournament = tournamentsRepository.findTournamentById(
-                  tournamentId,
-                );
+                  if (tournament != null) {
+                    return TournamentDetailScreen(tournament: tournament);
+                  } else {
+                    return const Text('Турнир не найден');
+                  }
+                },
+              ),
+            ],
+          ),
 
-                if (tournament != null) {
-                  return TournamentDetailScreen(tournament: tournament);
-                } else {
-                  return const Text('Турнир не найден');
-                }
-              },
-            ),
-          ],
-        ),
+          // Мои турниры
+          GoRoute(
+            path: '/my-tournaments',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: UserTournamentsScreen()),
+          ),
 
-        // Мои турниры
-        GoRoute(
-          path: '/my-tournaments',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: UserTournamentsScreen()),
-        ),
+          // Мои команды
+          GoRoute(
+            path: '/my-teams',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: UserTeamsScreen()),
+            routes: [
+              GoRoute(
+                path: ':teamId',
+                parentNavigatorKey: _rootNavigatorKey,
+                builder: (context, state) {
+                  final teamId = state.pathParameters['teamId']!;
 
-        // Мои команды
-        GoRoute(
-          path: '/my-teams',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: UserTeamsScreen()),
-          routes: [
-            GoRoute(
-              path: ':teamId',
-              parentNavigatorKey: _rootNavigatorKey,
-              builder: (context, state) {
-                final teamId = state.pathParameters['teamId']!;
+                  return BlocProvider(
+                    create: (context) => TeamDetailBloc(
+                      teamRepository: context.read<TeamRepository>(),
+                    )..add(TeamDetailStarted(teamId: teamId)),
+                    child: const TeamsDetailScreen(),
+                  );
+                },
+              ),
+            ],
+          ),
 
-                return BlocProvider(
-                  create: (context) =>
-                      TeamDetailBloc(teamRepository: teamRepository)
-                        ..add(TeamDetailStarted(teamId: teamId)),
-                  child: const TeamsDetailScreen(),
-                );
-              },
-            ),
-          ],
-        ),
-
-        // Профиль
-        GoRoute(
-          path: '/profile',
-          pageBuilder: (context, state) =>
-              NoTransitionPage(child: ProfileScreen()),
-        ),
-      ],
-      navigatorKey: _shellNavigatorKey,
-      builder: (context, state, child) {
-        return MainNavigation(child: child);
-      },
-    ),
-  ],
-);
+          // Профиль
+          GoRoute(
+            path: '/profile',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: ProfileScreen()),
+          ),
+        ],
+      ),
+    ],
+  );
+}

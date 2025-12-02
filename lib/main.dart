@@ -1,50 +1,42 @@
-import 'package:cyberclub_tournaments/core/routing/app_router.dart';
-import 'package:cyberclub_tournaments/core/theme/app_theme.dart';
+import 'package:cyberclub_tournaments/app.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
+import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
+import 'package:cyberclub_tournaments/data/services/token_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
+  // Инициализация приложения
   WidgetsFlutterBinding.ensureInitialized();
-
+  // Инициализация локализации и форматирования даты
   await initializeDateFormatting('ru_RU', null);
 
-  runApp(const MainApp());
-}
+  // Инициализация слоев данных
+  final tokenStorage = TokenStorage();
+  final apiClient = ApiClient(tokenStorage: tokenStorage);
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  // Инициализация репозиториев
+  final authRepository = AuthRepository(
+    apiClient: apiClient,
+    tokenStorage: tokenStorage,
+  );
+  final tournamentRepository = TournamentRepository(apiClient: apiClient);
+  final teamRepository = TeamRepository(
+    apiClient: apiClient,
+    tournamentsRepository: tournamentRepository,
+  );
+  final userRepository = UserRepository(apiClient: apiClient);
 
-  @override
-  Widget build(BuildContext context) {
-    final apiClient = ApiClient();
-
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(
-          create: (context) => TournamentRepository(apiClient: apiClient),
-        ),
-        RepositoryProvider(
-          create: (context) => TeamRepository(apiClient: apiClient),
-        ),
-      ],
-      child: MaterialApp.router(
-        routerConfig: goRouter,
-
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [const Locale('ru', 'RU')],
-
-        debugShowCheckedModeBanner: false,
-        theme: buildAppTheme(),
-      ),
-    );
-  }
+  // Запуск приложения
+  runApp(
+    MainApp(
+      authRepository: authRepository,
+      tournamentRepository: tournamentRepository,
+      teamRepository: teamRepository,
+      userRepository: userRepository,
+    ),
+  );
 }
