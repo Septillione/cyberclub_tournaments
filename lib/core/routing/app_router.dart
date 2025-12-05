@@ -1,7 +1,9 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
-import 'package:cyberclub_tournaments/presentation/screens/AuthScreen/auth_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/login_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
@@ -19,10 +21,15 @@ class AppRouter {
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/',
     navigatorKey: _rootNavigatorKey,
     routes: [
-      GoRoute(path: '/login', builder: (context, state) => const AuthScreen()),
+      GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegisterScreen(),
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {

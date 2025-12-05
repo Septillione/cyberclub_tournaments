@@ -18,3 +18,5 @@ class TournamentsFeedFilterChanged extends TournamentsFeedEvent {
   @override
   List<Object> get props => [selectedDiscipline];
 }
+
+class TournamentsFeedRefreshed extends TournamentsFeedEvent {}

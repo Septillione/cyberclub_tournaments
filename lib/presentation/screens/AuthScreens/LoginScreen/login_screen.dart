@@ -1,38 +1,38 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
-import 'package:cyberclub_tournaments/presentation/screens/AuthScreen/bloc/auth_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class AuthScreen extends StatelessWidget {
-  const AuthScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          AuthBloc(authRepository: context.read<AuthRepository>()),
-      child: const _AuthView(),
+          LoginBloc(authRepository: context.read<AuthRepository>()),
+      child: const _LoginView(),
     );
   }
 }
 
-class _AuthView extends StatefulWidget {
-  const _AuthView();
+class _LoginView extends StatefulWidget {
+  const _LoginView();
 
   @override
-  State<_AuthView> createState() => _AuthViewState();
+  State<_LoginView> createState() => _AuthViewState();
 }
 
-class _AuthViewState extends State<_AuthView> {
+class _AuthViewState extends State<_LoginView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
           context.go('/tournaments');
@@ -50,9 +50,9 @@ class _AuthViewState extends State<_AuthView> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-            child: BlocBuilder<AuthBloc, AuthState>(
+            child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
-                if (state is LoginLoading) {
+                if (state is LoginLoading || state is LoginSuccess) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
@@ -79,7 +79,7 @@ class _AuthViewState extends State<_AuthView> {
                     const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(
+                        context.read<LoginBloc>().add(
                           LoginSubmitted(
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim(),
@@ -87,6 +87,11 @@ class _AuthViewState extends State<_AuthView> {
                         );
                       },
                       child: const Text('Войти'),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => context.push('/register'),
+                      child: const Text('Нет аккаунта? Зарегистрироваться'),
                     ),
                   ],
                 );

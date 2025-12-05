@@ -149,18 +149,25 @@ class TournamentsFeedScreen extends StatelessWidget {
       );
     }
     return Expanded(
-      child: ListView.builder(
-        itemCount: state.filteredTournaments.length,
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index) {
-          final tournament = state.filteredTournaments[index];
-
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: TournamentCard(tournament: tournament),
-          );
+      child: RefreshIndicator(
+        onRefresh: () async {
+          context.read<TournamentsFeedBloc>().add(TournamentsFeedRefreshed());
+          await Future.delayed(const Duration(seconds: 1));
         },
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: state.filteredTournaments.length,
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (BuildContext context, int index) {
+            final tournament = state.filteredTournaments[index];
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: TournamentCard(tournament: tournament),
+            );
+          },
+        ),
       ),
     );
   }

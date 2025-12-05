@@ -32,18 +32,22 @@ class AuthRepository {
   }
 
   // Регистрация
-  Future<void> register(String email, String password, String nickname) async {
+  Future<void> register({
+    required String nickname,
+    required String email,
+    required String password,
+  }) async {
     final response = await _apiClient.dio.post(
       '/auth/register',
       data: RegisterRequest(
+        nickname: nickname,
         email: email,
         password: password,
-        nickname: nickname,
       ).toJson(),
     );
 
-    final accessToken = response.data['access_token'];
-    final refreshToken = response.data['refresh_token'];
+    final accessToken = response.data['accessToken'];
+    final refreshToken = response.data['refreshToken'];
 
     await _tokenStorage.saveTokens(
       accessToken: accessToken,
@@ -59,7 +63,17 @@ class AuthRepository {
   // Проверка авторизации
   Future<bool> isLoggedIn() async {
     final token = await _tokenStorage.getAccessToken();
-    return token != null && !JwtDecoder.isExpired(token);
+    print('Auth_repo: token from storage $token');
+
+    if (token == null) {
+      print('Auth_repo: token is null');
+      return false;
+    }
+    final isExpired = JwtDecoder.isExpired(token);
+    print('Auth_repo: is expired? $isExpired');
+
+    return !isExpired;
+    // return token != null && !JwtDecoder.isExpired(token);
   }
 
   // Узнать роль

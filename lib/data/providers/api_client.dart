@@ -31,11 +31,59 @@ class ApiClient {
 
           return handler.next(options);
         },
-        onError: (DioException error, handler) {
+        onError: (DioException error, handler) async {
+          if (error.response?.statusCode == 401 &&
+              !error.requestOptions.path.contains('auth')) {
+            try {
+              final newAccessToken = await _refreshToken();
+
+              if (newAccessToken != null) {
+                final options = error.requestOptions;
+                options.headers['Authorization'] = 'Bearer $newAccessToken';
+
+                final cloneReq = await _dio.request(
+                  options.path,
+                  options: Options(
+                    method: options.method,
+                    headers: options.headers,
+                  ),
+                  data: options.data,
+                  queryParameters: options.queryParameters,
+                );
+
+                return handler.resolve(cloneReq);
+              }
+            } catch (e) {
+              await _tokenStorage.clearTokens();
+            }
+          }
           return handler.next(error);
         },
       ),
     );
+  }
+
+  Future<String?> _refreshToken() async {
+    final refreshToken = await _tokenStorage.getRefreshToken();
+    if (refreshToken == null) return null;
+
+    try {
+      final dio = Dio(BaseOptions(baseUrl: _baseUrl));
+
+      final response = await dio.post(
+        '/auth/refresh',
+        data: {'refreshToken': refreshToken},
+      );
+
+      final newAt = response.data['accessToken'];
+      final newRt = response.data['refreshToken'];
+
+      await _tokenStorage.saveTokens(accessToken: newAt, refreshToken: newRt);
+      return newAt;
+    } catch (e) {
+      await _tokenStorage.clearTokens();
+      return null;
+    }
   }
 
   Dio get dio => _dio;

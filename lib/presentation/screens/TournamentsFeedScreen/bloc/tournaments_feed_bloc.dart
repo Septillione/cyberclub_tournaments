@@ -16,6 +16,7 @@ class TournamentsFeedBloc
       super(TournamentsFeedLoading()) {
     on<TournamentsFeedStarted>(_onStarted);
     on<TournamentsFeedFilterChanged>(_onFilterChanged);
+    on<TournamentsFeedRefreshed>(_onRefreshTournaments);
   }
 
   Future<void> _onStarted(
@@ -59,6 +60,28 @@ class TournamentsFeedBloc
           selectedDiscipline: event.selectedDiscipline,
         ),
       );
+    }
+  }
+
+  Future<void> _onRefreshTournaments(
+    TournamentsFeedRefreshed event,
+    Emitter emit,
+  ) async {
+    try {
+      final allTournaments = await _tournamentRepository.fetchTournaments();
+      final disciplines = await _tournamentRepository.fetchDisciplines();
+
+      emit(
+        TournamentsFeedLoaded(
+          allTournaments: allTournaments,
+          filteredTournaments: allTournaments,
+          disciplines: disciplines,
+          selectedDiscipline: 'Все игры',
+        ),
+      );
+      print('Данные были обновлены');
+    } catch (e) {
+      print('Ошибка обновления $e');
     }
   }
 }

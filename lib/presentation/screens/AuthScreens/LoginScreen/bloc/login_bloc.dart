@@ -3,13 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'auth_event.dart';
-part 'auth_state.dart';
+part 'login_event.dart';
+part 'login_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository _authRepository;
 
-  AuthBloc({required AuthRepository authRepository})
+  LoginBloc({required AuthRepository authRepository})
     : _authRepository = authRepository,
       super(LoginInitial()) {
     on<LoginSubmitted>(_onLoginSubmitted);
@@ -17,7 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onLoginSubmitted(
     LoginSubmitted event,
-    Emitter<AuthState> emit,
+    Emitter<LoginState> emit,
   ) async {
     emit(LoginLoading());
 
