@@ -15,14 +15,6 @@ class ActiveTournamentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => context.push('/tournaments/${tournament.id}'),
-      // onTap: () {
-      //   Navigator.of(context).push(
-      //     MaterialPageRoute(
-      //       builder: (context) =>
-      //           TournamentDetailScreen(tournament: tournament),
-      //     ),
-      //   );
-      // },
       borderRadius: BorderRadius.circular(16.0),
       child: Container(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +28,7 @@ class ActiveTournamentCard extends StatelessWidget {
             _buildHeader(),
             const SizedBox(height: 8),
             Text(
-              '${tournament.discipline}, ${tournament.formatVersus}, ${tournament.format}',
+              '${tournament.discipline}, ${tournament.teamMode}, ${tournament.bracketType}',
               style: AppTextStyles.bodyM,
             ),
             SizedBox(height: 16),

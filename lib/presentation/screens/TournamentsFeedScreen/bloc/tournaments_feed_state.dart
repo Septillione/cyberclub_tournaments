@@ -12,8 +12,8 @@ final class TournamentsFeedLoading extends TournamentsFeedState {}
 final class TournamentsFeedLoaded extends TournamentsFeedState {
   final List<TournamentModel> allTournaments;
   final List<TournamentModel> filteredTournaments;
-  final List<String> disciplines;
-  final String selectedDiscipline;
+  final List<Discipline> disciplines;
+  final Discipline? selectedDiscipline;
 
   const TournamentsFeedLoaded({
     required this.allTournaments,
@@ -26,7 +26,7 @@ final class TournamentsFeedLoaded extends TournamentsFeedState {
   List<Object> get props => [
     filteredTournaments,
     disciplines,
-    selectedDiscipline,
+    ?selectedDiscipline,
   ];
 }
 

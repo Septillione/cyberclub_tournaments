@@ -6,58 +6,45 @@ part of 'tournament_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_TournamentParticipants _$TournamentParticipantsFromJson(
-  Map<String, dynamic> json,
-) => _TournamentParticipants(
-  currentParticipants: (json['currentParticipants'] as num).toInt(),
-  maxParticipants: (json['maxParticipants'] as num).toInt(),
-);
-
-Map<String, dynamic> _$TournamentParticipantsToJson(
-  _TournamentParticipants instance,
-) => <String, dynamic>{
-  'currentParticipants': instance.currentParticipants,
-  'maxParticipants': instance.maxParticipants,
-};
-
-_TournamentPrizes _$TournamentPrizesFromJson(Map<String, dynamic> json) =>
-    _TournamentPrizes(
-      firstPlace: json['firstPlace'] as String?,
-      secondPlace: json['secondPlace'] as String?,
-      thirdPlace: json['thirdPlace'] as String?,
-    );
-
-Map<String, dynamic> _$TournamentPrizesToJson(_TournamentPrizes instance) =>
-    <String, dynamic>{
-      'firstPlace': instance.firstPlace,
-      'secondPlace': instance.secondPlace,
-      'thirdPlace': instance.thirdPlace,
-    };
-
 _TournamentModel _$TournamentModelFromJson(Map<String, dynamic> json) =>
     _TournamentModel(
       id: json['id'] as String,
       title: json['title'] as String,
       imageUrl: json['imageUrl'] as String,
-      discipline: json['discipline'] as String,
-      prizePool: (json['prizePool'] as num).toInt(),
+      discipline: $enumDecode(
+        _$DisciplineEnumMap,
+        json['discipline'],
+        unknownValue: Discipline.DOTA2,
+      ),
+      prizePool: json['prizePool'] as String?,
       type: json['type'] as String,
       address: json['address'] as String?,
-      format: json['format'] as String,
-      formatVersus: json['formatVersus'] as String,
+      bracketType: $enumDecode(
+        _$BracketTypeEnumMap,
+        json['bracketType'],
+        unknownValue: BracketType.SINGLE_ELIMINATION,
+      ),
+      teamMode: $enumDecode(
+        _$TeamModeEnumMap,
+        json['teamMode'],
+        unknownValue: TeamMode.TEAM_5V5,
+      ),
       description: json['description'] as String,
       rules: json['rules'] as String,
       startDate: DateTime.parse(json['startDate'] as String),
-      status: $enumDecode(_$TournamentStatusEnumMap, json['status']),
-      registeredPlayerIds:
-          (json['registeredPlayerIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      participants: TournamentParticipants.fromJson(
+      status: $enumDecode(
+        _$TournamentStatusEnumMap,
+        json['status'],
+        unknownValue: TournamentStatus.ANNOUNCED,
+      ),
+      participants: ParticipantsInfo.fromJson(
         json['participants'] as Map<String, dynamic>,
       ),
-      prizes: TournamentPrizes.fromJson(json['prizes'] as Map<String, dynamic>),
+      prizes:
+          (json['prizes'] as List<dynamic>?)
+              ?.map((e) => PrizeItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$TournamentModelToJson(_TournamentModel instance) =>
@@ -65,26 +52,76 @@ Map<String, dynamic> _$TournamentModelToJson(_TournamentModel instance) =>
       'id': instance.id,
       'title': instance.title,
       'imageUrl': instance.imageUrl,
-      'discipline': instance.discipline,
+      'discipline': _$DisciplineEnumMap[instance.discipline]!,
       'prizePool': instance.prizePool,
       'type': instance.type,
       'address': instance.address,
-      'format': instance.format,
-      'formatVersus': instance.formatVersus,
+      'bracketType': _$BracketTypeEnumMap[instance.bracketType]!,
+      'teamMode': _$TeamModeEnumMap[instance.teamMode]!,
       'description': instance.description,
       'rules': instance.rules,
       'startDate': instance.startDate.toIso8601String(),
       'status': _$TournamentStatusEnumMap[instance.status]!,
-      'registeredPlayerIds': instance.registeredPlayerIds,
       'participants': instance.participants,
       'prizes': instance.prizes,
     };
 
-const _$TournamentStatusEnumMap = {
-  TournamentStatus.announced: 'announced',
-  TournamentStatus.registrationOpened: 'registrationOpened',
-  TournamentStatus.registrationClosed: 'registrationClosed',
-  TournamentStatus.live: 'live',
-  TournamentStatus.finished: 'finished',
-  TournamentStatus.cancelled: 'cancelled',
+const _$DisciplineEnumMap = {
+  Discipline.DOTA2: 'DOTA2',
+  Discipline.CS2: 'CS2',
+  Discipline.VALORANT: 'VALORANT',
+  Discipline.LEAGUE_OF_LEGENDS: 'LEAGUE_OF_LEGENDS',
+  Discipline.FORTNITE: 'FORTNITE',
+  Discipline.CALL_OF_DUTY_WARZONE: 'CALL_OF_DUTY_WARZONE',
+  Discipline.WORLD_OF_TANKS: 'WORLD_OF_TANKS',
+  Discipline.PUBG: 'PUBG',
+  Discipline.APEX_LEGENDS: 'APEX_LEGENDS',
+  Discipline.WARFACE: 'WARFACE',
+  Discipline.FIFA: 'FIFA',
+  Discipline.OVERWATCH2: 'OVERWATCH2',
+  Discipline.CLASH_ROYALE: 'CLASH_ROYALE',
+  Discipline.BRAWL_STARS: 'BRAWL_STARS',
+  Discipline.STARCRAFT2: 'STARCRAFT2',
+  Discipline.MORTAL_KOMBAT: 'MORTAL_KOMBAT',
+  Discipline.TETRIS: 'TETRIS',
 };
+
+const _$BracketTypeEnumMap = {
+  BracketType.SINGLE_ELIMINATION: 'SINGLE_ELIMINATION',
+  BracketType.DOUBLE_ELIMINATION: 'DOUBLE_ELIMINATION',
+  BracketType.ROUND_ROBIN: 'ROUND_ROBIN',
+  BracketType.SWISS: 'SWISS',
+};
+
+const _$TeamModeEnumMap = {
+  TeamMode.SOLO: 'SOLO',
+  TeamMode.DUO: 'DUO',
+  TeamMode.TEAM_5V5: 'TEAM_5V5',
+  TeamMode.SQUAD: 'SQUAD',
+};
+
+const _$TournamentStatusEnumMap = {
+  TournamentStatus.ANNOUNCED: 'ANNOUNCED',
+  TournamentStatus.REGISTRATION_OPEN: 'REGISTRATION_OPEN',
+  TournamentStatus.REGISTRATION_CLOSED: 'REGISTRATION_CLOSED',
+  TournamentStatus.LIVE: 'LIVE',
+  TournamentStatus.FINISHED: 'FINISHED',
+  TournamentStatus.CANCELLED: 'CANCELLED',
+};
+
+_ParticipantsInfo _$ParticipantsInfoFromJson(Map<String, dynamic> json) =>
+    _ParticipantsInfo(
+      current: (json['current'] as num).toInt(),
+      max: (json['max'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$ParticipantsInfoToJson(_ParticipantsInfo instance) =>
+    <String, dynamic>{'current': instance.current, 'max': instance.max};
+
+_PrizeItem _$PrizeItemFromJson(Map<String, dynamic> json) => _PrizeItem(
+  label: json['label'] as String,
+  amount: json['amount'] as String,
+);
+
+Map<String, dynamic> _$PrizeItemToJson(_PrizeItem instance) =>
+    <String, dynamic>{'label': instance.label, 'amount': instance.amount};

@@ -100,26 +100,36 @@ class TournamentsFeedScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: state.disciplines.length,
+            child: ListView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.zero,
-              itemBuilder: (BuildContext context, int index) {
-                final discipline = state.disciplines[index];
-                final isSelected = discipline == state.selectedDiscipline;
-
-                return GestureDetector(
+              children: [
+                GestureDetector(
                   onTap: () {
                     context.read<TournamentsFeedBloc>().add(
-                      TournamentsFeedFilterChanged(discipline),
+                      const TournamentsFeedFilterChanged(null),
                     );
                   },
                   child: FilterChipWidget(
-                    label: discipline,
-                    isSelected: isSelected,
+                    label: 'Все игры',
+                    isSelected: state.selectedDiscipline == null,
                   ),
-                );
-              },
+                ),
+
+                ...state.disciplines.map((discipline) {
+                  return GestureDetector(
+                    onTap: () {
+                      context.read<TournamentsFeedBloc>().add(
+                        TournamentsFeedFilterChanged(discipline),
+                      );
+                    },
+                    child: FilterChipWidget(
+                      label: discipline.title,
+                      isSelected: state.selectedDiscipline == discipline,
+                    ),
+                  );
+                }),
+              ],
             ),
           ),
         ],

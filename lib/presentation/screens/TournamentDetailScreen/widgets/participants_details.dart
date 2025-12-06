@@ -20,7 +20,7 @@ class ParticipantsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Participant> mockParticipants = List.generate(
-      tournament.participants.currentParticipants,
+      tournament.participants.current,
       (index) {
         return Participant(
           id: '$index',
@@ -33,7 +33,7 @@ class ParticipantsDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Участники: ${tournament.participants.currentParticipants}/${tournament.participants.maxParticipants}',
+          'Участники: ${tournament.participants.current}/${tournament.participants.max}',
           style: AppTextStyles.h3,
         ),
         SizedBox(height: 24),

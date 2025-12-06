@@ -19,9 +19,10 @@ class GeneralDetails extends StatelessWidget {
     ).format(tournament.startDate);
 
     final participants =
-        '${tournament.participants.currentParticipants ?? 0}/${tournament.participants.maxParticipants ?? 0}';
+        '${tournament.participants.current}/${tournament.participants.max}';
 
-    final tournamentFormat = '${tournament.formatVersus}\n${tournament.format}';
+    final tournamentFormat =
+        '${tournament.teamMode}\n${tournament.bracketType}';
 
     final List<Widget> infoItemsGrid = [
       TournamentInfoItem(
@@ -112,9 +113,7 @@ class GeneralDetails extends StatelessWidget {
         ),
         const SizedBox(height: 32),
 
-        if (tournament.prizes.firstPlace != null ||
-            tournament.prizes.secondPlace != null ||
-            tournament.prizes.thirdPlace != null)
+        if (tournament.prizes.isNotEmpty)
           Container(
             padding: EdgeInsets.all(16),
             width: double.infinity,
@@ -126,57 +125,34 @@ class GeneralDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Призы и награды', style: AppTextStyles.h3),
-                const SizedBox(height: 4),
+                const SizedBox(height: 12),
 
-                if (tournament.prizes.firstPlace != null) ...[
-                  const SizedBox(height: 12),
-                  _buildPrizeItem(
-                    LucideIcons.medal,
-                    AppColors.statusWarning,
-                    '1 место:',
-                    tournament.prizes.firstPlace!,
-                  ),
-                ],
-
-                if (tournament.prizes.secondPlace != null) ...[
-                  const SizedBox(height: 12),
-                  _buildPrizeItem(
-                    LucideIcons.medal,
-                    AppColors.textSecondary,
-                    '2 место:',
-                    tournament.prizes.secondPlace!,
-                  ),
-                ],
-
-                if (tournament.prizes.thirdPlace != null) ...[
-                  const SizedBox(height: 12),
-                  _buildPrizeItem(
-                    LucideIcons.medal,
-                    AppColors.medalBronza,
-                    '3 место:',
-                    tournament.prizes.thirdPlace!,
-                  ),
-                ],
+                ...tournament.prizes.map((prize) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.medal,
+                          size: 20,
+                          color: AppColors.accentPrimary,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          '${prize.label}: ',
+                          style: AppTextStyles.bodyL.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        Text(prize.amount, style: AppTextStyles.bodyL),
+                      ],
+                    ),
+                  );
+                }),
               ],
             ),
           ),
         SizedBox(height: 16),
-      ],
-    );
-  }
-
-  Widget _buildPrizeItem(
-    IconData icon,
-    Color color,
-    String place,
-    String prize,
-  ) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 24, color: color),
-        const SizedBox(width: 12),
-        Flexible(child: Text('$place $prize', style: AppTextStyles.bodyL)),
       ],
     );
   }

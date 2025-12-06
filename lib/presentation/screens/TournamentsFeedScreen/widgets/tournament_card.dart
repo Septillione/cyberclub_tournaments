@@ -63,7 +63,7 @@ class TournamentCard extends StatelessWidget {
         color: AppColors.bgSurface.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Text(tournament.discipline, style: AppTextStyles.bodyL),
+      child: Text(tournament.discipline.title, style: AppTextStyles.bodyL),
     );
   }
 
@@ -96,27 +96,27 @@ class TournamentCard extends StatelessWidget {
     Color color;
 
     switch (status) {
-      case TournamentStatus.announced:
+      case TournamentStatus.ANNOUNCED:
         text = 'Анонс';
         color = AppColors.accentPrimary.withValues(alpha: 0.5);
         break;
-      case TournamentStatus.registrationOpened:
+      case TournamentStatus.REGISTRATION_OPEN:
         text = 'Регистрация открыта';
         color = AppColors.statusSuccess;
         break;
-      case TournamentStatus.registrationClosed:
+      case TournamentStatus.REGISTRATION_CLOSED:
         text = 'Регистрация закрыта';
         color = AppColors.statusFullUsers;
         break;
-      case TournamentStatus.live:
+      case TournamentStatus.LIVE:
         text = 'Идет';
         color = AppColors.statusLive;
         break;
-      case TournamentStatus.finished:
+      case TournamentStatus.FINISHED:
         text = 'Завершен';
         color = AppColors.statusArchived;
         break;
-      case TournamentStatus.cancelled:
+      case TournamentStatus.CANCELLED:
         text = 'Отменен';
         color = AppColors.statusArchived.withValues(alpha: 0.5);
         break;
@@ -165,8 +165,7 @@ class TournamentCard extends StatelessWidget {
 
   Widget _buildLineParticipants() {
     final double progress =
-        tournament.participants.currentParticipants /
-        tournament.participants.maxParticipants;
+        tournament.participants.current / tournament.participants.max;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,7 +175,7 @@ class TournamentCard extends StatelessWidget {
           children: [
             Text('Участники', style: AppTextStyles.caption),
             Text(
-              '${tournament.participants.currentParticipants}/${tournament.participants.maxParticipants}',
+              '${tournament.participants.current}/${tournament.participants.max}',
               style: AppTextStyles.caption.copyWith(
                 color: AppColors.textPrimary,
               ),

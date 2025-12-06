@@ -3,43 +3,77 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'tournament_model.freezed.dart';
 part 'tournament_model.g.dart';
 
+enum Discipline {
+  DOTA2,
+  CS2,
+  VALORANT,
+  LEAGUE_OF_LEGENDS,
+  FORTNITE,
+  CALL_OF_DUTY_WARZONE,
+  WORLD_OF_TANKS,
+  PUBG,
+  APEX_LEGENDS,
+  WARFACE,
+  FIFA,
+  OVERWATCH2,
+  CLASH_ROYALE,
+  BRAWL_STARS,
+  STARCRAFT2,
+  MORTAL_KOMBAT,
+  TETRIS;
+
+  String get title {
+    switch (this) {
+      case Discipline.DOTA2:
+        return 'Dota 2';
+      case Discipline.CS2:
+        return 'CS 2';
+      case Discipline.VALORANT:
+        return 'Valorant';
+      case Discipline.LEAGUE_OF_LEGENDS:
+        return 'League of Legends';
+      case Discipline.FORTNITE:
+        return 'Fortnite';
+      case Discipline.CALL_OF_DUTY_WARZONE:
+        return 'Call of Duty: Warzone';
+      case Discipline.WORLD_OF_TANKS:
+        return 'Мир танков';
+      case Discipline.PUBG:
+        return 'PUBG';
+      case Discipline.APEX_LEGENDS:
+        return 'Apex Legends';
+      case Discipline.WARFACE:
+        return 'Warface';
+      case Discipline.FIFA:
+        return 'FIFA';
+      case Discipline.OVERWATCH2:
+        return 'Overwatch 2';
+      case Discipline.CLASH_ROYALE:
+        return 'Clash Royale';
+      case Discipline.BRAWL_STARS:
+        return 'Brawl Stars';
+      case Discipline.STARCRAFT2:
+        return 'StarCraft II';
+      case Discipline.MORTAL_KOMBAT:
+        return 'Mortal Kombat';
+      case Discipline.TETRIS:
+        return 'Tetris';
+    }
+  }
+}
+
 enum TournamentStatus {
-  @JsonValue('announced')
-  announced,
-  @JsonValue('registrationOpened')
-  registrationOpened,
-  @JsonValue('registrationClosed')
-  registrationClosed,
-  @JsonValue('live')
-  live,
-  @JsonValue('finished')
-  finished,
-  @JsonValue('cancelled')
-  cancelled,
+  ANNOUNCED,
+  REGISTRATION_OPEN,
+  REGISTRATION_CLOSED,
+  LIVE,
+  FINISHED,
+  CANCELLED,
 }
 
-@freezed
-abstract class TournamentParticipants with _$TournamentParticipants {
-  const factory TournamentParticipants({
-    required int currentParticipants,
-    required int maxParticipants,
-  }) = _TournamentParticipants;
+enum BracketType { SINGLE_ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN, SWISS }
 
-  factory TournamentParticipants.fromJson(Map<String, dynamic> json) =>
-      _$TournamentParticipantsFromJson(json);
-}
-
-@freezed
-abstract class TournamentPrizes with _$TournamentPrizes {
-  const factory TournamentPrizes({
-    String? firstPlace,
-    String? secondPlace,
-    String? thirdPlace,
-  }) = _TournamentPrizes;
-
-  factory TournamentPrizes.fromJson(Map<String, dynamic> json) =>
-      _$TournamentPrizesFromJson(json);
-}
+enum TeamMode { SOLO, DUO, TEAM_5V5, SQUAD }
 
 @freezed
 abstract class TournamentModel with _$TournamentModel {
@@ -47,23 +81,48 @@ abstract class TournamentModel with _$TournamentModel {
     required String id,
     required String title,
     required String imageUrl,
-    required String discipline,
-    required int prizePool,
+
+    @JsonKey(unknownEnumValue: Discipline.DOTA2) required Discipline discipline,
+
+    String? prizePool,
     required String type,
     String? address,
-    required String format,
-    required String formatVersus,
+
+    @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)
+    required BracketType bracketType,
+
+    @JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) required TeamMode teamMode,
+
     required String description,
     required String rules,
     required DateTime startDate,
+
+    @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)
     required TournamentStatus status,
 
-    @Default([]) List<String> registeredPlayerIds,
+    required ParticipantsInfo participants,
 
-    required TournamentParticipants participants,
-    required TournamentPrizes prizes,
+    @Default([]) List<PrizeItem> prizes,
   }) = _TournamentModel;
 
   factory TournamentModel.fromJson(Map<String, dynamic> json) =>
       _$TournamentModelFromJson(json);
+}
+
+@freezed
+abstract class ParticipantsInfo with _$ParticipantsInfo {
+  const factory ParticipantsInfo({required int current, required int max}) =
+      _ParticipantsInfo;
+
+  factory ParticipantsInfo.fromJson(Map<String, dynamic> json) =>
+      _$ParticipantsInfoFromJson(json);
+}
+
+@freezed
+abstract class PrizeItem with _$PrizeItem {
+  const factory PrizeItem({required String label, required String amount}) =
+      _PrizeItem;
+
+  factory PrizeItem.fromJson(Map<String, dynamic> json) =>
+      _$PrizeItemFromJson(json);
 }

@@ -33,11 +33,15 @@ class _RegisterViewState extends State<_RegisterView> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   void _onRegister() {
     final nickname = _nicknameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
+
+    if (!_formKey.currentState!.validate()) return;
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,6 +66,10 @@ class _RegisterViewState extends State<_RegisterView> {
     context.read<RegisterBloc>().add(
       RegisterSubmitted(nickname: nickname, email: email, password: password),
     );
+  }
+
+  bool _isValidEmail(String email) {
+    return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
 
   @override
@@ -91,59 +99,89 @@ class _RegisterViewState extends State<_RegisterView> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomBackButton(),
-                        Text(
-                          'Регистрация',
-                          style: AppTextStyles.h1,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
-                    Column(
-                      children: [
-                        TextField(
-                          controller: _nicknameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Никнейм',
+                return Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomBackButton(),
+                          Text(
+                            'Регистрация',
+                            style: AppTextStyles.h1,
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(labelText: 'Email'),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: _passwordController,
-                          decoration: const InputDecoration(
-                            labelText: 'Пароль',
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      Column(
+                        children: [
+                          TextFormField(
+                            controller: _nicknameController,
+                            decoration: const InputDecoration(
+                              labelText: 'Никнейм',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Введите никнейм';
+                              }
+                              if (value.length < 3) return 'Минимум 3 символа';
+                              return null;
+                            },
                           ),
-                          obscureText: true,
-                        ),
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: _confirmPasswordController,
-                          decoration: const InputDecoration(
-                            labelText: 'Повторите пароль',
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Введите email';
+                              }
+                              if (!_isValidEmail(value)) {
+                                return 'Некорректный email';
+                              }
+                              return null;
+                            },
                           ),
-                          obscureText: true,
-                        ),
-                        const SizedBox(height: 32),
-                        ElevatedButton(
-                          onPressed: () => _onRegister(),
-                          child: const Text('Создать аккаунт'),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: const InputDecoration(
+                              labelText: 'Пароль',
+                            ),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Введите пароль';
+                              }
+                              if (value.length < 6) {
+                                return 'Минимум 6 символов';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextField(
+                            controller: _confirmPasswordController,
+                            decoration: const InputDecoration(
+                              labelText: 'Повторите пароль',
+                            ),
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 32),
+                          ElevatedButton(
+                            onPressed: () => _onRegister(),
+                            child: const Text('Создать аккаунт'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

@@ -26,14 +26,14 @@ class TournamentsFeedBloc
     emit(TournamentsFeedLoading());
     try {
       final allTournaments = await _tournamentRepository.fetchTournaments();
-      final disciplines = await _tournamentRepository.fetchDisciplines();
+      final disciplines = _tournamentRepository.getDisciplines();
 
       emit(
         TournamentsFeedLoaded(
           allTournaments: allTournaments,
           filteredTournaments: allTournaments,
           disciplines: disciplines,
-          selectedDiscipline: 'Все игры',
+          selectedDiscipline: null,
         ),
       );
     } catch (e) {
@@ -47,7 +47,7 @@ class TournamentsFeedBloc
   ) {
     final currentState = state;
     if (currentState is TournamentsFeedLoaded) {
-      final filteredList = event.selectedDiscipline == 'Все игры'
+      final filteredList = event.selectedDiscipline == null
           ? currentState.allTournaments
           : currentState.allTournaments
                 .where((t) => t.discipline == event.selectedDiscipline)
@@ -65,18 +65,28 @@ class TournamentsFeedBloc
 
   Future<void> _onRefreshTournaments(
     TournamentsFeedRefreshed event,
-    Emitter emit,
+    Emitter<TournamentsFeedState> emit,
   ) async {
+    final currentState = state;
+    Discipline? currentFilter;
+    if (currentState is TournamentsFeedLoaded) {
+      currentFilter = currentState.selectedDiscipline;
+    }
+
     try {
       final allTournaments = await _tournamentRepository.fetchTournaments();
-      final disciplines = await _tournamentRepository.fetchDisciplines();
+      final disciplines = _tournamentRepository.getDisciplines();
+
+      final filteredList = currentFilter == null
+          ? allTournaments
+          : allTournaments.where((t) => t.discipline == currentFilter).toList();
 
       emit(
         TournamentsFeedLoaded(
           allTournaments: allTournaments,
-          filteredTournaments: allTournaments,
+          filteredTournaments: filteredList,
           disciplines: disciplines,
-          selectedDiscipline: 'Все игры',
+          selectedDiscipline: currentFilter,
         ),
       );
       print('Данные были обновлены');

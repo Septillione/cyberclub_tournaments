@@ -1,6 +1,5 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
-import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/login_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
@@ -47,15 +46,7 @@ class AppRouter {
                 parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   final tournamentId = state.pathParameters['tournamentId']!;
-
-                  final repo = context.read<TournamentRepository>();
-                  final tournament = repo.findTournamentById(tournamentId);
-
-                  if (tournament != null) {
-                    return TournamentDetailScreen(tournament: tournament);
-                  } else {
-                    return const Text('Турнир не найден');
-                  }
+                  return TournamentDetailScreen(tournamentId: tournamentId);
                 },
               ),
             ],

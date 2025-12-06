@@ -34,10 +34,10 @@ class UserTournamentsBloc
       final List<TournamentModel> finished = [];
 
       for (final tournament in userTournaments) {
-        if (tournament.status == TournamentStatus.live) {
+        if (tournament.status == TournamentStatus.LIVE) {
           active.add(tournament);
-        } else if (tournament.status == TournamentStatus.finished ||
-            tournament.status == TournamentStatus.cancelled) {
+        } else if (tournament.status == TournamentStatus.FINISHED ||
+            tournament.status == TournamentStatus.CANCELLED) {
           finished.add(tournament);
         } else if (tournament.startDate.isAfter(now)) {
           upcoming.add(tournament);

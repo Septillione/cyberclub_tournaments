@@ -1,11 +1,13 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
+import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/card_setting.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -29,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTop(),
+                      _buildTop(context),
                       Expanded(
                         child: ListView(
                           children: [
@@ -78,32 +80,32 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Row _buildTop() {
+  Row _buildTop(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text('Профиль', style: AppTextStyles.h2),
-        GestureDetector(
-          onTap: () {
-            print('Settings team is pressed!');
-          },
-          child: PopupMenuButton<String>(
-            icon: Icon(
-              LucideIcons.settings,
-              size: 24,
-              color: AppColors.textSecondary,
-            ),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'configure',
-                child: Text('Настроить аккаунт'),
-              ),
-              PopupMenuItem<String>(
-                value: 'leave',
-                child: Text('Выйти из аккаунта'),
-              ),
-            ],
+        PopupMenuButton<String>(
+          icon: Icon(
+            LucideIcons.settings,
+            size: 24,
+            color: AppColors.textSecondary,
           ),
+          onSelected: (value) {
+            if (value == 'leave') {
+              _onLogout(context);
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'configure',
+              child: Text('Настроить аккаунт'),
+            ),
+            PopupMenuItem<String>(
+              value: 'leave',
+              child: Text('Выйти из аккаунта'),
+            ),
+          ],
         ),
       ],
     );
@@ -158,5 +160,37 @@ class ProfileScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _onLogout(BuildContext context) async {
+    final shouldLogout = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Выход'),
+        content: const Text('Вы уверены, что хотите выйти?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              'Выйти',
+              style: TextStyle(color: AppColors.statusError),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout != true) return;
+
+    if (context.mounted) {
+      await context.read<AuthRepository>().logout();
+      if (context.mounted) {
+        context.go('/login');
+      }
+    }
   }
 }

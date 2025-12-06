@@ -13,544 +13,9 @@ part of 'tournament_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$TournamentParticipants {
-
- int get currentParticipants; int get maxParticipants;
-/// Create a copy of TournamentParticipants
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$TournamentParticipantsCopyWith<TournamentParticipants> get copyWith => _$TournamentParticipantsCopyWithImpl<TournamentParticipants>(this as TournamentParticipants, _$identity);
-
-  /// Serializes this TournamentParticipants to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentParticipants&&(identical(other.currentParticipants, currentParticipants) || other.currentParticipants == currentParticipants)&&(identical(other.maxParticipants, maxParticipants) || other.maxParticipants == maxParticipants));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,currentParticipants,maxParticipants);
-
-@override
-String toString() {
-  return 'TournamentParticipants(currentParticipants: $currentParticipants, maxParticipants: $maxParticipants)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $TournamentParticipantsCopyWith<$Res>  {
-  factory $TournamentParticipantsCopyWith(TournamentParticipants value, $Res Function(TournamentParticipants) _then) = _$TournamentParticipantsCopyWithImpl;
-@useResult
-$Res call({
- int currentParticipants, int maxParticipants
-});
-
-
-
-
-}
-/// @nodoc
-class _$TournamentParticipantsCopyWithImpl<$Res>
-    implements $TournamentParticipantsCopyWith<$Res> {
-  _$TournamentParticipantsCopyWithImpl(this._self, this._then);
-
-  final TournamentParticipants _self;
-  final $Res Function(TournamentParticipants) _then;
-
-/// Create a copy of TournamentParticipants
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentParticipants = null,Object? maxParticipants = null,}) {
-  return _then(_self.copyWith(
-currentParticipants: null == currentParticipants ? _self.currentParticipants : currentParticipants // ignore: cast_nullable_to_non_nullable
-as int,maxParticipants: null == maxParticipants ? _self.maxParticipants : maxParticipants // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [TournamentParticipants].
-extension TournamentParticipantsPatterns on TournamentParticipants {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TournamentParticipants value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _TournamentParticipants() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TournamentParticipants value)  $default,){
-final _that = this;
-switch (_that) {
-case _TournamentParticipants():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TournamentParticipants value)?  $default,){
-final _that = this;
-switch (_that) {
-case _TournamentParticipants() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int currentParticipants,  int maxParticipants)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _TournamentParticipants() when $default != null:
-return $default(_that.currentParticipants,_that.maxParticipants);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int currentParticipants,  int maxParticipants)  $default,) {final _that = this;
-switch (_that) {
-case _TournamentParticipants():
-return $default(_that.currentParticipants,_that.maxParticipants);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int currentParticipants,  int maxParticipants)?  $default,) {final _that = this;
-switch (_that) {
-case _TournamentParticipants() when $default != null:
-return $default(_that.currentParticipants,_that.maxParticipants);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _TournamentParticipants implements TournamentParticipants {
-  const _TournamentParticipants({required this.currentParticipants, required this.maxParticipants});
-  factory _TournamentParticipants.fromJson(Map<String, dynamic> json) => _$TournamentParticipantsFromJson(json);
-
-@override final  int currentParticipants;
-@override final  int maxParticipants;
-
-/// Create a copy of TournamentParticipants
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$TournamentParticipantsCopyWith<_TournamentParticipants> get copyWith => __$TournamentParticipantsCopyWithImpl<_TournamentParticipants>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$TournamentParticipantsToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentParticipants&&(identical(other.currentParticipants, currentParticipants) || other.currentParticipants == currentParticipants)&&(identical(other.maxParticipants, maxParticipants) || other.maxParticipants == maxParticipants));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,currentParticipants,maxParticipants);
-
-@override
-String toString() {
-  return 'TournamentParticipants(currentParticipants: $currentParticipants, maxParticipants: $maxParticipants)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$TournamentParticipantsCopyWith<$Res> implements $TournamentParticipantsCopyWith<$Res> {
-  factory _$TournamentParticipantsCopyWith(_TournamentParticipants value, $Res Function(_TournamentParticipants) _then) = __$TournamentParticipantsCopyWithImpl;
-@override @useResult
-$Res call({
- int currentParticipants, int maxParticipants
-});
-
-
-
-
-}
-/// @nodoc
-class __$TournamentParticipantsCopyWithImpl<$Res>
-    implements _$TournamentParticipantsCopyWith<$Res> {
-  __$TournamentParticipantsCopyWithImpl(this._self, this._then);
-
-  final _TournamentParticipants _self;
-  final $Res Function(_TournamentParticipants) _then;
-
-/// Create a copy of TournamentParticipants
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentParticipants = null,Object? maxParticipants = null,}) {
-  return _then(_TournamentParticipants(
-currentParticipants: null == currentParticipants ? _self.currentParticipants : currentParticipants // ignore: cast_nullable_to_non_nullable
-as int,maxParticipants: null == maxParticipants ? _self.maxParticipants : maxParticipants // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
-
-
-/// @nodoc
-mixin _$TournamentPrizes {
-
- String? get firstPlace; String? get secondPlace; String? get thirdPlace;
-/// Create a copy of TournamentPrizes
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$TournamentPrizesCopyWith<TournamentPrizes> get copyWith => _$TournamentPrizesCopyWithImpl<TournamentPrizes>(this as TournamentPrizes, _$identity);
-
-  /// Serializes this TournamentPrizes to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentPrizes&&(identical(other.firstPlace, firstPlace) || other.firstPlace == firstPlace)&&(identical(other.secondPlace, secondPlace) || other.secondPlace == secondPlace)&&(identical(other.thirdPlace, thirdPlace) || other.thirdPlace == thirdPlace));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,firstPlace,secondPlace,thirdPlace);
-
-@override
-String toString() {
-  return 'TournamentPrizes(firstPlace: $firstPlace, secondPlace: $secondPlace, thirdPlace: $thirdPlace)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $TournamentPrizesCopyWith<$Res>  {
-  factory $TournamentPrizesCopyWith(TournamentPrizes value, $Res Function(TournamentPrizes) _then) = _$TournamentPrizesCopyWithImpl;
-@useResult
-$Res call({
- String? firstPlace, String? secondPlace, String? thirdPlace
-});
-
-
-
-
-}
-/// @nodoc
-class _$TournamentPrizesCopyWithImpl<$Res>
-    implements $TournamentPrizesCopyWith<$Res> {
-  _$TournamentPrizesCopyWithImpl(this._self, this._then);
-
-  final TournamentPrizes _self;
-  final $Res Function(TournamentPrizes) _then;
-
-/// Create a copy of TournamentPrizes
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstPlace = freezed,Object? secondPlace = freezed,Object? thirdPlace = freezed,}) {
-  return _then(_self.copyWith(
-firstPlace: freezed == firstPlace ? _self.firstPlace : firstPlace // ignore: cast_nullable_to_non_nullable
-as String?,secondPlace: freezed == secondPlace ? _self.secondPlace : secondPlace // ignore: cast_nullable_to_non_nullable
-as String?,thirdPlace: freezed == thirdPlace ? _self.thirdPlace : thirdPlace // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [TournamentPrizes].
-extension TournamentPrizesPatterns on TournamentPrizes {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TournamentPrizes value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _TournamentPrizes() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TournamentPrizes value)  $default,){
-final _that = this;
-switch (_that) {
-case _TournamentPrizes():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TournamentPrizes value)?  $default,){
-final _that = this;
-switch (_that) {
-case _TournamentPrizes() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? firstPlace,  String? secondPlace,  String? thirdPlace)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _TournamentPrizes() when $default != null:
-return $default(_that.firstPlace,_that.secondPlace,_that.thirdPlace);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? firstPlace,  String? secondPlace,  String? thirdPlace)  $default,) {final _that = this;
-switch (_that) {
-case _TournamentPrizes():
-return $default(_that.firstPlace,_that.secondPlace,_that.thirdPlace);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? firstPlace,  String? secondPlace,  String? thirdPlace)?  $default,) {final _that = this;
-switch (_that) {
-case _TournamentPrizes() when $default != null:
-return $default(_that.firstPlace,_that.secondPlace,_that.thirdPlace);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _TournamentPrizes implements TournamentPrizes {
-  const _TournamentPrizes({this.firstPlace, this.secondPlace, this.thirdPlace});
-  factory _TournamentPrizes.fromJson(Map<String, dynamic> json) => _$TournamentPrizesFromJson(json);
-
-@override final  String? firstPlace;
-@override final  String? secondPlace;
-@override final  String? thirdPlace;
-
-/// Create a copy of TournamentPrizes
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$TournamentPrizesCopyWith<_TournamentPrizes> get copyWith => __$TournamentPrizesCopyWithImpl<_TournamentPrizes>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$TournamentPrizesToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentPrizes&&(identical(other.firstPlace, firstPlace) || other.firstPlace == firstPlace)&&(identical(other.secondPlace, secondPlace) || other.secondPlace == secondPlace)&&(identical(other.thirdPlace, thirdPlace) || other.thirdPlace == thirdPlace));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,firstPlace,secondPlace,thirdPlace);
-
-@override
-String toString() {
-  return 'TournamentPrizes(firstPlace: $firstPlace, secondPlace: $secondPlace, thirdPlace: $thirdPlace)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$TournamentPrizesCopyWith<$Res> implements $TournamentPrizesCopyWith<$Res> {
-  factory _$TournamentPrizesCopyWith(_TournamentPrizes value, $Res Function(_TournamentPrizes) _then) = __$TournamentPrizesCopyWithImpl;
-@override @useResult
-$Res call({
- String? firstPlace, String? secondPlace, String? thirdPlace
-});
-
-
-
-
-}
-/// @nodoc
-class __$TournamentPrizesCopyWithImpl<$Res>
-    implements _$TournamentPrizesCopyWith<$Res> {
-  __$TournamentPrizesCopyWithImpl(this._self, this._then);
-
-  final _TournamentPrizes _self;
-  final $Res Function(_TournamentPrizes) _then;
-
-/// Create a copy of TournamentPrizes
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstPlace = freezed,Object? secondPlace = freezed,Object? thirdPlace = freezed,}) {
-  return _then(_TournamentPrizes(
-firstPlace: freezed == firstPlace ? _self.firstPlace : firstPlace // ignore: cast_nullable_to_non_nullable
-as String?,secondPlace: freezed == secondPlace ? _self.secondPlace : secondPlace // ignore: cast_nullable_to_non_nullable
-as String?,thirdPlace: freezed == thirdPlace ? _self.thirdPlace : thirdPlace // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-
-}
-
-
-/// @nodoc
 mixin _$TournamentModel {
 
- String get id; String get title; String get imageUrl; String get discipline; int get prizePool; String get type; String? get address; String get format; String get formatVersus; String get description; String get rules; DateTime get startDate; TournamentStatus get status; List<String> get registeredPlayerIds; TournamentParticipants get participants; TournamentPrizes get prizes;
+ String get id; String get title; String get imageUrl;@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline get discipline; String? get prizePool; String get type; String? get address;@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType get bracketType;@JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) TeamMode get teamMode; String get description; String get rules; DateTime get startDate;@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus get status; ParticipantsInfo get participants; List<PrizeItem> get prizes;
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -563,16 +28,16 @@ $TournamentModelCopyWith<TournamentModel> get copyWith => _$TournamentModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.prizePool, prizePool) || other.prizePool == prizePool)&&(identical(other.type, type) || other.type == type)&&(identical(other.address, address) || other.address == address)&&(identical(other.format, format) || other.format == format)&&(identical(other.formatVersus, formatVersus) || other.formatVersus == formatVersus)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.registeredPlayerIds, registeredPlayerIds)&&(identical(other.participants, participants) || other.participants == participants)&&(identical(other.prizes, prizes) || other.prizes == prizes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.prizePool, prizePool) || other.prizePool == prizePool)&&(identical(other.type, type) || other.type == type)&&(identical(other.address, address) || other.address == address)&&(identical(other.bracketType, bracketType) || other.bracketType == bracketType)&&(identical(other.teamMode, teamMode) || other.teamMode == teamMode)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.participants, participants) || other.participants == participants)&&const DeepCollectionEquality().equals(other.prizes, prizes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,prizePool,type,address,format,formatVersus,description,rules,startDate,status,const DeepCollectionEquality().hash(registeredPlayerIds),participants,prizes);
+int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,prizePool,type,address,bracketType,teamMode,description,rules,startDate,status,participants,const DeepCollectionEquality().hash(prizes));
 
 @override
 String toString() {
-  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, prizePool: $prizePool, type: $type, address: $address, format: $format, formatVersus: $formatVersus, description: $description, rules: $rules, startDate: $startDate, status: $status, registeredPlayerIds: $registeredPlayerIds, participants: $participants, prizes: $prizes)';
+  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, prizePool: $prizePool, type: $type, address: $address, bracketType: $bracketType, teamMode: $teamMode, description: $description, rules: $rules, startDate: $startDate, status: $status, participants: $participants, prizes: $prizes)';
 }
 
 
@@ -583,11 +48,11 @@ abstract mixin class $TournamentModelCopyWith<$Res>  {
   factory $TournamentModelCopyWith(TournamentModel value, $Res Function(TournamentModel) _then) = _$TournamentModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String imageUrl, String discipline, int prizePool, String type, String? address, String format, String formatVersus, String description, String rules, DateTime startDate, TournamentStatus status, List<String> registeredPlayerIds, TournamentParticipants participants, TournamentPrizes prizes
+ String id, String title, String imageUrl,@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline discipline, String? prizePool, String type, String? address,@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType bracketType,@JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) TeamMode teamMode, String description, String rules, DateTime startDate,@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus status, ParticipantsInfo participants, List<PrizeItem> prizes
 });
 
 
-$TournamentParticipantsCopyWith<$Res> get participants;$TournamentPrizesCopyWith<$Res> get prizes;
+$ParticipantsInfoCopyWith<$Res> get participants;
 
 }
 /// @nodoc
@@ -600,44 +65,34 @@ class _$TournamentModelCopyWithImpl<$Res>
 
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? prizePool = null,Object? type = null,Object? address = freezed,Object? format = null,Object? formatVersus = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? registeredPlayerIds = null,Object? participants = null,Object? prizes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? prizePool = freezed,Object? type = null,Object? address = freezed,Object? bracketType = null,Object? teamMode = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? participants = null,Object? prizes = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String,discipline: null == discipline ? _self.discipline : discipline // ignore: cast_nullable_to_non_nullable
-as String,prizePool: null == prizePool ? _self.prizePool : prizePool // ignore: cast_nullable_to_non_nullable
-as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as Discipline,prizePool: freezed == prizePool ? _self.prizePool : prizePool // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String?,format: null == format ? _self.format : format // ignore: cast_nullable_to_non_nullable
-as String,formatVersus: null == formatVersus ? _self.formatVersus : formatVersus // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,bracketType: null == bracketType ? _self.bracketType : bracketType // ignore: cast_nullable_to_non_nullable
+as BracketType,teamMode: null == teamMode ? _self.teamMode : teamMode // ignore: cast_nullable_to_non_nullable
+as TeamMode,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,rules: null == rules ? _self.rules : rules // ignore: cast_nullable_to_non_nullable
 as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as TournamentStatus,registeredPlayerIds: null == registeredPlayerIds ? _self.registeredPlayerIds : registeredPlayerIds // ignore: cast_nullable_to_non_nullable
-as List<String>,participants: null == participants ? _self.participants : participants // ignore: cast_nullable_to_non_nullable
-as TournamentParticipants,prizes: null == prizes ? _self.prizes : prizes // ignore: cast_nullable_to_non_nullable
-as TournamentPrizes,
+as TournamentStatus,participants: null == participants ? _self.participants : participants // ignore: cast_nullable_to_non_nullable
+as ParticipantsInfo,prizes: null == prizes ? _self.prizes : prizes // ignore: cast_nullable_to_non_nullable
+as List<PrizeItem>,
   ));
 }
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$TournamentParticipantsCopyWith<$Res> get participants {
+$ParticipantsInfoCopyWith<$Res> get participants {
   
-  return $TournamentParticipantsCopyWith<$Res>(_self.participants, (value) {
+  return $ParticipantsInfoCopyWith<$Res>(_self.participants, (value) {
     return _then(_self.copyWith(participants: value));
-  });
-}/// Create a copy of TournamentModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$TournamentPrizesCopyWith<$Res> get prizes {
-  
-  return $TournamentPrizesCopyWith<$Res>(_self.prizes, (value) {
-    return _then(_self.copyWith(prizes: value));
   });
 }
 }
@@ -721,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl,  String discipline,  int prizePool,  String type,  String? address,  String format,  String formatVersus,  String description,  String rules,  DateTime startDate,  TournamentStatus status,  List<String> registeredPlayerIds,  TournamentParticipants participants,  TournamentPrizes prizes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  String? prizePool,  String type,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.TEAM_5V5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TournamentModel() when $default != null:
-return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.format,_that.formatVersus,_that.description,_that.rules,_that.startDate,_that.status,_that.registeredPlayerIds,_that.participants,_that.prizes);case _:
+return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
   return orElse();
 
 }
@@ -742,10 +197,10 @@ return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prize
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl,  String discipline,  int prizePool,  String type,  String? address,  String format,  String formatVersus,  String description,  String rules,  DateTime startDate,  TournamentStatus status,  List<String> registeredPlayerIds,  TournamentParticipants participants,  TournamentPrizes prizes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  String? prizePool,  String type,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.TEAM_5V5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)  $default,) {final _that = this;
 switch (_that) {
 case _TournamentModel():
-return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.format,_that.formatVersus,_that.description,_that.rules,_that.startDate,_that.status,_that.registeredPlayerIds,_that.participants,_that.prizes);case _:
+return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -762,10 +217,10 @@ return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prize
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String imageUrl,  String discipline,  int prizePool,  String type,  String? address,  String format,  String formatVersus,  String description,  String rules,  DateTime startDate,  TournamentStatus status,  List<String> registeredPlayerIds,  TournamentParticipants participants,  TournamentPrizes prizes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  String? prizePool,  String type,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.TEAM_5V5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)?  $default,) {final _that = this;
 switch (_that) {
 case _TournamentModel() when $default != null:
-return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.format,_that.formatVersus,_that.description,_that.rules,_that.startDate,_that.status,_that.registeredPlayerIds,_that.participants,_that.prizes);case _:
+return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
   return null;
 
 }
@@ -777,31 +232,30 @@ return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prize
 @JsonSerializable()
 
 class _TournamentModel implements TournamentModel {
-  const _TournamentModel({required this.id, required this.title, required this.imageUrl, required this.discipline, required this.prizePool, required this.type, this.address, required this.format, required this.formatVersus, required this.description, required this.rules, required this.startDate, required this.status, final  List<String> registeredPlayerIds = const [], required this.participants, required this.prizes}): _registeredPlayerIds = registeredPlayerIds;
+  const _TournamentModel({required this.id, required this.title, required this.imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2) required this.discipline, this.prizePool, required this.type, this.address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) required this.bracketType, @JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) required this.teamMode, required this.description, required this.rules, required this.startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) required this.status, required this.participants, final  List<PrizeItem> prizes = const []}): _prizes = prizes;
   factory _TournamentModel.fromJson(Map<String, dynamic> json) => _$TournamentModelFromJson(json);
 
 @override final  String id;
 @override final  String title;
 @override final  String imageUrl;
-@override final  String discipline;
-@override final  int prizePool;
+@override@JsonKey(unknownEnumValue: Discipline.DOTA2) final  Discipline discipline;
+@override final  String? prizePool;
 @override final  String type;
 @override final  String? address;
-@override final  String format;
-@override final  String formatVersus;
+@override@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) final  BracketType bracketType;
+@override@JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) final  TeamMode teamMode;
 @override final  String description;
 @override final  String rules;
 @override final  DateTime startDate;
-@override final  TournamentStatus status;
- final  List<String> _registeredPlayerIds;
-@override@JsonKey() List<String> get registeredPlayerIds {
-  if (_registeredPlayerIds is EqualUnmodifiableListView) return _registeredPlayerIds;
+@override@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) final  TournamentStatus status;
+@override final  ParticipantsInfo participants;
+ final  List<PrizeItem> _prizes;
+@override@JsonKey() List<PrizeItem> get prizes {
+  if (_prizes is EqualUnmodifiableListView) return _prizes;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_registeredPlayerIds);
+  return EqualUnmodifiableListView(_prizes);
 }
 
-@override final  TournamentParticipants participants;
-@override final  TournamentPrizes prizes;
 
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
@@ -816,16 +270,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.prizePool, prizePool) || other.prizePool == prizePool)&&(identical(other.type, type) || other.type == type)&&(identical(other.address, address) || other.address == address)&&(identical(other.format, format) || other.format == format)&&(identical(other.formatVersus, formatVersus) || other.formatVersus == formatVersus)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._registeredPlayerIds, _registeredPlayerIds)&&(identical(other.participants, participants) || other.participants == participants)&&(identical(other.prizes, prizes) || other.prizes == prizes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.prizePool, prizePool) || other.prizePool == prizePool)&&(identical(other.type, type) || other.type == type)&&(identical(other.address, address) || other.address == address)&&(identical(other.bracketType, bracketType) || other.bracketType == bracketType)&&(identical(other.teamMode, teamMode) || other.teamMode == teamMode)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.participants, participants) || other.participants == participants)&&const DeepCollectionEquality().equals(other._prizes, _prizes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,prizePool,type,address,format,formatVersus,description,rules,startDate,status,const DeepCollectionEquality().hash(_registeredPlayerIds),participants,prizes);
+int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,prizePool,type,address,bracketType,teamMode,description,rules,startDate,status,participants,const DeepCollectionEquality().hash(_prizes));
 
 @override
 String toString() {
-  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, prizePool: $prizePool, type: $type, address: $address, format: $format, formatVersus: $formatVersus, description: $description, rules: $rules, startDate: $startDate, status: $status, registeredPlayerIds: $registeredPlayerIds, participants: $participants, prizes: $prizes)';
+  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, prizePool: $prizePool, type: $type, address: $address, bracketType: $bracketType, teamMode: $teamMode, description: $description, rules: $rules, startDate: $startDate, status: $status, participants: $participants, prizes: $prizes)';
 }
 
 
@@ -836,11 +290,11 @@ abstract mixin class _$TournamentModelCopyWith<$Res> implements $TournamentModel
   factory _$TournamentModelCopyWith(_TournamentModel value, $Res Function(_TournamentModel) _then) = __$TournamentModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String imageUrl, String discipline, int prizePool, String type, String? address, String format, String formatVersus, String description, String rules, DateTime startDate, TournamentStatus status, List<String> registeredPlayerIds, TournamentParticipants participants, TournamentPrizes prizes
+ String id, String title, String imageUrl,@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline discipline, String? prizePool, String type, String? address,@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType bracketType,@JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) TeamMode teamMode, String description, String rules, DateTime startDate,@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus status, ParticipantsInfo participants, List<PrizeItem> prizes
 });
 
 
-@override $TournamentParticipantsCopyWith<$Res> get participants;@override $TournamentPrizesCopyWith<$Res> get prizes;
+@override $ParticipantsInfoCopyWith<$Res> get participants;
 
 }
 /// @nodoc
@@ -853,25 +307,24 @@ class __$TournamentModelCopyWithImpl<$Res>
 
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? prizePool = null,Object? type = null,Object? address = freezed,Object? format = null,Object? formatVersus = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? registeredPlayerIds = null,Object? participants = null,Object? prizes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? prizePool = freezed,Object? type = null,Object? address = freezed,Object? bracketType = null,Object? teamMode = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? participants = null,Object? prizes = null,}) {
   return _then(_TournamentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String,discipline: null == discipline ? _self.discipline : discipline // ignore: cast_nullable_to_non_nullable
-as String,prizePool: null == prizePool ? _self.prizePool : prizePool // ignore: cast_nullable_to_non_nullable
-as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as Discipline,prizePool: freezed == prizePool ? _self.prizePool : prizePool // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String?,format: null == format ? _self.format : format // ignore: cast_nullable_to_non_nullable
-as String,formatVersus: null == formatVersus ? _self.formatVersus : formatVersus // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,bracketType: null == bracketType ? _self.bracketType : bracketType // ignore: cast_nullable_to_non_nullable
+as BracketType,teamMode: null == teamMode ? _self.teamMode : teamMode // ignore: cast_nullable_to_non_nullable
+as TeamMode,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,rules: null == rules ? _self.rules : rules // ignore: cast_nullable_to_non_nullable
 as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as DateTime,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as TournamentStatus,registeredPlayerIds: null == registeredPlayerIds ? _self._registeredPlayerIds : registeredPlayerIds // ignore: cast_nullable_to_non_nullable
-as List<String>,participants: null == participants ? _self.participants : participants // ignore: cast_nullable_to_non_nullable
-as TournamentParticipants,prizes: null == prizes ? _self.prizes : prizes // ignore: cast_nullable_to_non_nullable
-as TournamentPrizes,
+as TournamentStatus,participants: null == participants ? _self.participants : participants // ignore: cast_nullable_to_non_nullable
+as ParticipantsInfo,prizes: null == prizes ? _self._prizes : prizes // ignore: cast_nullable_to_non_nullable
+as List<PrizeItem>,
   ));
 }
 
@@ -879,21 +332,544 @@ as TournamentPrizes,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$TournamentParticipantsCopyWith<$Res> get participants {
+$ParticipantsInfoCopyWith<$Res> get participants {
   
-  return $TournamentParticipantsCopyWith<$Res>(_self.participants, (value) {
+  return $ParticipantsInfoCopyWith<$Res>(_self.participants, (value) {
     return _then(_self.copyWith(participants: value));
   });
-}/// Create a copy of TournamentModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$TournamentPrizesCopyWith<$Res> get prizes {
-  
-  return $TournamentPrizesCopyWith<$Res>(_self.prizes, (value) {
-    return _then(_self.copyWith(prizes: value));
-  });
 }
+}
+
+
+/// @nodoc
+mixin _$ParticipantsInfo {
+
+ int get current; int get max;
+/// Create a copy of ParticipantsInfo
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ParticipantsInfoCopyWith<ParticipantsInfo> get copyWith => _$ParticipantsInfoCopyWithImpl<ParticipantsInfo>(this as ParticipantsInfo, _$identity);
+
+  /// Serializes this ParticipantsInfo to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ParticipantsInfo&&(identical(other.current, current) || other.current == current)&&(identical(other.max, max) || other.max == max));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,current,max);
+
+@override
+String toString() {
+  return 'ParticipantsInfo(current: $current, max: $max)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ParticipantsInfoCopyWith<$Res>  {
+  factory $ParticipantsInfoCopyWith(ParticipantsInfo value, $Res Function(ParticipantsInfo) _then) = _$ParticipantsInfoCopyWithImpl;
+@useResult
+$Res call({
+ int current, int max
+});
+
+
+
+
+}
+/// @nodoc
+class _$ParticipantsInfoCopyWithImpl<$Res>
+    implements $ParticipantsInfoCopyWith<$Res> {
+  _$ParticipantsInfoCopyWithImpl(this._self, this._then);
+
+  final ParticipantsInfo _self;
+  final $Res Function(ParticipantsInfo) _then;
+
+/// Create a copy of ParticipantsInfo
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? current = null,Object? max = null,}) {
+  return _then(_self.copyWith(
+current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as int,max: null == max ? _self.max : max // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ParticipantsInfo].
+extension ParticipantsInfoPatterns on ParticipantsInfo {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ParticipantsInfo value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ParticipantsInfo() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ParticipantsInfo value)  $default,){
+final _that = this;
+switch (_that) {
+case _ParticipantsInfo():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ParticipantsInfo value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ParticipantsInfo() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int current,  int max)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ParticipantsInfo() when $default != null:
+return $default(_that.current,_that.max);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int current,  int max)  $default,) {final _that = this;
+switch (_that) {
+case _ParticipantsInfo():
+return $default(_that.current,_that.max);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int current,  int max)?  $default,) {final _that = this;
+switch (_that) {
+case _ParticipantsInfo() when $default != null:
+return $default(_that.current,_that.max);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ParticipantsInfo implements ParticipantsInfo {
+  const _ParticipantsInfo({required this.current, required this.max});
+  factory _ParticipantsInfo.fromJson(Map<String, dynamic> json) => _$ParticipantsInfoFromJson(json);
+
+@override final  int current;
+@override final  int max;
+
+/// Create a copy of ParticipantsInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ParticipantsInfoCopyWith<_ParticipantsInfo> get copyWith => __$ParticipantsInfoCopyWithImpl<_ParticipantsInfo>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ParticipantsInfoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ParticipantsInfo&&(identical(other.current, current) || other.current == current)&&(identical(other.max, max) || other.max == max));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,current,max);
+
+@override
+String toString() {
+  return 'ParticipantsInfo(current: $current, max: $max)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ParticipantsInfoCopyWith<$Res> implements $ParticipantsInfoCopyWith<$Res> {
+  factory _$ParticipantsInfoCopyWith(_ParticipantsInfo value, $Res Function(_ParticipantsInfo) _then) = __$ParticipantsInfoCopyWithImpl;
+@override @useResult
+$Res call({
+ int current, int max
+});
+
+
+
+
+}
+/// @nodoc
+class __$ParticipantsInfoCopyWithImpl<$Res>
+    implements _$ParticipantsInfoCopyWith<$Res> {
+  __$ParticipantsInfoCopyWithImpl(this._self, this._then);
+
+  final _ParticipantsInfo _self;
+  final $Res Function(_ParticipantsInfo) _then;
+
+/// Create a copy of ParticipantsInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? current = null,Object? max = null,}) {
+  return _then(_ParticipantsInfo(
+current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as int,max: null == max ? _self.max : max // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$PrizeItem {
+
+ String get label; String get amount;
+/// Create a copy of PrizeItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PrizeItemCopyWith<PrizeItem> get copyWith => _$PrizeItemCopyWithImpl<PrizeItem>(this as PrizeItem, _$identity);
+
+  /// Serializes this PrizeItem to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PrizeItem&&(identical(other.label, label) || other.label == label)&&(identical(other.amount, amount) || other.amount == amount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,label,amount);
+
+@override
+String toString() {
+  return 'PrizeItem(label: $label, amount: $amount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PrizeItemCopyWith<$Res>  {
+  factory $PrizeItemCopyWith(PrizeItem value, $Res Function(PrizeItem) _then) = _$PrizeItemCopyWithImpl;
+@useResult
+$Res call({
+ String label, String amount
+});
+
+
+
+
+}
+/// @nodoc
+class _$PrizeItemCopyWithImpl<$Res>
+    implements $PrizeItemCopyWith<$Res> {
+  _$PrizeItemCopyWithImpl(this._self, this._then);
+
+  final PrizeItem _self;
+  final $Res Function(PrizeItem) _then;
+
+/// Create a copy of PrizeItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? label = null,Object? amount = null,}) {
+  return _then(_self.copyWith(
+label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PrizeItem].
+extension PrizeItemPatterns on PrizeItem {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PrizeItem value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PrizeItem() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PrizeItem value)  $default,){
+final _that = this;
+switch (_that) {
+case _PrizeItem():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PrizeItem value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PrizeItem() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String label,  String amount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PrizeItem() when $default != null:
+return $default(_that.label,_that.amount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String label,  String amount)  $default,) {final _that = this;
+switch (_that) {
+case _PrizeItem():
+return $default(_that.label,_that.amount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String label,  String amount)?  $default,) {final _that = this;
+switch (_that) {
+case _PrizeItem() when $default != null:
+return $default(_that.label,_that.amount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PrizeItem implements PrizeItem {
+  const _PrizeItem({required this.label, required this.amount});
+  factory _PrizeItem.fromJson(Map<String, dynamic> json) => _$PrizeItemFromJson(json);
+
+@override final  String label;
+@override final  String amount;
+
+/// Create a copy of PrizeItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PrizeItemCopyWith<_PrizeItem> get copyWith => __$PrizeItemCopyWithImpl<_PrizeItem>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PrizeItemToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PrizeItem&&(identical(other.label, label) || other.label == label)&&(identical(other.amount, amount) || other.amount == amount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,label,amount);
+
+@override
+String toString() {
+  return 'PrizeItem(label: $label, amount: $amount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PrizeItemCopyWith<$Res> implements $PrizeItemCopyWith<$Res> {
+  factory _$PrizeItemCopyWith(_PrizeItem value, $Res Function(_PrizeItem) _then) = __$PrizeItemCopyWithImpl;
+@override @useResult
+$Res call({
+ String label, String amount
+});
+
+
+
+
+}
+/// @nodoc
+class __$PrizeItemCopyWithImpl<$Res>
+    implements _$PrizeItemCopyWith<$Res> {
+  __$PrizeItemCopyWithImpl(this._self, this._then);
+
+  final _PrizeItem _self;
+  final $Res Function(_PrizeItem) _then;
+
+/// Create a copy of PrizeItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? label = null,Object? amount = null,}) {
+  return _then(_PrizeItem(
+label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on
