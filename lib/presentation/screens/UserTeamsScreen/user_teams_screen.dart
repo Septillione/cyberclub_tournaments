@@ -65,7 +65,7 @@ class UserTeamsScreen extends StatelessWidget {
                         if (state.teams.isEmpty) {
                           return _buildEmptyState();
                         }
-                        return _buildTeamList(state.teams);
+                        return _buildTeamList(state.teams, state.currentUserId);
                     }
                   },
                 ),
@@ -118,12 +118,12 @@ class UserTeamsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamList(List<TeamListItemModel> teams) {
+  Widget _buildTeamList(List<TeamModel> teams, String currentUserId) {
     return ListView.builder(
       itemCount: teams.length,
       itemBuilder: (context, index) {
         final team = teams[index];
-        return TeamCard(team: team);
+        return TeamCard(team: team, currentUserId: currentUserId);
       },
     );
   }

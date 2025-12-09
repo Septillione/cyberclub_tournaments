@@ -27,7 +27,6 @@ class TournamentRepository {
   Future<TournamentModel?> fetchTournamentById(String id) async {
     try {
       final response = await _apiClient.dio.get('/tournaments/$id');
-
       final tournament = TournamentModel.fromJson(response.data);
 
       print('УСПЕХ: Загружен турнир с сервера!');
@@ -35,6 +34,18 @@ class TournamentRepository {
     } catch (e) {
       print('ОШИБКА СЕТИ: $e');
       return null;
+    }
+  }
+
+  Future<List<TournamentModel>> fetchUserTournaments() async {
+    try {
+      final response = await _apiClient.dio.get('/tournaments/my');
+      final List<dynamic> dataList = response.data;
+
+      return dataList.map((json) => TournamentModel.fromJson(json)).toList();
+    } catch (e) {
+      print('Ошибка загрузки турниров пользователя');
+      return [];
     }
   }
 

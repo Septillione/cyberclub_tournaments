@@ -84,4 +84,13 @@ class AuthRepository {
     final decodedToken = JwtDecoder.decode(token);
     return decodedToken['role'];
   }
+
+  // Узнать ID
+  Future<String?> getUserId() async {
+    final token = await _tokenStorage.getAccessToken();
+    if (token == null) return null;
+
+    final decodedToken = JwtDecoder.decode(token);
+    return decodedToken['id'];
+  }
 }

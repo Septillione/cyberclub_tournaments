@@ -24,10 +24,7 @@ Future<void> main() async {
     tokenStorage: tokenStorage,
   );
   final tournamentRepository = TournamentRepository(apiClient: apiClient);
-  final teamRepository = TeamRepository(
-    apiClient: apiClient,
-    tournamentsRepository: tournamentRepository,
-  );
+  final teamRepository = TeamRepository(apiClient: apiClient);
   final userRepository = UserRepository(apiClient: apiClient);
 
   // Запуск приложения

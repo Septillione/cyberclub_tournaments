@@ -23,10 +23,8 @@ class UserTournamentsBloc
   ) async {
     emit(UserTournamentsLoading());
     try {
-      const userId = 'currentUserId';
-      final userTournaments = await _tournamentRepository.fetchUserTournaments(
-        userId,
-      );
+      final userTournaments = await _tournamentRepository
+          .fetchUserTournaments();
 
       final now = DateTime.now();
       final List<TournamentModel> active = [];

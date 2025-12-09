@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CardTeammate extends StatelessWidget {
-  final TeammateModel teammate;
+  final TeamMemberModel teammate;
   final bool isCaptain;
 
   const CardTeammate({
@@ -16,31 +16,31 @@ class CardTeammate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCurrentUser = teammate.id == 'p0';
+    final user = teammate.user;
 
     return Container(
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: AppColors.bgSurface,
         borderRadius: BorderRadius.circular(12.0),
-        border: isCurrentUser
-            ? Border.all(color: AppColors.accentPrimary)
-            : null,
+        border: isCaptain ? Border.all(color: AppColors.accentPrimary) : null,
       ),
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(teammate.avatarUrl),
+            backgroundImage: user.avatarUrl != null
+                ? NetworkImage(user.avatarUrl!)
+                : null,
             radius: 20,
           ),
           const SizedBox(width: 12),
-          Text(teammate.name, style: AppTextStyles.h3),
+          Text(user.nickname, style: AppTextStyles.h3),
           const Spacer(),
           Text(
-            teammate.isCaptain ? 'Капитан' : 'Игрок',
+            isCaptain ? 'Капитан' : 'Игрок',
             style: AppTextStyles.bodyL.copyWith(color: AppColors.textSecondary),
           ),
-          if (isCaptain && !teammate.isCaptain) ...[
+          if (isCaptain) ...[
             PopupMenuButton<String>(
               child: const Icon(LucideIcons.ellipsisVertical, size: 24),
               itemBuilder: (context) => [

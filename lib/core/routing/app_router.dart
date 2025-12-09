@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
+import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/login_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
@@ -74,6 +75,7 @@ class AppRouter {
                   return BlocProvider(
                     create: (context) => TeamDetailBloc(
                       teamRepository: context.read<TeamRepository>(),
+                      authRepository: context.read<AuthRepository>(),
                     )..add(TeamDetailStarted(teamId: teamId)),
                     child: const TeamsDetailScreen(),
                   );

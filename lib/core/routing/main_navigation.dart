@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
@@ -30,9 +31,10 @@ class MainNavigation extends StatelessWidget {
           )..add(UserTournamentsStarted()),
         ),
         BlocProvider(
-          create: (context) =>
-              UserTeamsBloc(teamRepository: context.read<TeamRepository>())
-                ..add(UserTeamsStarted()),
+          create: (context) => UserTeamsBloc(
+            teamRepository: context.read<TeamRepository>(),
+            authRepository: context.read<AuthRepository>(),
+          )..add(UserTeamsStarted()),
         ),
         BlocProvider(
           create: (context) =>

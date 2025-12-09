@@ -38,13 +38,16 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   return Center(child: Text('Ошибка: ${state.errorMessage}'));
                 case TeamDetailLoaded():
                   final team = state.team;
-                  final segments = team.isCurrentUserCaptain
-                      ? ['Состав', 'Турниры', 'Приглашения']
-                      : ['Состав', 'Турниры'];
+                  final isCaptain = state.isCaptain;
+
+                  final segments = ['Состав'];
+                  // final segments = isCaptain
+                  //     ? ['Состав', 'Турниры', 'Приглашения']
+                  //     : ['Состав', 'Турниры'];
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTop(team.isCurrentUserCaptain),
+                      _buildTop(isCaptain),
                       _buildHeader(team),
                       const SizedBox(height: 16),
                       SegmentedButtonDetails(
@@ -61,6 +64,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                         child: _buildSegmentContent(
                           team,
                           _selectedSegmentIndex,
+                          isCaptain,
                         ),
                       ),
                       SizedBox(height: 16),
@@ -101,11 +105,16 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  Column _buildHeader(TeamDetailModel team) {
+  Column _buildHeader(TeamModel team) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CircleAvatar(radius: 40, backgroundImage: NetworkImage(team.avatarUrl)),
+        CircleAvatar(
+          radius: 40,
+          backgroundImage: team.avatarUrl != null
+              ? NetworkImage(team.avatarUrl!)
+              : null,
+        ),
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -115,56 +124,54 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
           ],
         ),
         const SizedBox(height: 16),
-        Row(
-          // mainAxisSize: MainAxisSize.max,
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: CardStatistics(
-                title: 'Турниров',
-                value: '${team.tournamentsCount}',
-                color: AppColors.textPrimary,
-              ),
-            ),
-            SizedBox(width: 8,),
-            Expanded(
-              child: CardStatistics(
-                title: 'Побед',
-                value: '${team.winsCount}',
-                color: AppColors.accentPrimary,
-              ),
-            ),
-            SizedBox(width: 8,),
-            Expanded(
-              child: CardStatistics(
-                title: 'Winrate',
-                value: '${team.winrate}%',
-                color: AppColors.statusSuccess,
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   // mainAxisSize: MainAxisSize.max,
+        //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     Expanded(
+        //       child: CardStatistics(
+        //         title: 'Турниров',
+        //         value: '${team.tournamentsCount}',
+        //         color: AppColors.textPrimary,
+        //       ),
+        //     ),
+        //     SizedBox(width: 8),
+        //     Expanded(
+        //       child: CardStatistics(
+        //         title: 'Побед',
+        //         value: '${team.winsCount}',
+        //         color: AppColors.accentPrimary,
+        //       ),
+        //     ),
+        //     SizedBox(width: 8),
+        //     Expanded(
+        //       child: CardStatistics(
+        //         title: 'Winrate',
+        //         value: '${team.winrate}%',
+        //         color: AppColors.statusSuccess,
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
 
-  Widget _buildSegmentContent(TeamDetailModel team, int index) {
+  Widget _buildSegmentContent(TeamModel team, int index, bool isCaptain) {
     List<Widget> captainWidgets = [
-      _buildRosterTab(team.teammates, team.isCurrentUserCaptain),
-      _buildTournamentsTab(team),
-      _buildApplicationsTab(team),
+      _buildRosterTab(team.members, isCaptain),
+      // _buildTournamentsTab(team),
+      // _buildApplicationsTab(team),
     ];
     List<Widget> playerWidgets = [
-      _buildRosterTab(team.teammates, team.isCurrentUserCaptain),
-      _buildTournamentsTab(team),
+      _buildRosterTab(team.members, isCaptain),
+      // _buildTournamentsTab(team),
     ];
 
-    return team.isCurrentUserCaptain
-        ? captainWidgets[index]
-        : playerWidgets[index];
+    return isCaptain ? captainWidgets[index] : playerWidgets[index];
   }
 
-  Widget _buildRosterTab(List<TeammateModel> teammates, bool isCaptain) {
+  Widget _buildRosterTab(List<TeamMemberModel> teammates, bool isCaptain) {
     return ListView.separated(
       itemBuilder: (context, index) {
         if (isCaptain && index == teammates.length) {
@@ -184,7 +191,8 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  Widget _buildTournamentsTab(TeamDetailModel team) {
+  /*
+  Widget _buildTournamentsTab(TeamModel team) {
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemCount: team.tournaments.length,
@@ -260,5 +268,5 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
         );
       },
     );
-  }
+  }*/
 }

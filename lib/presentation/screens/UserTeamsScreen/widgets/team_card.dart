@@ -7,12 +7,19 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TeamCard extends StatelessWidget {
-  final TeamListItemModel team;
+  final TeamModel team;
+  final String currentUserId;
 
-  const TeamCard({super.key, required this.team});
+  const TeamCard({super.key, required this.team, required this.currentUserId});
 
   @override
   Widget build(BuildContext context) {
+    final isCaptain = team.ownerId == currentUserId;
+    final avatarUrls = team.members
+        .map((m) => m.user.avatarUrl ?? '')
+        .where((url) => url.isNotEmpty)
+        .toList();
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.0),
@@ -31,7 +38,9 @@ class TeamCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: NetworkImage(team.avatarUrl),
+                    backgroundImage: team.avatarUrl != null
+                        ? NetworkImage(team.avatarUrl!)
+                        : null,
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -44,7 +53,7 @@ class TeamCard extends StatelessWidget {
               Row(
                 children: [
                   Text('Роль: ', style: AppTextStyles.bodyM),
-                  if (team.isCurrentUserCaptain) ...[
+                  if (isCaptain) ...[
                     Text(
                       'Капитан',
                       style: AppTextStyles.bodyM.copyWith(
@@ -65,7 +74,7 @@ class TeamCard extends StatelessWidget {
               const Divider(color: AppColors.bgMain, height: 1),
               const SizedBox(height: 16),
               Text(
-                'Участников: ${team.teammatesCount}',
+                'Участников: ${team.members.length}',
                 style: AppTextStyles.bodyM,
               ),
               const SizedBox(height: 16),
@@ -73,8 +82,8 @@ class TeamCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OverlappingAvatars(
-                    avatarUrls: team.teammatesAvatarUrls,
-                    totalCount: team.teammatesCount,
+                    avatarUrls: avatarUrls,
+                    totalCount: team.members.length,
                   ),
                   Icon(LucideIcons.arrowRight, color: AppColors.textPrimary),
                 ],

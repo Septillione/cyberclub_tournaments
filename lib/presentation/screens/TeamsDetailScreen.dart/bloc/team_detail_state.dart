@@ -9,12 +9,18 @@ sealed class TeamDetailState extends Equatable {
 final class TeamDetailLoading extends TeamDetailState {}
 
 final class TeamDetailLoaded extends TeamDetailState {
-  final TeamDetailModel team;
-  
-  const TeamDetailLoaded({required this.team});
+  final TeamModel team;
+  final bool isCaptain;
+  final int tournamentCount;
+
+  const TeamDetailLoaded({
+    required this.team,
+    required this.isCaptain,
+    this.tournamentCount = 0,
+  });
 
   @override
-  List<Object> get props => [team];
+  List<Object> get props => [team, isCaptain, tournamentCount];
 }
 
 final class TeamDetailError extends TeamDetailState {

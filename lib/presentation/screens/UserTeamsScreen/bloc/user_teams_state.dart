@@ -10,12 +10,13 @@ sealed class UserTeamsState extends Equatable {
 final class UserTeamsLoading extends UserTeamsState {}
 
 final class UserTeamsLoaded extends UserTeamsState {
-  final List<TeamListItemModel> teams;
+  final List<TeamModel> teams;
+  final String currentUserId;
 
-  const UserTeamsLoaded({required this.teams});
+  const UserTeamsLoaded({required this.teams, required this.currentUserId});
 
   @override
-  List<Object> get props => [teams];
+  List<Object> get props => [teams, currentUserId];
 }
 
 final class UserTeamsError extends UserTeamsState {
