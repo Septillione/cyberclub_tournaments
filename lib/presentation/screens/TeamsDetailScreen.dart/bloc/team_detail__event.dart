@@ -36,3 +36,12 @@ class DeclineApplicationClicked extends TeamDetailEvent {
   @override
   List<Object> get props => [applicationId];
 }
+
+class TeamDetailJoinRequested extends TeamDetailEvent {
+  final String teamId;
+
+  const TeamDetailJoinRequested(this.teamId);
+
+  @override
+  List<Object> get props => [teamId];
+}

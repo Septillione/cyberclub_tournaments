@@ -30,10 +30,14 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
       final teamDetails = await _teamRepository.fetchTeamDetails(event.teamId);
       final currentUserId = await _authRepository.getUserId();
       final isCaptain = teamDetails.ownerId == currentUserId;
+      final isMember = teamDetails.members.any(
+        (m) => m.userId == currentUserId,
+      );
       emit(
         TeamDetailLoaded(
           team: teamDetails,
           isCaptain: isCaptain,
+          isMember: isMember,
           tournamentCount: 0,
         ),
       );

@@ -99,7 +99,7 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
                           if (value == null || value.isEmpty) {
                             return 'Введите название команды';
                           }
-                          if (value.length < 5) return 'Минимум 4 символа';
+                          if (value.length < 4) return 'Минимум 3 символа';
                           return null;
                         },
                       ),

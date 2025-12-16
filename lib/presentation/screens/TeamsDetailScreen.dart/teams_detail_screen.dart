@@ -2,14 +2,10 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_application.dart';
-import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/team_tournament_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -39,15 +35,18 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                 case TeamDetailLoaded():
                   final team = state.team;
                   final isCaptain = state.isCaptain;
+                  final isMember = state.isMember;
 
-                  final segments = ['Состав'];
                   // final segments = isCaptain
                   //     ? ['Состав', 'Турниры', 'Приглашения']
                   //     : ['Состав', 'Турниры'];
+                  final segments = isCaptain
+                      ? ['Состав', 'Приглашения']
+                      : ['Состав'];
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTop(isCaptain),
+                      _buildTop(isCaptain, isMember, context),
                       _buildHeader(team),
                       const SizedBox(height: 16),
                       SegmentedButtonDetails(
@@ -78,29 +77,39 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  Row _buildTop(bool isCaptain) {
+  Row _buildTop(bool isCaptain, bool isMember, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomBackButton(),
-        GestureDetector(
-          onTap: () {
-            print('Settings team is pressed!');
-          },
-          child: PopupMenuButton<String>(
-            icon: Icon(
-              LucideIcons.settings,
-              size: 24,
-              color: AppColors.textSecondary,
-            ),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: isCaptain ? 'edit' : 'leave',
-                child: Text(isCaptain ? 'Редактировать' : 'Покинуть команду'),
+        if (isCaptain || isMember) ...[
+          GestureDetector(
+            onTap: () {
+              print('Settings team is pressed!');
+            },
+            child: PopupMenuButton<String>(
+              icon: Icon(
+                LucideIcons.settings,
+                size: 24,
+                color: AppColors.textSecondary,
               ),
-            ],
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                if (isCaptain) ...[
+                  PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Text('Редактировать'),
+                  ),
+                ] else if (isMember) ...[
+                  PopupMenuItem<String>(
+                    value: 'leave',
+                    child: Text('Покинуть команду'),
+                  ),
+                ] else
+                  ...[],
+              ],
+            ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -119,7 +128,13 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('${team.name} ', style: AppTextStyles.h2),
+            Flexible(
+              child: Text(
+                '${team.name} ',
+                style: AppTextStyles.h2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             Text('[${team.tag}]', style: AppTextStyles.h2),
           ],
         ),
@@ -161,7 +176,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     List<Widget> captainWidgets = [
       _buildRosterTab(team.members, isCaptain),
       // _buildTournamentsTab(team),
-      // _buildApplicationsTab(team),
+      _buildApplicationsTab(team),
     ];
     List<Widget> playerWidgets = [
       _buildRosterTab(team.members, isCaptain),
@@ -191,22 +206,21 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  /*
-  Widget _buildTournamentsTab(TeamModel team) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: team.tournaments.length,
-      itemBuilder: (context, index) {
-        final tournament = team.tournaments[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: TeamTournamentCard(tournament: tournament, team: team),
-        );
-      },
-    );
-  }
+  // Widget _buildTournamentsTab(TeamModel team) {
+  //   return ListView.builder(
+  //     padding: EdgeInsets.zero,
+  //     itemCount: team.tournaments.length,
+  //     itemBuilder: (context, index) {
+  //       final tournament = team.tournaments[index];
+  //       return Padding(
+  //         padding: const EdgeInsets.only(bottom: 16.0),
+  //         child: TeamTournamentCard(tournament: tournament, team: team),
+  //       );
+  //     },
+  //   );
+  // }
 
-  Widget _buildApplicationsTab(TeamDetailModel team) {
+  Widget _buildApplicationsTab(TeamModel team) {
     final bool hasApplications = team.applications.isNotEmpty;
 
     return ListView.builder(
@@ -268,5 +282,5 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
         );
       },
     );
-  }*/
+  }
 }

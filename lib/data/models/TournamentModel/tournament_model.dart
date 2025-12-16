@@ -73,7 +73,16 @@ enum TournamentStatus {
 
 enum BracketType { SINGLE_ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN, SWISS }
 
-enum TeamMode { SOLO, DUO, TEAM_5V5, SQUAD }
+enum TeamMode {
+  @JsonValue('SOLO_1V1')
+  solo,
+  @JsonValue('DUO_2V2')
+  duo,
+  @JsonValue('TEAM_5V5')
+  team5v5,
+  @JsonValue('SQUAD')
+  squad,
+}
 
 @freezed
 abstract class TournamentModel with _$TournamentModel {
@@ -91,7 +100,7 @@ abstract class TournamentModel with _$TournamentModel {
     @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)
     required BracketType bracketType,
 
-    @JsonKey(unknownEnumValue: TeamMode.TEAM_5V5) required TeamMode teamMode,
+    @JsonKey(unknownEnumValue: TeamMode.team5v5) required TeamMode teamMode,
 
     required String description,
     required String rules,

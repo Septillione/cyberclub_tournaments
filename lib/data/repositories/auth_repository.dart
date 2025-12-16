@@ -91,6 +91,6 @@ class AuthRepository {
     if (token == null) return null;
 
     final decodedToken = JwtDecoder.decode(token);
-    return decodedToken['id'];
+    return decodedToken['sub'];
   }
 }

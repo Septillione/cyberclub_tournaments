@@ -14,6 +14,7 @@ class TeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('DEBUG: Team Owner: ${team.ownerId} vs Me: $currentUserId');
     final isCaptain = team.ownerId == currentUserId;
     final avatarUrls = team.members
         .map((m) => m.user.avatarUrl ?? '')
@@ -74,7 +75,7 @@ class TeamCard extends StatelessWidget {
               const Divider(color: AppColors.bgMain, height: 1),
               const SizedBox(height: 16),
               Text(
-                'Участников: ${team.members.length}',
+                'Участников: ${team.count?['members'] ?? team.members.length}',
                 style: AppTextStyles.bodyM,
               ),
               const SizedBox(height: 16),
@@ -83,7 +84,7 @@ class TeamCard extends StatelessWidget {
                 children: [
                   OverlappingAvatars(
                     avatarUrls: avatarUrls,
-                    totalCount: team.members.length,
+                    totalCount: team.count?['members'] ?? team.members.length,
                   ),
                   Icon(LucideIcons.arrowRight, color: AppColors.textPrimary),
                 ],

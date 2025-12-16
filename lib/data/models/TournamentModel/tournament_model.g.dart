@@ -27,7 +27,7 @@ _TournamentModel _$TournamentModelFromJson(Map<String, dynamic> json) =>
       teamMode: $enumDecode(
         _$TeamModeEnumMap,
         json['teamMode'],
-        unknownValue: TeamMode.TEAM_5V5,
+        unknownValue: TeamMode.team5v5,
       ),
       description: json['description'] as String,
       rules: json['rules'] as String,
@@ -94,10 +94,10 @@ const _$BracketTypeEnumMap = {
 };
 
 const _$TeamModeEnumMap = {
-  TeamMode.SOLO: 'SOLO',
-  TeamMode.DUO: 'DUO',
-  TeamMode.TEAM_5V5: 'TEAM_5V5',
-  TeamMode.SQUAD: 'SQUAD',
+  TeamMode.solo: 'SOLO_1V1',
+  TeamMode.duo: 'DUO_2V2',
+  TeamMode.team5v5: 'TEAM_5V5',
+  TeamMode.squad: 'SQUAD',
 };
 
 const _$TournamentStatusEnumMap = {

@@ -29,6 +29,24 @@ class TeamRepository {
   }
 
   Future<void> leaveTeam(String teamId) async {
-    await _apiClient.dio.post('/teams/$teamId/leave');
+    await _apiClient.dio.delete('/teams/$teamId/leave');
+  }
+
+  Future<List<TeamModel>> searchTeams(String query) async {
+    try {
+      final response = await _apiClient.dio.get(
+        '/teams',
+        queryParameters: {'search': query},
+      );
+      if (response.data == null) return [];
+      final List list = response.data;
+      return list.map((json) => TeamModel.fromJson(json)).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> sendJoinRequest(String teamId) async {
+    await _apiClient.dio.post('/teams/$teamId/request');
   }
 }

@@ -13,6 +13,9 @@ _TeamModel _$TeamModelFromJson(Map<String, dynamic> json) => _TeamModel(
   avatarUrl: json['avatarUrl'] as String?,
   description: json['description'] as String?,
   ownerId: json['ownerId'] as String,
+  count: (json['_count'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(k, (e as num).toInt()),
+  ),
   members:
       (json['members'] as List<dynamic>?)
           ?.map((e) => TeamMemberModel.fromJson(e as Map<String, dynamic>))
@@ -28,6 +31,7 @@ Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
       'avatarUrl': instance.avatarUrl,
       'description': instance.description,
       'ownerId': instance.ownerId,
+      '_count': instance.count,
       'members': instance.members,
     };
 

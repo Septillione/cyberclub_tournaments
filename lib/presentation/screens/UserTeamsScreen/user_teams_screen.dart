@@ -5,6 +5,7 @@ import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class UserTeamsScreen extends StatelessWidget {
@@ -27,7 +28,7 @@ class UserTeamsScreen extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          print('Search team is pressed!');
+                          context.push('/find-team');
                         },
                         child: Icon(
                           LucideIcons.search,
@@ -37,8 +38,13 @@ class UserTeamsScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 16),
                       GestureDetector(
-                        onTap: () {
-                          print('Create team is pressed!');
+                        onTap: () async {
+                          await context.push('/create-team');
+                          if (context.mounted) {
+                            context.read<UserTeamsBloc>().add(
+                              UserTeamsStarted(),
+                            );
+                          }
                         },
                         child: Icon(
                           LucideIcons.circleFadingPlus,
@@ -63,7 +69,7 @@ class UserTeamsScreen extends StatelessWidget {
                         );
                       case UserTeamsLoaded():
                         if (state.teams.isEmpty) {
-                          return _buildEmptyState();
+                          return _buildEmptyState(context);
                         }
                         return _buildTeamList(state.teams, state.currentUserId);
                     }
@@ -77,7 +83,7 @@ class UserTeamsScreen extends StatelessWidget {
     );
   }
 
-  Column _buildEmptyState() {
+  Column _buildEmptyState(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -103,12 +109,19 @@ class UserTeamsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await context.push('/create-team');
+                  if (context.mounted) {
+                    context.read<UserTeamsBloc>().add(UserTeamsStarted());
+                  }
+                },
                 child: Text('Создать команду', style: AppTextStyles.button),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/find-team');
+                },
                 child: Text('Найти команду', style: AppTextStyles.button),
               ),
             ],
