@@ -53,6 +53,33 @@ class TournamentRepository {
     return Discipline.values;
   }
 
+  Future<void> createTournament({
+    required String title,
+    required String description,
+    required Discipline discipline,
+    required DateTime startDate,
+    required int maxParticipants,
+    required BracketType bracketType,
+    required TeamMode teamMode,
+    String? imageUrl,
+    String? prizePool,
+  }) async {
+    await _apiClient.dio.post(
+      '/tournaments',
+      data: {
+        'title': title,
+        'description': description,
+        'discipline': discipline.name,
+        'startDate': startDate.toIso8601String(),
+        'maxParticipants': maxParticipants,
+        'bracketType': bracketType.name,
+        'teamMode': teamMode.name,
+        'imageUrl': imageUrl ?? 'https://placehold.co/600x400',
+        'prizePool': prizePool,
+      },
+    );
+  }
+
   // Future<List<String>> fetchDisciplines() async {
   //   return _disciplineFilterChips;
   // }

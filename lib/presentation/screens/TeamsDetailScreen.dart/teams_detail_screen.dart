@@ -1,7 +1,9 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
+import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_request.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
@@ -36,6 +38,9 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   final team = state.team;
                   final isCaptain = state.isCaptain;
                   final isMember = state.isMember;
+                  final requests = state.joinRequests;
+                  final ownerId = team.ownerId;
+                  final currentUserId = state.currentUserId;
 
                   // final segments = isCaptain
                   //     ? ['Состав', 'Турниры', 'Приглашения']
@@ -64,6 +69,9 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                           team,
                           _selectedSegmentIndex,
                           isCaptain,
+                          requests,
+                          ownerId,
+                          currentUserId,
                         ),
                       ),
                       SizedBox(height: 16),
@@ -172,21 +180,33 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  Widget _buildSegmentContent(TeamModel team, int index, bool isCaptain) {
+  Widget _buildSegmentContent(
+    TeamModel team,
+    int index,
+    bool isCaptain,
+    List<JoinRequestModel> requests,
+    String ownerId,
+    String currentUserId,
+  ) {
     List<Widget> captainWidgets = [
-      _buildRosterTab(team.members, isCaptain),
+      _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
       // _buildTournamentsTab(team),
-      _buildApplicationsTab(team),
+      _buildRequestsTab(requests),
     ];
     List<Widget> playerWidgets = [
-      _buildRosterTab(team.members, isCaptain),
+      _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
       // _buildTournamentsTab(team),
     ];
 
     return isCaptain ? captainWidgets[index] : playerWidgets[index];
   }
 
-  Widget _buildRosterTab(List<TeamMemberModel> teammates, bool isCaptain) {
+  Widget _buildRosterTab(
+    List<TeamMemberModel> teammates,
+    bool isCaptain,
+    String ownerId,
+    String currentUserId,
+  ) {
     return ListView.separated(
       itemBuilder: (context, index) {
         if (isCaptain && index == teammates.length) {
@@ -199,7 +219,11 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
           );
         }
         final teammate = teammates[index];
-        return CardTeammate(teammate: teammate, isCaptain: isCaptain);
+        return CardTeammate(
+          teammate: teammate,
+          ownerId: ownerId,
+          currentUserId: currentUserId,
+        );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemCount: teammates.length + (isCaptain ? 1 : 0),
@@ -220,67 +244,89 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
   //   );
   // }
 
-  Widget _buildApplicationsTab(TeamModel team) {
-    final bool hasApplications = team.applications.isNotEmpty;
+  Widget _buildRequestsTab(List<JoinRequestModel> requests) {
+    if (requests.isEmpty) {
+      return const Center(child: Text('Нет заявок на вступление'));
+    }
 
     return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: 1 + (hasApplications ? 1 + team.applications.length : 0),
+      itemCount: requests.length,
       itemBuilder: (context, index) {
-        if (index == 0) {
-          return Container(
-            padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: AppColors.bgSurface,
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Ссылка приглашение', style: AppTextStyles.h3),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(team.inviteLink, style: AppTextStyles.caption),
-                    const SizedBox(width: 12),
-                    GestureDetector(
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: team.inviteLink));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Ссылка скопирована')),
-                        );
-                      },
-                      child: Icon(
-                        LucideIcons.copy,
-                        size: 24,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }
-
-        if (index == 1) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
-            child: Text(
-              'Заявки на вступление (${team.applications.length})',
-              style: AppTextStyles.h3,
-            ),
-          );
-        }
-
-        final applicationIndex = index - 2;
-        final application = team.applications[applicationIndex];
-
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: CardApplication(teamApplication: application),
+        final request = requests[index];
+        return CardRequest(
+          joinRequest: request,
+          onAccept: () {
+            context.read<TeamDetailBloc>().add(
+              AcceptRequestClicked(requestId: request.id),
+            );
+          },
+          onReject: () {
+            context.read<TeamDetailBloc>().add(
+              RejectRequestClicked(requestId: request.id),
+            );
+          },
         );
       },
     );
+
+    // return ListView.builder(
+    //   padding: EdgeInsets.zero,
+    //   itemCount: 1 + (hasApplications ? 1 + team.applications.length : 0),
+    //   itemBuilder: (context, index) {
+    //     if (index == 0) {
+    //       return Container(
+    //         padding: EdgeInsets.all(16.0),
+    //         decoration: BoxDecoration(
+    //           color: AppColors.bgSurface,
+    //           borderRadius: BorderRadius.circular(16.0),
+    //         ),
+    //         child: Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Text('Ссылка приглашение', style: AppTextStyles.h3),
+    //             const SizedBox(height: 16),
+    //             Row(
+    //               children: [
+    //                 Text(team.inviteLink, style: AppTextStyles.caption),
+    //                 const SizedBox(width: 12),
+    //                 GestureDetector(
+    //                   onTap: () {
+    //                     Clipboard.setData(ClipboardData(text: team.inviteLink));
+    //                     ScaffoldMessenger.of(context).showSnackBar(
+    //                       const SnackBar(content: Text('Ссылка скопирована')),
+    //                     );
+    //                   },
+    //                   child: Icon(
+    //                     LucideIcons.copy,
+    //                     size: 24,
+    //                     color: AppColors.textSecondary,
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ],
+    //         ),
+    //       );
+    //     }
+
+    //     if (index == 1) {
+    //       return Padding(
+    //         padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+    //         child: Text(
+    //           'Заявки на вступление (${team.applications.length})',
+    //           style: AppTextStyles.h3,
+    //         ),
+    //       );
+    //     }
+
+    //     final applicationIndex = index - 2;
+    //     final application = team.applications[applicationIndex];
+
+    //     return Padding(
+    //       padding: const EdgeInsets.only(bottom: 16.0),
+    //       child: CardApplication(teamApplication: application),
+    //     );
+    //   },
+    // );
   }
 }

@@ -6,17 +6,8 @@ class UserRepository {
 
   UserRepository({required ApiClient apiClient}) : _apiClient = apiClient;
 
-  final _mockUserProfile = const UserProfileModel(
-    id: 'current_user_id',
-    nickname: 'Илюха Монеси',
-    avatarUrl:
-        'https://avatars.mds.yandex.net/i?id=ef0feff28c7826bf124c426dc05d05e9_l-4593232-images-thumbs&n=13',
-    tournamentsPlayed: 15,
-    tournamentsWon: 12,
-    winrate: 78.0,
-  );
-
-  Future<UserProfileModel> fetchUserProfile() async {
-    return _mockUserProfile;
+  Future<UserProfileModel> fetchUserProfile(String userId) async {
+    final response = await _apiClient.dio.get('/users/$userId');
+    return UserProfileModel.fromJson(response.data);
   }
 }

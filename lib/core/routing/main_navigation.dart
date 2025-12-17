@@ -37,9 +37,10 @@ class MainNavigation extends StatelessWidget {
           )..add(UserTeamsStarted()),
         ),
         BlocProvider(
-          create: (context) =>
-              ProfileBloc(userRepository: context.read<UserRepository>())
-                ..add(ProfileStarted()),
+          create: (context) => ProfileBloc(
+            userRepository: context.read<UserRepository>(),
+            authRepository: context.read<AuthRepository>(),
+          )..add(ProfileStarted()),
         ),
       ],
       child: Scaffold(

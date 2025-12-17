@@ -43,6 +43,15 @@ class ProfileScreen extends StatelessWidget {
                               onTap: () {},
                             ),
                             const SizedBox(height: 16),
+                            if (user.role == UserRole.manager ||
+                                user.role == UserRole.admin) ...[
+                              CardSetting(
+                                icon: LucideIcons.box,
+                                title: 'Панель Организатора',
+                                onTap: () {},
+                              ),
+                              const SizedBox(height: 16),
+                            ],
                             CardSetting(
                               icon: LucideIcons.shieldCheck,
                               title: 'Приватность',
@@ -131,33 +140,33 @@ class ProfileScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: CardStatistics(
-                title: 'Турниры',
-                value: '${user.tournamentsPlayed}',
-                color: AppColors.textPrimary,
-              ),
-            ),
-            SizedBox(width: 8),
-            Expanded(
-              child: CardStatistics(
-                title: 'Победы',
-                value: '${user.tournamentsWon}',
-                color: AppColors.accentPrimary,
-              ),
-            ),
-            SizedBox(width: 8),
-            Expanded(
-              child: CardStatistics(
-                title: 'Winrate',
-                value: '${user.winrate}%',
-                color: AppColors.statusSuccess,
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: CardStatistics(
+        //         title: 'Турниры',
+        //         value: '${user.tournamentsPlayed}',
+        //         color: AppColors.textPrimary,
+        //       ),
+        //     ),
+        //     SizedBox(width: 8),
+        //     Expanded(
+        //       child: CardStatistics(
+        //         title: 'Победы',
+        //         value: '${user.tournamentsWon}',
+        //         color: AppColors.accentPrimary,
+        //       ),
+        //     ),
+        //     SizedBox(width: 8),
+        //     Expanded(
+        //       child: CardStatistics(
+        //         title: 'Winrate',
+        //         value: '${user.winrate}%',
+        //         color: AppColors.statusSuccess,
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

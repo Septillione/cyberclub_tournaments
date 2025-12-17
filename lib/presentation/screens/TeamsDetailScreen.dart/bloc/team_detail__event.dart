@@ -21,20 +21,20 @@ class KickPlayerClicked extends TeamDetailEvent {
   List<Object> get props => [playerId];
 }
 
-class AcceptApplicationClicked extends TeamDetailEvent {
-  final String applicationId;
-  const AcceptApplicationClicked({required this.applicationId});
+class AcceptRequestClicked extends TeamDetailEvent {
+  final String requestId;
+  const AcceptRequestClicked({required this.requestId});
 
   @override
-  List<Object> get props => [applicationId];
+  List<Object> get props => [requestId];
 }
 
-class DeclineApplicationClicked extends TeamDetailEvent {
-  final String applicationId;
-  const DeclineApplicationClicked({required this.applicationId});
+class RejectRequestClicked extends TeamDetailEvent {
+  final String requestId;
+  const RejectRequestClicked({required this.requestId});
 
   @override
-  List<Object> get props => [applicationId];
+  List<Object> get props => [requestId];
 }
 
 class TeamDetailJoinRequested extends TeamDetailEvent {

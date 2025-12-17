@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
+import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,14 @@ part 'profile_event.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository _userRepository;
+  final AuthRepository _authRepository;
 
-  ProfileBloc({required UserRepository userRepository})
-    : _userRepository = userRepository,
-      super(ProfileLoading()) {
+  ProfileBloc({
+    required UserRepository userRepository,
+    required AuthRepository authRepository,
+  }) : _userRepository = userRepository,
+       _authRepository = authRepository,
+       super(ProfileLoading()) {
     on<ProfileStarted>(_onStarted);
   }
 
@@ -22,7 +27,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(ProfileLoading());
     try {
-      final userProfile = await _userRepository.fetchUserProfile();
+      final currentUserId = await _authRepository.getUserId();
+      final userProfile = await _userRepository.fetchUserProfile(
+        currentUserId ?? '',
+      );
       emit(ProfileLoaded(userProfile: userProfile));
     } catch (e) {
       emit(ProfileError(errorMessage: e.toString()));

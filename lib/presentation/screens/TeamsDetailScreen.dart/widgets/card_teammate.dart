@@ -6,24 +6,30 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CardTeammate extends StatelessWidget {
   final TeamMemberModel teammate;
-  final bool isCaptain;
+  final String ownerId;
+  final String currentUserId;
 
   const CardTeammate({
     super.key,
     required this.teammate,
-    required this.isCaptain,
+    required this.ownerId,
+    required this.currentUserId,
   });
 
   @override
   Widget build(BuildContext context) {
     final user = teammate.user;
+    final isUserCaptain = teammate.userId == ownerId;
+    final isCurrentUser = teammate.userId == currentUserId;
 
     return Container(
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: AppColors.bgSurface,
         borderRadius: BorderRadius.circular(12.0),
-        border: isCaptain ? Border.all(color: AppColors.accentPrimary) : null,
+        border: isCurrentUser
+            ? Border.all(color: AppColors.accentPrimary)
+            : null,
       ),
       child: Row(
         children: [
@@ -37,23 +43,25 @@ class CardTeammate extends StatelessWidget {
           Text(user.nickname, style: AppTextStyles.h3),
           const Spacer(),
           Text(
-            isCaptain ? 'Капитан' : 'Игрок',
+            isUserCaptain ? 'Капитан' : 'Игрок',
             style: AppTextStyles.bodyL.copyWith(color: AppColors.textSecondary),
           ),
-          if (isCaptain) ...[
-            PopupMenuButton<String>(
-              child: const Icon(LucideIcons.ellipsisVertical, size: 24),
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: 'promote',
-                  child: Text('Передать капитанство'),
-                ),
-                const PopupMenuItem(
-                  value: 'kick',
-                  child: Text('Исключить из команды'),
-                ),
-              ],
-            ),
+          if (currentUserId == ownerId) ...[
+            if (!isCurrentUser) ...[
+              PopupMenuButton<String>(
+                child: const Icon(LucideIcons.ellipsisVertical, size: 24),
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'promote',
+                    child: Text('Передать капитанство'),
+                  ),
+                  const PopupMenuItem(
+                    value: 'kick',
+                    child: Text('Исключить из команды'),
+                  ),
+                ],
+              ),
+            ],
           ],
         ],
       ),

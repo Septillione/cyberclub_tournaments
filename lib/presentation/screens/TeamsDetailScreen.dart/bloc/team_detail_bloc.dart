@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
@@ -19,6 +20,8 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
        _authRepository = authRepository,
        super(TeamDetailLoading()) {
     on<TeamDetailStarted>(_onStarted);
+    on<AcceptRequestClicked>(_onAcceptRequest);
+    on<RejectRequestClicked>(_onRejectRequest);
   }
 
   Future<void> _onStarted(
@@ -33,14 +36,51 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
       final isMember = teamDetails.members.any(
         (m) => m.userId == currentUserId,
       );
+      List<JoinRequestModel> joinRequests = [];
+      if (isCaptain) {
+        joinRequests = await _teamRepository.fetchJoinRequest(event.teamId);
+      }
       emit(
         TeamDetailLoaded(
           team: teamDetails,
           isCaptain: isCaptain,
           isMember: isMember,
-          tournamentCount: 0,
+          joinRequests: joinRequests,
+          currentUserId: currentUserId ?? '',
         ),
       );
+    } catch (e) {
+      emit(TeamDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onAcceptRequest(
+    AcceptRequestClicked event,
+    Emitter<TeamDetailState> emit,
+  ) async {
+    try {
+      await _teamRepository.acceptJoinRequest(event.requestId);
+
+      if (state is TeamDetailLoaded) {
+        final teamId = (state as TeamDetailLoaded).team.id;
+        add(TeamDetailStarted(teamId: teamId));
+      }
+    } catch (e) {
+      emit(TeamDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onRejectRequest(
+    RejectRequestClicked event,
+    Emitter<TeamDetailState> emit,
+  ) async {
+    try {
+      await _teamRepository.rejectJoinRequest(event.requestId);
+
+      if (state is TeamDetailLoaded) {
+        final teamId = (state as TeamDetailLoaded).team.id;
+        add(TeamDetailStarted(teamId: teamId));
+      }
     } catch (e) {
       emit(TeamDetailError(errorMessage: e.toString()));
     }

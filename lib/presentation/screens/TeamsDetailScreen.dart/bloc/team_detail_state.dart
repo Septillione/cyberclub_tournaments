@@ -12,17 +12,25 @@ final class TeamDetailLoaded extends TeamDetailState {
   final TeamModel team;
   final bool isCaptain;
   final bool isMember;
-  final int tournamentCount;
+  final List<JoinRequestModel> joinRequests;
+  final String currentUserId;
 
   const TeamDetailLoaded({
     required this.team,
     required this.isCaptain,
     required this.isMember,
-    this.tournamentCount = 0,
+    this.joinRequests = const [],
+    required this.currentUserId,
   });
 
   @override
-  List<Object> get props => [team, isCaptain, isMember, tournamentCount];
+  List<Object> get props => [
+    team,
+    isCaptain,
+    isMember,
+    joinRequests,
+    currentUserId,
+  ];
 }
 
 final class TeamDetailError extends TeamDetailState {

@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 
@@ -48,5 +49,24 @@ class TeamRepository {
 
   Future<void> sendJoinRequest(String teamId) async {
     await _apiClient.dio.post('/teams/$teamId/request');
+  }
+
+  Future<List<JoinRequestModel>> fetchJoinRequest(String teamId) async {
+    try {
+      final response = await _apiClient.dio.get('/teams/$teamId/requests');
+      final List list = response.data;
+      return list.map((json) => JoinRequestModel.fromJson(json)).toList();
+    } catch (e) {
+      print('Ошибка загрузки заявок $e');
+      return [];
+    }
+  }
+
+  Future<void> acceptJoinRequest(String requestId) async {
+    await _apiClient.dio.post('/teams/requests/$requestId/accept');
+  }
+
+  Future<void> rejectJoinRequest(String requestId) async {
+    await _apiClient.dio.post('/teams/requests/$requestId/reject');
   }
 }
