@@ -5,6 +5,8 @@ import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScre
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/CreateTeamScreen/create_team_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/create_tournament_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/ManagerDashboardScreen/manager_dashboard_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/team_search_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
@@ -39,6 +41,14 @@ class AppRouter {
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/manager-dashboard',
+        builder: (context, state) => const ManagerDashboardScreen(),
+      ),
+      GoRoute(
+        path: '/create-tournament',
+        builder: (context, state) => const CreateTournamentScreen(),
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,

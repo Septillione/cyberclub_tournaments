@@ -81,7 +81,20 @@ enum TeamMode {
   @JsonValue('TEAM_5V5')
   team5v5,
   @JsonValue('SQUAD')
-  squad,
+  squad;
+
+  String toJson() {
+    switch (this) {
+      case TeamMode.solo:
+        return 'SOLO_1V1';
+      case TeamMode.duo:
+        return 'DUO_2V2';
+      case TeamMode.team5v5:
+        return 'TEAM_5V5';
+      case TeamMode.squad:
+        return 'SQUAD';
+    }
+  }
 }
 
 @freezed
@@ -93,8 +106,7 @@ abstract class TournamentModel with _$TournamentModel {
 
     @JsonKey(unknownEnumValue: Discipline.DOTA2) required Discipline discipline,
 
-    String? prizePool,
-    required String type,
+    required bool isOnline,
     String? address,
 
     @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)

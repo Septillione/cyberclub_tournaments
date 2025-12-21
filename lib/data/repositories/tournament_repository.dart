@@ -56,48 +56,50 @@ class TournamentRepository {
   Future<void> createTournament({
     required String title,
     required String description,
+    required String rules,
     required Discipline discipline,
     required DateTime startDate,
     required int maxParticipants,
     required BracketType bracketType,
     required TeamMode teamMode,
+    required bool isOnline,
+    String? address,
     String? imageUrl,
-    String? prizePool,
+    List<PrizeItem>? prizes,
   }) async {
     await _apiClient.dio.post(
       '/tournaments',
       data: {
         'title': title,
         'description': description,
+        'rules': rules,
         'discipline': discipline.name,
         'startDate': startDate.toIso8601String(),
         'maxParticipants': maxParticipants,
         'bracketType': bracketType.name,
-        'teamMode': teamMode.name,
+        'teamMode': teamMode.toJson(),
+        'isOnline': isOnline,
+        'address': address,
         'imageUrl': imageUrl ?? 'https://placehold.co/600x400',
-        'prizePool': prizePool,
+        'prizes': prizes!.map((p) => p.toJson()).toList(),
       },
     );
   }
 
-  // Future<List<String>> fetchDisciplines() async {
-  //   return _disciplineFilterChips;
-  // }
+  Future<List<TournamentModel>> fetchTournamentsForManagerDashboard() async {
+    try {
+      final response = await _apiClient.dio.get('/tournaments/organized');
 
-  // Future<List<TournamentModel>> fetchUserTournaments(String userId) async {
-  //   return [
-  //     mockTournaments.firstWhere((t) => t.id == 't-dota-1'),
-  //     mockTournaments.firstWhere((t) => t.id == 't-cs-1'),
-  //     mockTournaments.firstWhere((t) => t.id == 't-valorant-1'),
-  //     mockTournaments.firstWhere((t) => t.id == 't-mortalkombat-1'),
-  //   ];
-  // }
+      final List<dynamic> dataList = response.data;
 
-  // TournamentModel? findTournamentById(String id) {
-  //   try {
-  //     return mockTournaments.firstWhere((t) => t.id == id);
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
+      final tournaments = dataList
+          .map((t) => TournamentModel.fromJson(t))
+          .toList();
+
+      return tournaments;
+    } catch (e) {
+      print('Ошибка $e');
+      return [];
+    }
+  }
 }

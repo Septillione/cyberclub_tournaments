@@ -31,12 +31,21 @@ class GeneralDetails extends StatelessWidget {
         colorIcon: AppColors.accentPrimary,
         bodyText: formattedDate,
       ),
-      TournamentInfoItem(
-        title: 'Адрес',
-        icon: LucideIcons.mapPin,
-        colorIcon: AppColors.statusLive,
-        bodyText: tournament.address ?? tournament.type,
-      ),
+      if (tournament.isOnline == true) ...[
+        TournamentInfoItem(
+          title: 'Адрес',
+          icon: LucideIcons.mapPin,
+          colorIcon: AppColors.statusLive,
+          bodyText: 'Онлайн',
+        ),
+      ] else ...[
+        TournamentInfoItem(
+          title: 'Адрес',
+          icon: LucideIcons.mapPin,
+          colorIcon: AppColors.statusLive,
+          bodyText: tournament.address ?? '',
+        ),
+      ],
       TournamentInfoItem(
         title: 'Формат',
         icon: LucideIcons.swords,

@@ -143,6 +143,12 @@ class TournamentCard extends StatelessWidget {
       'ru_RU',
     ).format(tournament.startDate);
 
+    String topPrize = 'Призы';
+
+    if (tournament.prizes.isNotEmpty) {
+      topPrize = tournament.prizes.first.amount;
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,7 +162,7 @@ class TournamentCard extends StatelessWidget {
         Icon(LucideIcons.trophy, color: AppColors.textSecondary, size: 16),
         SizedBox(width: 8),
         Text(
-          '${tournament.prizePool} ₽',
+          topPrize,
           style: AppTextStyles.bodyM.copyWith(color: AppColors.textSecondary),
         ),
       ],

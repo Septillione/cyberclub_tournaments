@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TournamentModel {
 
- String get id; String get title; String get imageUrl;@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline get discipline; String? get prizePool; String get type; String? get address;@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType get bracketType;@JsonKey(unknownEnumValue: TeamMode.team5v5) TeamMode get teamMode; String get description; String get rules; DateTime get startDate;@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus get status; ParticipantsInfo get participants; List<PrizeItem> get prizes;
+ String get id; String get title; String get imageUrl;@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline get discipline; bool get isOnline; String? get address;@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType get bracketType;@JsonKey(unknownEnumValue: TeamMode.team5v5) TeamMode get teamMode; String get description; String get rules; DateTime get startDate;@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus get status; ParticipantsInfo get participants; List<PrizeItem> get prizes;
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TournamentModelCopyWith<TournamentModel> get copyWith => _$TournamentModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.prizePool, prizePool) || other.prizePool == prizePool)&&(identical(other.type, type) || other.type == type)&&(identical(other.address, address) || other.address == address)&&(identical(other.bracketType, bracketType) || other.bracketType == bracketType)&&(identical(other.teamMode, teamMode) || other.teamMode == teamMode)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.participants, participants) || other.participants == participants)&&const DeepCollectionEquality().equals(other.prizes, prizes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.isOnline, isOnline) || other.isOnline == isOnline)&&(identical(other.address, address) || other.address == address)&&(identical(other.bracketType, bracketType) || other.bracketType == bracketType)&&(identical(other.teamMode, teamMode) || other.teamMode == teamMode)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.participants, participants) || other.participants == participants)&&const DeepCollectionEquality().equals(other.prizes, prizes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,prizePool,type,address,bracketType,teamMode,description,rules,startDate,status,participants,const DeepCollectionEquality().hash(prizes));
+int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,isOnline,address,bracketType,teamMode,description,rules,startDate,status,participants,const DeepCollectionEquality().hash(prizes));
 
 @override
 String toString() {
-  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, prizePool: $prizePool, type: $type, address: $address, bracketType: $bracketType, teamMode: $teamMode, description: $description, rules: $rules, startDate: $startDate, status: $status, participants: $participants, prizes: $prizes)';
+  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, isOnline: $isOnline, address: $address, bracketType: $bracketType, teamMode: $teamMode, description: $description, rules: $rules, startDate: $startDate, status: $status, participants: $participants, prizes: $prizes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TournamentModelCopyWith<$Res>  {
   factory $TournamentModelCopyWith(TournamentModel value, $Res Function(TournamentModel) _then) = _$TournamentModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String imageUrl,@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline discipline, String? prizePool, String type, String? address,@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType bracketType,@JsonKey(unknownEnumValue: TeamMode.team5v5) TeamMode teamMode, String description, String rules, DateTime startDate,@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus status, ParticipantsInfo participants, List<PrizeItem> prizes
+ String id, String title, String imageUrl,@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline discipline, bool isOnline, String? address,@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType bracketType,@JsonKey(unknownEnumValue: TeamMode.team5v5) TeamMode teamMode, String description, String rules, DateTime startDate,@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus status, ParticipantsInfo participants, List<PrizeItem> prizes
 });
 
 
@@ -65,15 +65,14 @@ class _$TournamentModelCopyWithImpl<$Res>
 
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? prizePool = freezed,Object? type = null,Object? address = freezed,Object? bracketType = null,Object? teamMode = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? participants = null,Object? prizes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? isOnline = null,Object? address = freezed,Object? bracketType = null,Object? teamMode = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? participants = null,Object? prizes = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String,discipline: null == discipline ? _self.discipline : discipline // ignore: cast_nullable_to_non_nullable
-as Discipline,prizePool: freezed == prizePool ? _self.prizePool : prizePool // ignore: cast_nullable_to_non_nullable
-as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as Discipline,isOnline: null == isOnline ? _self.isOnline : isOnline // ignore: cast_nullable_to_non_nullable
+as bool,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,bracketType: null == bracketType ? _self.bracketType : bracketType // ignore: cast_nullable_to_non_nullable
 as BracketType,teamMode: null == teamMode ? _self.teamMode : teamMode // ignore: cast_nullable_to_non_nullable
 as TeamMode,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -176,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  String? prizePool,  String type,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  bool isOnline,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TournamentModel() when $default != null:
-return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
+return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.isOnline,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
   return orElse();
 
 }
@@ -197,10 +196,10 @@ return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prize
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  String? prizePool,  String type,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  bool isOnline,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)  $default,) {final _that = this;
 switch (_that) {
 case _TournamentModel():
-return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
+return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.isOnline,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -217,10 +216,10 @@ return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prize
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  String? prizePool,  String type,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2)  Discipline discipline,  bool isOnline,  String? address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION)  BracketType bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5)  TeamMode teamMode,  String description,  String rules,  DateTime startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED)  TournamentStatus status,  ParticipantsInfo participants,  List<PrizeItem> prizes)?  $default,) {final _that = this;
 switch (_that) {
 case _TournamentModel() when $default != null:
-return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prizePool,_that.type,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
+return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.isOnline,_that.address,_that.bracketType,_that.teamMode,_that.description,_that.rules,_that.startDate,_that.status,_that.participants,_that.prizes);case _:
   return null;
 
 }
@@ -232,15 +231,14 @@ return $default(_that.id,_that.title,_that.imageUrl,_that.discipline,_that.prize
 @JsonSerializable()
 
 class _TournamentModel implements TournamentModel {
-  const _TournamentModel({required this.id, required this.title, required this.imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2) required this.discipline, this.prizePool, required this.type, this.address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) required this.bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5) required this.teamMode, required this.description, required this.rules, required this.startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) required this.status, required this.participants, final  List<PrizeItem> prizes = const []}): _prizes = prizes;
+  const _TournamentModel({required this.id, required this.title, required this.imageUrl, @JsonKey(unknownEnumValue: Discipline.DOTA2) required this.discipline, required this.isOnline, this.address, @JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) required this.bracketType, @JsonKey(unknownEnumValue: TeamMode.team5v5) required this.teamMode, required this.description, required this.rules, required this.startDate, @JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) required this.status, required this.participants, final  List<PrizeItem> prizes = const []}): _prizes = prizes;
   factory _TournamentModel.fromJson(Map<String, dynamic> json) => _$TournamentModelFromJson(json);
 
 @override final  String id;
 @override final  String title;
 @override final  String imageUrl;
 @override@JsonKey(unknownEnumValue: Discipline.DOTA2) final  Discipline discipline;
-@override final  String? prizePool;
-@override final  String type;
+@override final  bool isOnline;
 @override final  String? address;
 @override@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) final  BracketType bracketType;
 @override@JsonKey(unknownEnumValue: TeamMode.team5v5) final  TeamMode teamMode;
@@ -270,16 +268,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.prizePool, prizePool) || other.prizePool == prizePool)&&(identical(other.type, type) || other.type == type)&&(identical(other.address, address) || other.address == address)&&(identical(other.bracketType, bracketType) || other.bracketType == bracketType)&&(identical(other.teamMode, teamMode) || other.teamMode == teamMode)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.participants, participants) || other.participants == participants)&&const DeepCollectionEquality().equals(other._prizes, _prizes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.discipline, discipline) || other.discipline == discipline)&&(identical(other.isOnline, isOnline) || other.isOnline == isOnline)&&(identical(other.address, address) || other.address == address)&&(identical(other.bracketType, bracketType) || other.bracketType == bracketType)&&(identical(other.teamMode, teamMode) || other.teamMode == teamMode)&&(identical(other.description, description) || other.description == description)&&(identical(other.rules, rules) || other.rules == rules)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.status, status) || other.status == status)&&(identical(other.participants, participants) || other.participants == participants)&&const DeepCollectionEquality().equals(other._prizes, _prizes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,prizePool,type,address,bracketType,teamMode,description,rules,startDate,status,participants,const DeepCollectionEquality().hash(_prizes));
+int get hashCode => Object.hash(runtimeType,id,title,imageUrl,discipline,isOnline,address,bracketType,teamMode,description,rules,startDate,status,participants,const DeepCollectionEquality().hash(_prizes));
 
 @override
 String toString() {
-  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, prizePool: $prizePool, type: $type, address: $address, bracketType: $bracketType, teamMode: $teamMode, description: $description, rules: $rules, startDate: $startDate, status: $status, participants: $participants, prizes: $prizes)';
+  return 'TournamentModel(id: $id, title: $title, imageUrl: $imageUrl, discipline: $discipline, isOnline: $isOnline, address: $address, bracketType: $bracketType, teamMode: $teamMode, description: $description, rules: $rules, startDate: $startDate, status: $status, participants: $participants, prizes: $prizes)';
 }
 
 
@@ -290,7 +288,7 @@ abstract mixin class _$TournamentModelCopyWith<$Res> implements $TournamentModel
   factory _$TournamentModelCopyWith(_TournamentModel value, $Res Function(_TournamentModel) _then) = __$TournamentModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String imageUrl,@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline discipline, String? prizePool, String type, String? address,@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType bracketType,@JsonKey(unknownEnumValue: TeamMode.team5v5) TeamMode teamMode, String description, String rules, DateTime startDate,@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus status, ParticipantsInfo participants, List<PrizeItem> prizes
+ String id, String title, String imageUrl,@JsonKey(unknownEnumValue: Discipline.DOTA2) Discipline discipline, bool isOnline, String? address,@JsonKey(unknownEnumValue: BracketType.SINGLE_ELIMINATION) BracketType bracketType,@JsonKey(unknownEnumValue: TeamMode.team5v5) TeamMode teamMode, String description, String rules, DateTime startDate,@JsonKey(unknownEnumValue: TournamentStatus.ANNOUNCED) TournamentStatus status, ParticipantsInfo participants, List<PrizeItem> prizes
 });
 
 
@@ -307,15 +305,14 @@ class __$TournamentModelCopyWithImpl<$Res>
 
 /// Create a copy of TournamentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? prizePool = freezed,Object? type = null,Object? address = freezed,Object? bracketType = null,Object? teamMode = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? participants = null,Object? prizes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? imageUrl = null,Object? discipline = null,Object? isOnline = null,Object? address = freezed,Object? bracketType = null,Object? teamMode = null,Object? description = null,Object? rules = null,Object? startDate = null,Object? status = null,Object? participants = null,Object? prizes = null,}) {
   return _then(_TournamentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String,discipline: null == discipline ? _self.discipline : discipline // ignore: cast_nullable_to_non_nullable
-as Discipline,prizePool: freezed == prizePool ? _self.prizePool : prizePool // ignore: cast_nullable_to_non_nullable
-as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as Discipline,isOnline: null == isOnline ? _self.isOnline : isOnline // ignore: cast_nullable_to_non_nullable
+as bool,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,bracketType: null == bracketType ? _self.bracketType : bracketType // ignore: cast_nullable_to_non_nullable
 as BracketType,teamMode: null == teamMode ? _self.teamMode : teamMode // ignore: cast_nullable_to_non_nullable
 as TeamMode,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
