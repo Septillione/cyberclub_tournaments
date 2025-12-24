@@ -15,6 +15,7 @@ class TournamentDetailBloc
     : _tournamentRepository = tournamentRepository,
       super(TournamentDetailLoading()) {
     on<TournamentDetailStarted>(_onStarted);
+    on<TournamentRegisterRequested>(_onRegisterRequested);
   }
 
   Future<void> _onStarted(
@@ -32,6 +33,27 @@ class TournamentDetailBloc
       } else {
         emit(TournamentDetailError(errorMessage: 'Турнир не найден'));
       }
+    } catch (e) {
+      emit(TournamentDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onRegisterRequested(
+    TournamentRegisterRequested event,
+    Emitter<TournamentDetailState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! TournamentDetailLoaded) return;
+
+    try {
+      emit(TournamentDetailLoading());
+
+      await _tournamentRepository.joinTournament(
+        currentState.tournament.id,
+        teamId: event.teamId,
+      );
+
+      add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
     } catch (e) {
       emit(TournamentDetailError(errorMessage: e.toString()));
     }

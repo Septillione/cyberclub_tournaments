@@ -44,3 +44,16 @@ abstract class TeamUserShort with _$TeamUserShort {
   factory TeamUserShort.fromJson(Map<String, dynamic> json) =>
       _$TeamUserShortFromJson(json);
 }
+
+@freezed
+abstract class TeamShortInfo with _$TeamShortInfo {
+  const factory TeamShortInfo({
+    required String id,
+    required String name,
+    required String tag,
+    String? avatarUrl,
+  }) = _TeamShortInfo;
+
+  factory TeamShortInfo.fromJson(Map<String, dynamic> json) =>
+      _$TeamShortInfoFromJson(json);
+}

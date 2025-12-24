@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tournament_model.freezed.dart';
@@ -71,7 +72,25 @@ enum TournamentStatus {
   CANCELLED,
 }
 
-enum BracketType { SINGLE_ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN, SWISS }
+enum BracketType {
+  SINGLE_ELIMINATION,
+  DOUBLE_ELIMINATION,
+  ROUND_ROBIN,
+  SWISS;
+
+  String get title {
+    switch (this) {
+      case BracketType.SINGLE_ELIMINATION:
+        return 'Single elimination';
+      case BracketType.DOUBLE_ELIMINATION:
+        return 'Double elimination';
+      case BracketType.ROUND_ROBIN:
+        return 'Round robin';
+      case BracketType.SWISS:
+        return 'Swiss';
+    }
+  }
+}
 
 enum TeamMode {
   @JsonValue('SOLO_1V1')
@@ -82,6 +101,19 @@ enum TeamMode {
   team5v5,
   @JsonValue('SQUAD')
   squad;
+
+  String get title {
+    switch (this) {
+      case TeamMode.solo:
+        return 'Solo 1v1';
+      case TeamMode.duo:
+        return 'Duo 2v2';
+      case TeamMode.team5v5:
+        return 'Team 5v5';
+      case TeamMode.squad:
+        return 'Squad';
+    }
+  }
 
   String toJson() {
     switch (this) {
@@ -124,6 +156,8 @@ abstract class TournamentModel with _$TournamentModel {
     required ParticipantsInfo participants,
 
     @Default([]) List<PrizeItem> prizes,
+
+    @Default([]) List<TournamentEntryItem> entries,
   }) = _TournamentModel;
 
   factory TournamentModel.fromJson(Map<String, dynamic> json) =>
@@ -146,4 +180,18 @@ abstract class PrizeItem with _$PrizeItem {
 
   factory PrizeItem.fromJson(Map<String, dynamic> json) =>
       _$PrizeItemFromJson(json);
+}
+
+@freezed
+abstract class TournamentEntryItem with _$TournamentEntryItem {
+  const factory TournamentEntryItem({
+    required String id,
+    required String userId,
+    String? teamId,
+    required TeamUserShort user,
+    TeamShortInfo? team,
+  }) = _TournamentEntryItem;
+
+  factory TournamentEntryItem.fromJson(Map<String, dynamic> json) =>
+      _$TournamentEntryItemFromJson(json);
 }

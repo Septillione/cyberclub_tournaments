@@ -27,14 +27,20 @@ class TournamentCard extends StatelessWidget {
   }
 
   Widget _buildImage() {
+    final imageUrl = tournament.imageUrl;
+    ImageProvider imageProvider;
+
+    if (imageUrl.startsWith('http')) {
+      imageProvider = NetworkImage(imageUrl);
+    } else {
+      imageProvider = AssetImage(imageUrl);
+    }
+
     return AspectRatio(
       aspectRatio: 2 / 1,
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(tournament.imageUrl),
-            fit: BoxFit.cover,
-          ),
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
         ),
         child: Container(
           decoration: BoxDecoration(

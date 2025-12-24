@@ -868,4 +868,276 @@ as String?,
 
 }
 
+
+/// @nodoc
+mixin _$TeamShortInfo {
+
+ String get id; String get name; String get tag; String? get avatarUrl;
+/// Create a copy of TeamShortInfo
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TeamShortInfoCopyWith<TeamShortInfo> get copyWith => _$TeamShortInfoCopyWithImpl<TeamShortInfo>(this as TeamShortInfo, _$identity);
+
+  /// Serializes this TeamShortInfo to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamShortInfo&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl);
+
+@override
+String toString() {
+  return 'TeamShortInfo(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $TeamShortInfoCopyWith<$Res>  {
+  factory $TeamShortInfoCopyWith(TeamShortInfo value, $Res Function(TeamShortInfo) _then) = _$TeamShortInfoCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name, String tag, String? avatarUrl
+});
+
+
+
+
+}
+/// @nodoc
+class _$TeamShortInfoCopyWithImpl<$Res>
+    implements $TeamShortInfoCopyWith<$Res> {
+  _$TeamShortInfoCopyWithImpl(this._self, this._then);
+
+  final TeamShortInfo _self;
+  final $Res Function(TeamShortInfo) _then;
+
+/// Create a copy of TeamShortInfo
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,tag: null == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [TeamShortInfo].
+extension TeamShortInfoPatterns on TeamShortInfo {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TeamShortInfo value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _TeamShortInfo() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TeamShortInfo value)  $default,){
+final _that = this;
+switch (_that) {
+case _TeamShortInfo():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TeamShortInfo value)?  $default,){
+final _that = this;
+switch (_that) {
+case _TeamShortInfo() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _TeamShortInfo() when $default != null:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl)  $default,) {final _that = this;
+switch (_that) {
+case _TeamShortInfo():
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl)?  $default,) {final _that = this;
+switch (_that) {
+case _TeamShortInfo() when $default != null:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _TeamShortInfo implements TeamShortInfo {
+  const _TeamShortInfo({required this.id, required this.name, required this.tag, this.avatarUrl});
+  factory _TeamShortInfo.fromJson(Map<String, dynamic> json) => _$TeamShortInfoFromJson(json);
+
+@override final  String id;
+@override final  String name;
+@override final  String tag;
+@override final  String? avatarUrl;
+
+/// Create a copy of TeamShortInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TeamShortInfoCopyWith<_TeamShortInfo> get copyWith => __$TeamShortInfoCopyWithImpl<_TeamShortInfo>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$TeamShortInfoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamShortInfo&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl);
+
+@override
+String toString() {
+  return 'TeamShortInfo(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$TeamShortInfoCopyWith<$Res> implements $TeamShortInfoCopyWith<$Res> {
+  factory _$TeamShortInfoCopyWith(_TeamShortInfo value, $Res Function(_TeamShortInfo) _then) = __$TeamShortInfoCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name, String tag, String? avatarUrl
+});
+
+
+
+
+}
+/// @nodoc
+class __$TeamShortInfoCopyWithImpl<$Res>
+    implements _$TeamShortInfoCopyWith<$Res> {
+  __$TeamShortInfoCopyWithImpl(this._self, this._then);
+
+  final _TeamShortInfo _self;
+  final $Res Function(_TeamShortInfo) _then;
+
+/// Create a copy of TeamShortInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,}) {
+  return _then(_TeamShortInfo(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,tag: null == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
 // dart format on

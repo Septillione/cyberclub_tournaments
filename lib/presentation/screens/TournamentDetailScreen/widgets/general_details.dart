@@ -22,7 +22,7 @@ class GeneralDetails extends StatelessWidget {
         '${tournament.participants.current}/${tournament.participants.max}';
 
     final tournamentFormat =
-        '${tournament.teamMode}\n${tournament.bracketType}';
+        '${tournament.teamMode.title}\n${tournament.bracketType.title}';
 
     final List<Widget> infoItemsGrid = [
       TournamentInfoItem(
@@ -61,6 +61,7 @@ class GeneralDetails extends StatelessWidget {
     ];
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildInfoGrid(infoItemsGrid),
         const SizedBox(height: 32),

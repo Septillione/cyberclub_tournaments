@@ -16,3 +16,12 @@ class TournamentDetailStarted extends TournamentDetailEvent {
   @override
   List<Object> get props => [tournamentId];
 }
+
+class TournamentRegisterRequested extends TournamentDetailEvent {
+  final String? teamId;
+
+  const TournamentRegisterRequested({this.teamId});
+
+  @override
+  List<Object> get props => [?teamId];
+}

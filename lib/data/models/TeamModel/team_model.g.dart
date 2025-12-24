@@ -64,3 +64,19 @@ Map<String, dynamic> _$TeamUserShortToJson(_TeamUserShort instance) =>
       'nickname': instance.nickname,
       'avatarUrl': instance.avatarUrl,
     };
+
+_TeamShortInfo _$TeamShortInfoFromJson(Map<String, dynamic> json) =>
+    _TeamShortInfo(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      tag: json['tag'] as String,
+      avatarUrl: json['avatarUrl'] as String?,
+    );
+
+Map<String, dynamic> _$TeamShortInfoToJson(_TeamShortInfo instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'tag': instance.tag,
+      'avatarUrl': instance.avatarUrl,
+    };

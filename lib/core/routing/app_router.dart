@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/login_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
@@ -11,6 +12,7 @@ import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile
 import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/team_search_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/tournament_detail_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/tournaments_feed_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/user_teams_screen.dart';
@@ -67,7 +69,13 @@ class AppRouter {
                 parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   final tournamentId = state.pathParameters['tournamentId']!;
-                  return TournamentDetailScreen(tournamentId: tournamentId);
+                  return BlocProvider(
+                    create: (context) => TournamentDetailBloc(
+                      tournamentRepository: context
+                          .read<TournamentRepository>(),
+                    )..add(TournamentDetailStarted(tournamentId: tournamentId)),
+                    child: TournamentDetailScreen(tournamentId: tournamentId),
+                  );
                 },
               ),
             ],

@@ -102,4 +102,11 @@ class TournamentRepository {
       return [];
     }
   }
+
+  Future<void> joinTournament(String tournamentId, {String? teamId}) async {
+    await _apiClient.dio.post(
+      '/tournaments/$tournamentId/join',
+      data: {if (teamId != null) 'teamId': teamId},
+    );
+  }
 }

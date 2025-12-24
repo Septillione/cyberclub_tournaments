@@ -1,7 +1,8 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
-import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/general_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/participants_details.dart';
@@ -24,69 +25,81 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TournamentDetailBloc(
-        tournamentRepository: context.read<TournamentRepository>(),
-      )..add(TournamentDetailStarted(tournamentId: widget.tournamentId)),
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        body: BlocBuilder<TournamentDetailBloc, TournamentDetailState>(
-          builder: (context, state) {
-            switch (state) {
-              case TournamentDetailLoading():
-                return const Center(child: CircularProgressIndicator());
-              case TournamentDetailError():
-                return const Center(child: Text('Error'));
-              case TournamentDetailLoaded():
-                final tournament = state.tournament;
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeaderImage(tournament),
-                      SafeArea(
-                        top: false,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                            left: 16.0,
-                            right: 16.0,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SegmentedButtonDetails(
-                                segments: const ['Общее', 'Участники', 'Сетка'],
-                                initialIndex: _selectedSegmentIndex,
-                                onSegmentTapped: (index) {
-                                  setState(() {
-                                    _selectedSegmentIndex = index;
-                                  });
-                                },
-                              ),
-                              SizedBox(height: 24),
-                              _buildSegmentContent(tournament),
-                            ],
-                          ),
+    return BlocBuilder<TournamentDetailBloc, TournamentDetailState>(
+      builder: (context, state) {
+        switch (state) {
+          case TournamentDetailLoading():
+            return const Center(child: CircularProgressIndicator());
+          case TournamentDetailError():
+            return const Center(child: Text('Error'));
+          case TournamentDetailLoaded():
+            final tournament = state.tournament;
+            return Scaffold(
+              floatingActionButton: _buildRegisterButton(tournament),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              extendBodyBehindAppBar: true,
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeaderImage(tournament),
+                    SafeArea(
+                      top: false,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8.0,
+                          left: 16.0,
+                          right: 16.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SegmentedButtonDetails(
+                              segments: const ['Общее', 'Участники', 'Сетка'],
+                              initialIndex: _selectedSegmentIndex,
+                              onSegmentTapped: (index) {
+                                setState(() {
+                                  _selectedSegmentIndex = index;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 24),
+                            _buildSegmentContent(tournament),
+                            SizedBox(height: 64),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                );
-            }
-          },
-        ),
-      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+        }
+      },
     );
   }
 
   Widget _buildHeaderImage(TournamentModel tournament) {
+    final imageUrl = tournament.imageUrl;
+    ImageProvider imageProvider;
+
+    if (imageUrl.startsWith('http')) {
+      imageProvider = NetworkImage(imageUrl);
+    } else {
+      imageProvider = AssetImage(imageUrl);
+    }
+
     return AspectRatio(
       aspectRatio: 1.4 / 1,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.network(tournament.imageUrl, fit: BoxFit.cover),
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          ),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -143,5 +156,140 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
     ];
 
     return segmentContents[_selectedSegmentIndex];
+  }
+
+  Widget _buildRegisterButton(TournamentModel tournament) {
+    switch (tournament.status) {
+      case TournamentStatus.REGISTRATION_OPEN:
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ElevatedButton(
+            onPressed: () => _showJoinDialog(tournament),
+            child: const Text('Зарегистрироваться'),
+          ),
+        );
+      case TournamentStatus.REGISTRATION_CLOSED:
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: const Text('Регистрация закрыта'),
+          ),
+        );
+      case TournamentStatus.ANNOUNCED:
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: const Text('Анонсирован'),
+          ),
+        );
+      case TournamentStatus.LIVE:
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ElevatedButton(onPressed: null, child: const Text('Live')),
+        );
+      case TournamentStatus.FINISHED:
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ElevatedButton(onPressed: null, child: const Text('Завершён')),
+        );
+      case TournamentStatus.CANCELLED:
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          child: ElevatedButton(onPressed: null, child: const Text('Отменён')),
+        );
+    }
+  }
+
+  void _showJoinDialog(TournamentModel tournament) {
+    if (tournament.teamMode == TeamMode.solo) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: AppColors.bgSurface,
+          title: const Text('Участие'),
+          content: const Text('Зарегистрироваться на турнир?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Отмена'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.read<TournamentDetailBloc>().add(
+                  TournamentRegisterRequested(),
+                );
+                Navigator.pop(context);
+              },
+              child: const Text('Да, участвую'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return AlertDialog(
+            backgroundColor: AppColors.bgSurface,
+            title: const Text('Выберите команду'),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: FutureBuilder<List<TeamModel>>(
+                future: context.read<TeamRepository>().fetchUserTeams(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const LinearProgressIndicator();
+                  }
+                  if (snapshot.hasError) {
+                    return const Text('Ошибка загрузки команд');
+                  }
+
+                  final teams = snapshot.data ?? [];
+
+                  if (teams.isEmpty) {
+                    return const Text(
+                      'У вас нет команд. Создайте или вступите в новую команду.',
+                    );
+                  }
+
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (_, __) => Divider(),
+                    itemCount: teams.length,
+                    itemBuilder: (context, index) {
+                      final team = teams[index];
+
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: team.avatarUrl != null
+                              ? NetworkImage(team.avatarUrl!)
+                              : null,
+                        ),
+                        title: Text(team.name, style: AppTextStyles.bodyL),
+                        subtitle: Text(team.tag, style: AppTextStyles.caption),
+                        onTap: () {
+                          this.context.read<TournamentDetailBloc>().add(
+                            TournamentRegisterRequested(teamId: team.id),
+                          );
+                          Navigator.pop(dialogContext);
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Отмена'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }

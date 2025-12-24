@@ -56,13 +56,12 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _rulesController = TextEditingController();
-  final _prizePoolController = TextEditingController();
 
   String _selectedImageUrl = '';
   bool _isOnline = true;
   final _addressController = TextEditingController();
 
-  List<PrizeInput> _prizes = [
+  final List<PrizeInput> _prizes = [
     PrizeInput(label: '1 место', amount: ''),
     PrizeInput(label: '2 место', amount: ''),
     PrizeInput(label: '3 место', amount: ''),

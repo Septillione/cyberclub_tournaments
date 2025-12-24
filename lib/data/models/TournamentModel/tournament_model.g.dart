@@ -44,6 +44,13 @@ _TournamentModel _$TournamentModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => PrizeItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      entries:
+          (json['entries'] as List<dynamic>?)
+              ?.map(
+                (e) => TournamentEntryItem.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$TournamentModelToJson(_TournamentModel instance) =>
@@ -62,6 +69,7 @@ Map<String, dynamic> _$TournamentModelToJson(_TournamentModel instance) =>
       'status': _$TournamentStatusEnumMap[instance.status]!,
       'participants': instance.participants,
       'prizes': instance.prizes,
+      'entries': instance.entries,
     };
 
 const _$DisciplineEnumMap = {
@@ -123,3 +131,24 @@ _PrizeItem _$PrizeItemFromJson(Map<String, dynamic> json) => _PrizeItem(
 
 Map<String, dynamic> _$PrizeItemToJson(_PrizeItem instance) =>
     <String, dynamic>{'label': instance.label, 'amount': instance.amount};
+
+_TournamentEntryItem _$TournamentEntryItemFromJson(Map<String, dynamic> json) =>
+    _TournamentEntryItem(
+      id: json['id'] as String,
+      userId: json['userId'] as String,
+      teamId: json['teamId'] as String?,
+      user: TeamUserShort.fromJson(json['user'] as Map<String, dynamic>),
+      team: json['team'] == null
+          ? null
+          : TeamShortInfo.fromJson(json['team'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$TournamentEntryItemToJson(
+  _TournamentEntryItem instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'userId': instance.userId,
+  'teamId': instance.teamId,
+  'user': instance.user,
+  'team': instance.team,
+};
