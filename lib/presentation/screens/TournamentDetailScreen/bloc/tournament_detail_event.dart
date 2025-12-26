@@ -25,3 +25,5 @@ class TournamentRegisterRequested extends TournamentDetailEvent {
   @override
   List<Object> get props => [?teamId];
 }
+
+class TournamentStartRequested extends TournamentDetailEvent {}

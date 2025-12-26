@@ -4,6 +4,7 @@ import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/bracket_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/general_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/participants_details.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
@@ -31,11 +32,17 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
           case TournamentDetailLoading():
             return const Center(child: CircularProgressIndicator());
           case TournamentDetailError():
-            return const Center(child: Text('Error'));
+            final error = state.errorMessage;
+            return Center(child: Text(error));
+
           case TournamentDetailLoaded():
             final tournament = state.tournament;
+            final currentUserId = state.currentUserId;
             return Scaffold(
-              floatingActionButton: _buildRegisterButton(tournament),
+              floatingActionButton: _buildRegisterButton(
+                tournament,
+                currentUserId,
+              ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               extendBodyBehindAppBar: true,
@@ -152,22 +159,79 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
     final List<Widget> segmentContents = [
       GeneralDetails(tournament: tournament),
       ParticipantsDetails(tournament: tournament),
-      const Center(child: Text('Grid')),
+      BracketDetails(),
     ];
 
     return segmentContents[_selectedSegmentIndex];
   }
 
-  Widget _buildRegisterButton(TournamentModel tournament) {
+  Widget _buildRegisterButton(
+    TournamentModel tournament,
+    String currentUserId,
+  ) {
+    final bool isCreator = tournament.creatorId == currentUserId;
+
+    // if (isCreator && tournament.status == TournamentStatus.REGISTRATION_OPEN) {
+    //   return Container(
+    //     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+    //     child: Row(
+    //       children: [
+    //         ElevatedButton(
+    //           style: ElevatedButton.styleFrom(
+    //             backgroundColor: AppColors.statusLive,
+    //           ),
+    //           onPressed: () => context.read<TournamentDetailBloc>().add(
+    //             TournamentStartRequested(),
+    //           ),
+    //           child: const Text('ЗАПУСТИТЬ ТУРНИР'),
+    //         ),
+    //         SizedBox(width: 16),
+    //         ElevatedButton(
+    //           onPressed: () => _showJoinDialog(tournament),
+    //           child: const Text('Зарегистрироваться'),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
+
     switch (tournament.status) {
       case TournamentStatus.REGISTRATION_OPEN:
-        return Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: ElevatedButton(
-            onPressed: () => _showJoinDialog(tournament),
-            child: const Text('Зарегистрироваться'),
-          ),
-        );
+        if (isCreator) {
+          return Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.statusLive,
+                  ),
+                  onPressed: () => context.read<TournamentDetailBloc>().add(
+                    TournamentStartRequested(),
+                  ),
+                  child: const Text('ЗАПУСТИТЬ ТУРНИР'),
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () => _showJoinDialog(tournament),
+                  child: const Text('Зарегистрироваться'),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Container(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              bottom: 16.0,
+            ),
+            child: ElevatedButton(
+              onPressed: () => _showJoinDialog(tournament),
+              child: const Text('Зарегистрироваться'),
+            ),
+          );
+        }
       case TournamentStatus.REGISTRATION_CLOSED:
         return Container(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),

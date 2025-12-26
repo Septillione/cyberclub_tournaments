@@ -73,6 +73,7 @@ class AppRouter {
                     create: (context) => TournamentDetailBloc(
                       tournamentRepository: context
                           .read<TournamentRepository>(),
+                      authRepository: context.read<AuthRepository>(),
                     )..add(TournamentDetailStarted(tournamentId: tournamentId)),
                     child: TournamentDetailScreen(tournamentId: tournamentId),
                   );

@@ -11,11 +11,17 @@ final class TournamentDetailLoading extends TournamentDetailState {}
 
 final class TournamentDetailLoaded extends TournamentDetailState {
   final TournamentModel tournament;
+  final List<Tournament> bracketRounds;
+  final String currentUserId;
 
-  const TournamentDetailLoaded({required this.tournament});
+  const TournamentDetailLoaded({
+    required this.tournament,
+    this.bracketRounds = const [],
+    required this.currentUserId,
+  });
 
   @override
-  List<Object> get props => [tournament];
+  List<Object> get props => [tournament, bracketRounds, currentUserId];
 }
 
 final class TournamentDetailError extends TournamentDetailState {

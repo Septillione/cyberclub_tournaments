@@ -158,6 +158,10 @@ abstract class TournamentModel with _$TournamentModel {
     @Default([]) List<PrizeItem> prizes,
 
     @Default([]) List<TournamentEntryItem> entries,
+
+    @Default([]) List<MatchModel> matches,
+
+    String? creatorId,
   }) = _TournamentModel;
 
   factory TournamentModel.fromJson(Map<String, dynamic> json) =>
@@ -194,4 +198,20 @@ abstract class TournamentEntryItem with _$TournamentEntryItem {
 
   factory TournamentEntryItem.fromJson(Map<String, dynamic> json) =>
       _$TournamentEntryItemFromJson(json);
+}
+
+@freezed
+abstract class MatchModel with _$MatchModel {
+  const factory MatchModel({
+    required String id,
+    required int round,
+    required int position,
+    String? participant1,
+    String? participant2,
+    @Default(0) int score1,
+    @Default(0) int score2,
+  }) = _MatchModel;
+
+  factory MatchModel.fromJson(Map<String, dynamic> json) =>
+      _$MatchModelFromJson(json);
 }

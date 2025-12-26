@@ -51,6 +51,12 @@ _TournamentModel _$TournamentModelFromJson(Map<String, dynamic> json) =>
               )
               .toList() ??
           const [],
+      matches:
+          (json['matches'] as List<dynamic>?)
+              ?.map((e) => MatchModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      creatorId: json['creatorId'] as String?,
     );
 
 Map<String, dynamic> _$TournamentModelToJson(_TournamentModel instance) =>
@@ -70,6 +76,8 @@ Map<String, dynamic> _$TournamentModelToJson(_TournamentModel instance) =>
       'participants': instance.participants,
       'prizes': instance.prizes,
       'entries': instance.entries,
+      'matches': instance.matches,
+      'creatorId': instance.creatorId,
     };
 
 const _$DisciplineEnumMap = {
@@ -152,3 +160,24 @@ Map<String, dynamic> _$TournamentEntryItemToJson(
   'user': instance.user,
   'team': instance.team,
 };
+
+_MatchModel _$MatchModelFromJson(Map<String, dynamic> json) => _MatchModel(
+  id: json['id'] as String,
+  round: (json['round'] as num).toInt(),
+  position: (json['position'] as num).toInt(),
+  participant1: json['participant1'] as String?,
+  participant2: json['participant2'] as String?,
+  score1: (json['score1'] as num?)?.toInt() ?? 0,
+  score2: (json['score2'] as num?)?.toInt() ?? 0,
+);
+
+Map<String, dynamic> _$MatchModelToJson(_MatchModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'round': instance.round,
+      'position': instance.position,
+      'participant1': instance.participant1,
+      'participant2': instance.participant2,
+      'score1': instance.score1,
+      'score2': instance.score2,
+    };

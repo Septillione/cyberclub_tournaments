@@ -109,4 +109,8 @@ class TournamentRepository {
       data: {if (teamId != null) 'teamId': teamId},
     );
   }
+
+  Future<void> startTournament(String tournamentId) async {
+    await _apiClient.dio.post('/tournaments/$tournamentId/start');
+  }
 }

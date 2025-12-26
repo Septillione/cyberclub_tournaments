@@ -2,7 +2,8 @@ import 'package:cyberclub_tournaments/data/services/token_storage.dart';
 import 'package:dio/dio.dart';
 
 class ApiClient {
-  static const String _baseUrl = 'https://cctournaments.ccmanager.ru/api/v1';
+  // static const String _baseUrl = 'https://cctournaments.ccmanager.ru/api/v1';
+  static const String _baseUrl = 'http://10.0.2.2:3000/api/v1';
 
   final Dio _dio;
   final TokenStorage _tokenStorage;
