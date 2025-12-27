@@ -38,7 +38,11 @@ class TournamentDetailBloc
       final currentUserId = await _authRepository.getUserId();
 
       if (tournament != null) {
+        print(
+          "DEBUG: Загружено матчей с сервера: ${tournament.matches.length}",
+        );
         final rounds = _mapBracketMatchesToUI(tournament.matches);
+        print("DEBUG: Сформировано раундов для сетки: ${rounds.length}");
         emit(
           TournamentDetailLoaded(
             tournament: tournament,
@@ -78,14 +82,12 @@ class TournamentDetailBloc
   List<Tournament> _mapBracketMatchesToUI(List<MatchModel> backendMatches) {
     if (backendMatches.isEmpty) return [];
 
-    // backendMatches.sort((a, b) => a.round.compareTo(b.round));
-
-    final sortedMathces = List<MatchModel>.from(backendMatches);
-    sortedMathces.sort((a, b) => a.round.compareTo(b.round));
+    final matchesCopy = List<MatchModel>.from(backendMatches);
+    matchesCopy.sort((a, b) => a.round.compareTo(b.round));
 
     final Map<int, List<MatchModel>> groupedByRound = {};
 
-    for (var m in sortedMathces) {
+    for (var m in matchesCopy) {
       if (!groupedByRound.containsKey(m.round)) {
         groupedByRound[m.round] = [];
       }
@@ -93,21 +95,18 @@ class TournamentDetailBloc
     }
 
     final List<Tournament> rounds = [];
-
     final roundNumbers = groupedByRound.keys.toList()..sort();
 
     for (var r in roundNumbers) {
-      // final matchesInRound = groupedByRound[r]!;
-      // matchesInRound.sort((a, b) => a.position.compareTo(b.position));
+      final matchesInRound = List<MatchModel>.from(groupedByRound[r]!);
 
-      final matchesInRound = groupedByRound[r]!.toList();
       matchesInRound.sort((a, b) => a.position.compareTo(b.position));
 
       final uiMatches = matchesInRound.map((m) {
         return TournamentMatch(
           id: m.id,
-          teamA: m.participant1 ?? 'TBD',
-          teamB: m.participant2 ?? 'TBD',
+          teamA: m.participant1 ?? "TBD",
+          teamB: m.participant2 ?? "TBD",
           scoreTeamA: m.score1.toString(),
           scoreTeamB: m.score2.toString(),
         );

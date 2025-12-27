@@ -46,23 +46,24 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               extendBodyBehindAppBar: true,
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildHeaderImage(tournament),
-                    SafeArea(
-                      top: false,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8.0,
-                          left: 16.0,
-                          right: 16.0,
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeaderImage(tournament),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.bgMain,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(20),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SegmentedButtonDetails(
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: SegmentedButtonDetails(
                               segments: const ['Общее', 'Участники', 'Сетка'],
                               initialIndex: _selectedSegmentIndex,
                               onSegmentTapped: (index) {
@@ -71,15 +72,42 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                                 });
                               },
                             ),
-                            SizedBox(height: 24),
-                            _buildSegmentContent(tournament),
-                            SizedBox(height: 64),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 24),
+                          Expanded(child: _buildSegmentContent(tournament)),
+                          SizedBox(height: 64),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  // SafeArea(
+                  //   top: false,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(
+                  //       top: 8.0,
+                  //       left: 16.0,
+                  //       right: 16.0,
+                  //     ),
+                  //     child: Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         SegmentedButtonDetails(
+                  //           segments: const ['Общее', 'Участники', 'Сетка'],
+                  //           initialIndex: _selectedSegmentIndex,
+                  //           onSegmentTapped: (index) {
+                  //             setState(() {
+                  //               _selectedSegmentIndex = index;
+                  //             });
+                  //           },
+                  //         ),
+                  //         SizedBox(height: 24),
+                  //         _buildSegmentContent(tournament),
+                  //         SizedBox(height: 64),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
             );
         }
@@ -156,13 +184,29 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   }
 
   Widget _buildSegmentContent(TournamentModel tournament) {
-    final List<Widget> segmentContents = [
-      GeneralDetails(tournament: tournament),
-      ParticipantsDetails(tournament: tournament),
-      BracketDetails(),
-    ];
+    switch (_selectedSegmentIndex) {
+      case 0:
+        return SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
+          child: GeneralDetails(tournament: tournament),
+        );
+      case 1:
+        return SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
+          child: ParticipantsDetails(tournament: tournament),
+        );
+      case 2:
+        return const BracketDetails();
+      default:
+        return const SizedBox.shrink();
+    }
+    // final List<Widget> segmentContents = [
+    //   GeneralDetails(tournament: tournament),
+    //   ParticipantsDetails(tournament: tournament),
+    //   BracketDetails(),
+    // ];
 
-    return segmentContents[_selectedSegmentIndex];
+    // return segmentContents[_selectedSegmentIndex];
   }
 
   Widget _buildRegisterButton(
