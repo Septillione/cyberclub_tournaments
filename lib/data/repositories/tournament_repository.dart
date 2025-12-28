@@ -113,4 +113,11 @@ class TournamentRepository {
   Future<void> startTournament(String tournamentId) async {
     await _apiClient.dio.post('/tournaments/$tournamentId/start');
   }
+
+  Future<void> updateMatchScore(String matchId, int score1, int score2) async {
+    await _apiClient.dio.post(
+      '/tournaments/matches/$matchId',
+      data: {'score1': score1, 'score2': score2},
+    );
+  }
 }

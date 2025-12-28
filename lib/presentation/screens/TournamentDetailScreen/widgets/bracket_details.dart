@@ -24,6 +24,7 @@ class BracketDetails extends StatelessWidget {
         }
 
         final rounds = state.bracketRounds;
+        final isCreator = state.currentUserId == state.tournament.creatorId;
 
         if (rounds.isEmpty) {
           return Center(
@@ -86,7 +87,8 @@ class BracketDetails extends StatelessWidget {
                     lineColor: AppColors.accentPrimary,
                     cardWidth: cardWidth,
                     cardHeight: cardHeight,
-                    card: (TournamentMatch item) => _buildMatchCard(item),
+                    card: (TournamentMatch item) =>
+                        _buildMatchCard(item, context, isCreator),
                   ),
                 ),
               ),
@@ -97,20 +99,37 @@ class BracketDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildMatchCard(TournamentMatch match) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.bgSurface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.bgMain, width: 1),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildTeamRow(match.teamA, match.scoreTeamA),
-          const Divider(height: 15, thickness: 1, color: AppColors.bgMain),
-          _buildTeamRow(match.teamB, match.scoreTeamB),
-        ],
+  Widget _buildMatchCard(
+    TournamentMatch match,
+    BuildContext context,
+    bool isCreator,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        if (!isCreator) return;
+        if (match.teamA == 'TBD' || match.teamB == 'TBD') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Участники еще не определены")),
+          );
+          return;
+        }
+        _showScoreDialog(context, match);
+      },
+
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.bgSurface,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.bgMain, width: 1),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTeamRow(match.teamA, match.scoreTeamA),
+            const Divider(height: 15, thickness: 1, color: AppColors.bgMain),
+            _buildTeamRow(match.teamB, match.scoreTeamB),
+          ],
+        ),
       ),
     );
   }
@@ -153,6 +172,63 @@ class BracketDetails extends StatelessWidget {
                 ),
               ),
             ),
+        ],
+      ),
+    );
+  }
+
+  void _showScoreDialog(BuildContext context, TournamentMatch match) {
+    final s1Controller = TextEditingController(text: match.scoreTeamA);
+    final s2Controller = TextEditingController(text: match.scoreTeamB);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Счет матча"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("${match.teamA} vs ${match.teamB}"),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: s1Controller,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextField(
+                    controller: s2Controller,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("Отмена"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Отправляем Event
+              // Важно: нужен context, который имеет доступ к BLoC.
+              // Если диалог не видит BLoC, передай context снаружи или используй BlocProvider.value
+              context.read<TournamentDetailBloc>().add(
+                MatchScoreUpdated(
+                  matchId: match.id,
+                  score1: int.parse(s1Controller.text),
+                  score2: int.parse(s2Controller.text),
+                ),
+              );
+              Navigator.pop(ctx);
+            },
+            child: const Text("Сохранить"),
+          ),
         ],
       ),
     );

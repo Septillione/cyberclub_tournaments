@@ -23,6 +23,7 @@ class TournamentDetailBloc
     on<TournamentDetailStarted>(_onStarted);
     on<TournamentRegisterRequested>(_onRegisterRequested);
     on<TournamentStartRequested>(_onStartRequested);
+    on<MatchScoreUpdated>(_onScoreUpdated);
   }
 
   Future<void> _onStarted(
@@ -127,6 +128,25 @@ class TournamentDetailBloc
 
     try {
       await _tournamentRepository.startTournament(currentState.tournament.id);
+      add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } catch (e) {
+      emit(TournamentDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onScoreUpdated(
+    MatchScoreUpdated event,
+    Emitter<TournamentDetailState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! TournamentDetailLoaded) return;
+
+    try {
+      await _tournamentRepository.updateMatchScore(
+        event.matchId,
+        event.score1,
+        event.score2,
+      );
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
     } catch (e) {
       emit(TournamentDetailError(errorMessage: e.toString()));
