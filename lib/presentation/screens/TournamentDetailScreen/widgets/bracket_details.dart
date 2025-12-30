@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,8 @@ class BracketDetails extends StatelessWidget {
 
         final rounds = state.bracketRounds;
         final isCreator = state.currentUserId == state.tournament.creatorId;
+        final isFinished = state.tournament.status == TournamentStatus.FINISHED;
+        final canEdit = isCreator && !isFinished;
 
         if (rounds.isEmpty) {
           return Center(
@@ -88,7 +91,7 @@ class BracketDetails extends StatelessWidget {
                     cardWidth: cardWidth,
                     cardHeight: cardHeight,
                     card: (TournamentMatch item) =>
-                        _buildMatchCard(item, context, isCreator),
+                        _buildMatchCard(item, context, canEdit),
                   ),
                 ),
               ),
@@ -102,11 +105,11 @@ class BracketDetails extends StatelessWidget {
   Widget _buildMatchCard(
     TournamentMatch match,
     BuildContext context,
-    bool isCreator,
+    bool canEdit,
   ) {
     return GestureDetector(
       onTap: () {
-        if (!isCreator) return;
+        if (!canEdit) return;
         if (match.teamA == 'TBD' || match.teamB == 'TBD') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Участники еще не определены")),

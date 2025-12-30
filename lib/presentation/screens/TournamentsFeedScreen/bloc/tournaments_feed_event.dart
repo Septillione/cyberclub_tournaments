@@ -10,13 +10,35 @@ abstract class TournamentsFeedEvent extends Equatable {
 
 class TournamentsFeedStarted extends TournamentsFeedEvent {}
 
-class TournamentsFeedFilterChanged extends TournamentsFeedEvent {
-  final Discipline? selectedDiscipline;
+// class TournamentsFeedFilterChanged extends TournamentsFeedEvent {
+//   final Discipline? selectedDiscipline;
 
-  const TournamentsFeedFilterChanged(this.selectedDiscipline);
+//   const TournamentsFeedFilterChanged(this.selectedDiscipline);
+
+//   @override
+//   List<Object> get props => [?selectedDiscipline];
+// }
+
+class TournamentsFeedRefreshed extends TournamentsFeedEvent {
+  final TournamentFilter newFilter;
+
+  const TournamentsFeedRefreshed(this.newFilter);
 
   @override
-  List<Object> get props => [?selectedDiscipline];
+  List<Object> get props => [newFilter];
 }
 
-class TournamentsFeedRefreshed extends TournamentsFeedEvent {}
+class TournamentFilterUpdated extends TournamentsFeedEvent {
+  final TournamentFilter newFilter;
+
+  const TournamentFilterUpdated(this.newFilter);
+}
+
+class TouranmentFeedSearchChanged extends TournamentsFeedEvent {
+  final String query;
+
+  const TouranmentFeedSearchChanged(this.query);
+
+  @override
+  List<Object> get props => [query];
+}

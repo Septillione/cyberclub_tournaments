@@ -1,14 +1,25 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
+import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/bloc/tournaments_feed_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/filter_bottom_sheet.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/filter_chip.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class TournamentsFeedScreen extends StatelessWidget {
+class TournamentsFeedScreen extends StatefulWidget {
   const TournamentsFeedScreen({super.key});
+
+  @override
+  State<TournamentsFeedScreen> createState() => _TournamentsFeedScreenState();
+}
+
+class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
+  bool _isSearchActive = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,30 +30,66 @@ class TournamentsFeedScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
           child: BlocBuilder<TournamentsFeedBloc, TournamentsFeedState>(
             builder: (context, state) {
-              switch (state) {
-                case TournamentsFeedLoading():
-                  return const Center(child: CircularProgressIndicator());
-                case TournamentsFeedError():
-                  return Center(
-                    child: Text(
-                      'Ошибка: ${state.errorMessage}',
-                      style: AppTextStyles.bodyL.copyWith(
-                        color: AppColors.statusError,
+              TournamentFilter currentFilter = const TournamentFilter();
+              if (state is TournamentsFeedLoaded) {
+                currentFilter = state.currentFilter;
+              }
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildHeader(context),
+                  SizedBox(height: 16),
+
+                  if (state is TournamentsFeedLoaded)
+                    _buildFilter(context, state)
+                  else
+                    const SizedBox(height: 32),
+
+                  const SizedBox(height: 24),
+
+                  if (state is TournamentsFeedLoading)
+                    const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else if (state is TournamentsFeedLoaded)
+                    _buildTournaments(context, state)
+                  else if (state is TournamentsFeedError)
+                    Center(
+                      child: Text(
+                        'Ошибка: ${state.errorMessage}',
+                        style: AppTextStyles.bodyL.copyWith(
+                          color: AppColors.statusError,
+                        ),
                       ),
                     ),
-                  );
-                case TournamentsFeedLoaded():
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildHeader(),
-                      SizedBox(height: 16),
-                      _buildFilter(context, state),
-                      SizedBox(height: 24),
-                      _buildTournaments(context, state),
-                    ],
-                  );
-              }
+                ],
+              );
+
+              // switch (state) {
+              //   case TournamentsFeedLoading():
+              //     return const Center(child: CircularProgressIndicator());
+              //   case TournamentsFeedError():
+              //     return Center(
+              //       child: Text(
+              //         'Ошибка: ${state.errorMessage}',
+              //         style: AppTextStyles.bodyL.copyWith(
+              //           color: AppColors.statusError,
+              //         ),
+              //       ),
+              //     );
+              //   case TournamentsFeedLoaded():
+              //     return Column(
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       children: [
+              //         _buildHeader(),
+              //         SizedBox(height: 16),
+              //         _buildFilter(context, state),
+              //         SizedBox(height: 24),
+              //         _buildTournaments(context, state),
+              //       ],
+              //     );
+              // }
             },
           ),
         ),
@@ -50,37 +97,84 @@ class TournamentsFeedScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('CyberClub', style: AppTextStyles.h2),
-        Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                print('Search is pressed!');
-              },
-              child: Icon(
-                LucideIcons.search,
-                size: 24,
-                color: AppColors.textSecondary,
+  Widget _buildHeader(BuildContext context) {
+    return SizedBox(
+      height: 48,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (_isSearchActive)
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Поиск турнира...',
+                  border: InputBorder.none,
+                  hintStyle: AppTextStyles.bodyL.copyWith(
+                    color: AppColors.textDisabled,
+                  ),
+                  contentPadding: EdgeInsets.zero,
+                ),
+                style: AppTextStyles.h3,
+                onChanged: (value) {
+                  context.read<TournamentsFeedBloc>().add(
+                    TouranmentFeedSearchChanged(value),
+                  );
+                },
               ),
-            ),
-            SizedBox(width: 16),
-            GestureDetector(
-              onTap: () {
-                print('Bell is pressed!');
-              },
-              child: Icon(
-                LucideIcons.bell,
-                size: 24,
-                color: AppColors.textSecondary,
+            )
+          else
+            Text('CyberClub', style: AppTextStyles.h2),
+          Row(
+            children: [
+              if (_isSearchActive)
+                GestureDetector(
+                  onTap: () {
+                    print('Search is pressed!');
+                    setState(() {
+                      _isSearchActive = false;
+                      _searchController.clear();
+                    });
+                    context.read<TournamentsFeedBloc>().add(
+                      const TouranmentFeedSearchChanged(''),
+                    );
+                  },
+                  child: Icon(
+                    LucideIcons.search,
+                    size: 24,
+                    color: AppColors.textSecondary,
+                  ),
+                )
+              else
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isSearchActive = true;
+                    });
+                  },
+                  child: Icon(
+                    LucideIcons.search,
+                    size: 24,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+
+              SizedBox(width: 16),
+              GestureDetector(
+                onTap: () {
+                  print('Bell is pressed!');
+                },
+                child: Icon(
+                  LucideIcons.bell,
+                  size: 24,
+                  color: AppColors.textSecondary,
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -91,12 +185,25 @@ class TournamentsFeedScreen extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              print('Filter is pressed!');
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (ctx) => FilterBottomSheet(
+                  currentFilter: state.currentFilter,
+                  onApply: (newFilter) {
+                    context.read<TournamentsFeedBloc>().add(
+                      TournamentFilterUpdated(newFilter),
+                    );
+                  },
+                ),
+              );
             },
             child: Icon(
               LucideIcons.slidersHorizontal,
               size: 32,
-              color: AppColors.textSecondary,
+              color: state.currentFilter.isEmpty
+                  ? AppColors.textSecondary
+                  : AppColors.accentPrimary,
             ),
           ),
           Expanded(
@@ -106,26 +213,32 @@ class TournamentsFeedScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
+                    final newFilter = state.currentFilter.copyWith(
+                      clearDiscipline: true,
+                    );
                     context.read<TournamentsFeedBloc>().add(
-                      const TournamentsFeedFilterChanged(null),
+                      TournamentFilterUpdated(newFilter),
                     );
                   },
                   child: FilterChipWidget(
                     label: 'Все игры',
-                    isSelected: state.selectedDiscipline == null,
+                    isSelected: state.currentFilter.discipline == null,
                   ),
                 ),
 
-                ...state.disciplines.map((discipline) {
+                ...Discipline.values.map((discipline) {
                   return GestureDetector(
                     onTap: () {
+                      final newFilter = state.currentFilter.copyWith(
+                        discipline: discipline,
+                      );
                       context.read<TournamentsFeedBloc>().add(
-                        TournamentsFeedFilterChanged(discipline),
+                        TournamentFilterUpdated(newFilter),
                       );
                     },
                     child: FilterChipWidget(
                       label: discipline.title,
-                      isSelected: state.selectedDiscipline == discipline,
+                      isSelected: state.currentFilter.discipline == discipline,
                     ),
                   );
                 }),
@@ -138,7 +251,7 @@ class TournamentsFeedScreen extends StatelessWidget {
   }
 
   Widget _buildTournaments(BuildContext context, TournamentsFeedLoaded state) {
-    if (state.filteredTournaments.isEmpty) {
+    if (state.tournaments.isEmpty) {
       return Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,16 +274,19 @@ class TournamentsFeedScreen extends StatelessWidget {
     return Expanded(
       child: RefreshIndicator(
         onRefresh: () async {
-          context.read<TournamentsFeedBloc>().add(TournamentsFeedRefreshed());
+          final newFilter = state.currentFilter;
+          context.read<TournamentsFeedBloc>().add(
+            TournamentsFeedRefreshed(newFilter),
+          );
           await Future.delayed(const Duration(seconds: 1));
         },
         child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: state.filteredTournaments.length,
+          itemCount: state.tournaments.length,
           padding: EdgeInsets.zero,
           scrollDirection: Axis.vertical,
           itemBuilder: (BuildContext context, int index) {
-            final tournament = state.filteredTournaments[index];
+            final tournament = state.tournaments[index];
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 16.0),

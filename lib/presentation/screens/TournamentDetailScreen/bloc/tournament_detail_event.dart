@@ -42,3 +42,5 @@ class MatchScoreUpdated extends TournamentDetailEvent {
   @override
   List<Object> get props => [matchId, score1, score2];
 }
+
+class TournamentFinishRequested extends TournamentDetailEvent {}

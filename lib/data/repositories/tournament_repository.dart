@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 
@@ -6,9 +7,29 @@ class TournamentRepository {
 
   TournamentRepository({required ApiClient apiClient}) : _apiClient = apiClient;
 
-  Future<List<TournamentModel>> fetchTournaments() async {
+  Future<List<TournamentModel>> fetchTournaments({
+    TournamentFilter? filter,
+  }) async {
     try {
-      final response = await _apiClient.dio.get('/tournaments');
+      final Map<String, dynamic> queryParams = {};
+
+      if (filter != null) {
+        if (filter.discipline != null) {
+          queryParams['discipline'] = filter.discipline!.name;
+        }
+        if (filter.status != null) queryParams['status'] = filter.status!.name;
+        if (filter.teamMode != null) {
+          queryParams['teamMode'] = filter.teamMode!.toJson();
+        }
+        if (filter.searchQuery != null && filter.searchQuery!.isNotEmpty) {
+          queryParams['search'] = filter.searchQuery;
+        }
+      }
+
+      final response = await _apiClient.dio.get(
+        '/tournaments',
+        queryParameters: queryParams,
+      );
 
       final List<dynamic> dataList = response.data['items'];
 
@@ -119,5 +140,9 @@ class TournamentRepository {
       '/tournaments/matches/$matchId',
       data: {'score1': score1, 'score2': score2},
     );
+  }
+
+  Future<void> finishTournament(String tournamentId) async {
+    await _apiClient.dio.post('/tournaments/$tournamentId/finish');
   }
 }

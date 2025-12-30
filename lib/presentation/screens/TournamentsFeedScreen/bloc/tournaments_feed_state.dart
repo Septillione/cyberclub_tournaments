@@ -10,24 +10,16 @@ sealed class TournamentsFeedState extends Equatable {
 final class TournamentsFeedLoading extends TournamentsFeedState {}
 
 final class TournamentsFeedLoaded extends TournamentsFeedState {
-  final List<TournamentModel> allTournaments;
-  final List<TournamentModel> filteredTournaments;
-  final List<Discipline> disciplines;
-  final Discipline? selectedDiscipline;
+  final List<TournamentModel> tournaments;
+  final TournamentFilter currentFilter;
 
   const TournamentsFeedLoaded({
-    required this.allTournaments,
-    required this.filteredTournaments,
-    required this.disciplines,
-    required this.selectedDiscipline,
+    required this.tournaments,
+    required this.currentFilter,
   });
 
   @override
-  List<Object> get props => [
-    filteredTournaments,
-    disciplines,
-    ?selectedDiscipline,
-  ];
+  List<Object> get props => [tournaments, currentFilter];
 }
 
 final class TournamentsFeedError extends TournamentsFeedState {

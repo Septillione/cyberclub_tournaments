@@ -293,10 +293,33 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
           ),
         );
       case TournamentStatus.LIVE:
-        return Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: ElevatedButton(onPressed: null, child: const Text('Live')),
-        );
+        if (isCreator) {
+          return Container(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              bottom: 16.0,
+            ),
+            child: ElevatedButton(
+              onPressed: () => context.read<TournamentDetailBloc>().add(
+                TournamentFinishRequested(),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.statusWarning,
+              ),
+              child: const Text('Завершить турнир'),
+            ),
+          );
+        } else {
+          return Container(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              bottom: 16.0,
+            ),
+            child: ElevatedButton(onPressed: null, child: const Text('LIVE')),
+          );
+        }
       case TournamentStatus.FINISHED:
         return Container(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
