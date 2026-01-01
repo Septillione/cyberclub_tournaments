@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TeamModel {
 
- String get id; String get name; String get tag; String? get avatarUrl; String? get description; String get ownerId;@JsonKey(name: '_count') Map<String, int>? get count; List<TeamMemberModel> get members;
+ String get id; String get name; String get tag; String? get avatarUrl; String? get description; String get ownerId;@JsonKey(name: '_count') Map<String, int>? get count; List<TeamMemberModel> get members; List<TeamEntryModel> get entries;
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TeamModelCopyWith<TeamModel> get copyWith => _$TeamModelCopyWithImpl<TeamModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.count, count)&&const DeepCollectionEquality().equals(other.members, members));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.count, count)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.entries, entries));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,ownerId,const DeepCollectionEquality().hash(count),const DeepCollectionEquality().hash(members));
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,ownerId,const DeepCollectionEquality().hash(count),const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(entries));
 
 @override
 String toString() {
-  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, ownerId: $ownerId, count: $count, members: $members)';
+  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TeamModelCopyWith<$Res>  {
   factory $TeamModelCopyWith(TeamModel value, $Res Function(TeamModel) _then) = _$TeamModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String tag, String? avatarUrl, String? description, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members
+ String id, String name, String tag, String? avatarUrl, String? description, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
 });
 
 
@@ -65,7 +65,7 @@ class _$TeamModelCopyWithImpl<$Res>
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,8 @@ as String?,description: freezed == description ? _self.description : description
 as String?,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
 as String,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as Map<String, int>?,members: null == members ? _self.members : members // ignore: cast_nullable_to_non_nullable
-as List<TeamMemberModel>,
+as List<TeamMemberModel>,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
+as List<TeamEntryModel>,
   ));
 }
 
@@ -160,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeamModel() when $default != null:
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.ownerId,_that.count,_that.members);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.ownerId,_that.count,_that.members,_that.entries);case _:
   return orElse();
 
 }
@@ -181,10 +182,10 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)  $default,) {final _that = this;
 switch (_that) {
 case _TeamModel():
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.ownerId,_that.count,_that.members);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.ownerId,_that.count,_that.members,_that.entries);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +202,10 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,) {final _that = this;
 switch (_that) {
 case _TeamModel() when $default != null:
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.ownerId,_that.count,_that.members);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.ownerId,_that.count,_that.members,_that.entries);case _:
   return null;
 
 }
@@ -216,7 +217,7 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 @JsonSerializable()
 
 class _TeamModel implements TeamModel {
-  const _TeamModel({required this.id, required this.name, required this.tag, this.avatarUrl, this.description, required this.ownerId, @JsonKey(name: '_count') final  Map<String, int>? count, final  List<TeamMemberModel> members = const []}): _count = count,_members = members;
+  const _TeamModel({required this.id, required this.name, required this.tag, this.avatarUrl, this.description, required this.ownerId, @JsonKey(name: '_count') final  Map<String, int>? count, final  List<TeamMemberModel> members = const [], final  List<TeamEntryModel> entries = const []}): _count = count,_members = members,_entries = entries;
   factory _TeamModel.fromJson(Map<String, dynamic> json) => _$TeamModelFromJson(json);
 
 @override final  String id;
@@ -241,6 +242,13 @@ class _TeamModel implements TeamModel {
   return EqualUnmodifiableListView(_members);
 }
 
+ final  List<TeamEntryModel> _entries;
+@override@JsonKey() List<TeamEntryModel> get entries {
+  if (_entries is EqualUnmodifiableListView) return _entries;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_entries);
+}
+
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +263,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._count, _count)&&const DeepCollectionEquality().equals(other._members, _members));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._count, _count)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._entries, _entries));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,ownerId,const DeepCollectionEquality().hash(_count),const DeepCollectionEquality().hash(_members));
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,ownerId,const DeepCollectionEquality().hash(_count),const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_entries));
 
 @override
 String toString() {
-  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, ownerId: $ownerId, count: $count, members: $members)';
+  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
 }
 
 
@@ -275,7 +283,7 @@ abstract mixin class _$TeamModelCopyWith<$Res> implements $TeamModelCopyWith<$Re
   factory _$TeamModelCopyWith(_TeamModel value, $Res Function(_TeamModel) _then) = __$TeamModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String tag, String? avatarUrl, String? description, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members
+ String id, String name, String tag, String? avatarUrl, String? description, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
 });
 
 
@@ -292,7 +300,7 @@ class __$TeamModelCopyWithImpl<$Res>
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
   return _then(_TeamModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -302,7 +310,8 @@ as String?,description: freezed == description ? _self.description : description
 as String?,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
 as String,count: freezed == count ? _self._count : count // ignore: cast_nullable_to_non_nullable
 as Map<String, int>?,members: null == members ? _self._members : members // ignore: cast_nullable_to_non_nullable
-as List<TeamMemberModel>,
+as List<TeamMemberModel>,entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
+as List<TeamEntryModel>,
   ));
 }
 
@@ -1138,6 +1147,293 @@ as String?,
 }
 
 
+}
+
+
+/// @nodoc
+mixin _$TeamEntryModel {
+
+ String get id; String get status; TournamentModel get tournament;
+/// Create a copy of TeamEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TeamEntryModelCopyWith<TeamEntryModel> get copyWith => _$TeamEntryModelCopyWithImpl<TeamEntryModel>(this as TeamEntryModel, _$identity);
+
+  /// Serializes this TeamEntryModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamEntryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.tournament, tournament) || other.tournament == tournament));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,status,tournament);
+
+@override
+String toString() {
+  return 'TeamEntryModel(id: $id, status: $status, tournament: $tournament)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $TeamEntryModelCopyWith<$Res>  {
+  factory $TeamEntryModelCopyWith(TeamEntryModel value, $Res Function(TeamEntryModel) _then) = _$TeamEntryModelCopyWithImpl;
+@useResult
+$Res call({
+ String id, String status, TournamentModel tournament
+});
+
+
+$TournamentModelCopyWith<$Res> get tournament;
+
+}
+/// @nodoc
+class _$TeamEntryModelCopyWithImpl<$Res>
+    implements $TeamEntryModelCopyWith<$Res> {
+  _$TeamEntryModelCopyWithImpl(this._self, this._then);
+
+  final TeamEntryModel _self;
+  final $Res Function(TeamEntryModel) _then;
+
+/// Create a copy of TeamEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? status = null,Object? tournament = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,tournament: null == tournament ? _self.tournament : tournament // ignore: cast_nullable_to_non_nullable
+as TournamentModel,
+  ));
+}
+/// Create a copy of TeamEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TournamentModelCopyWith<$Res> get tournament {
+  
+  return $TournamentModelCopyWith<$Res>(_self.tournament, (value) {
+    return _then(_self.copyWith(tournament: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [TeamEntryModel].
+extension TeamEntryModelPatterns on TeamEntryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TeamEntryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _TeamEntryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TeamEntryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _TeamEntryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TeamEntryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _TeamEntryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String status,  TournamentModel tournament)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _TeamEntryModel() when $default != null:
+return $default(_that.id,_that.status,_that.tournament);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String status,  TournamentModel tournament)  $default,) {final _that = this;
+switch (_that) {
+case _TeamEntryModel():
+return $default(_that.id,_that.status,_that.tournament);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String status,  TournamentModel tournament)?  $default,) {final _that = this;
+switch (_that) {
+case _TeamEntryModel() when $default != null:
+return $default(_that.id,_that.status,_that.tournament);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _TeamEntryModel implements TeamEntryModel {
+  const _TeamEntryModel({required this.id, required this.status, required this.tournament});
+  factory _TeamEntryModel.fromJson(Map<String, dynamic> json) => _$TeamEntryModelFromJson(json);
+
+@override final  String id;
+@override final  String status;
+@override final  TournamentModel tournament;
+
+/// Create a copy of TeamEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TeamEntryModelCopyWith<_TeamEntryModel> get copyWith => __$TeamEntryModelCopyWithImpl<_TeamEntryModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$TeamEntryModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamEntryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.tournament, tournament) || other.tournament == tournament));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,status,tournament);
+
+@override
+String toString() {
+  return 'TeamEntryModel(id: $id, status: $status, tournament: $tournament)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$TeamEntryModelCopyWith<$Res> implements $TeamEntryModelCopyWith<$Res> {
+  factory _$TeamEntryModelCopyWith(_TeamEntryModel value, $Res Function(_TeamEntryModel) _then) = __$TeamEntryModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String status, TournamentModel tournament
+});
+
+
+@override $TournamentModelCopyWith<$Res> get tournament;
+
+}
+/// @nodoc
+class __$TeamEntryModelCopyWithImpl<$Res>
+    implements _$TeamEntryModelCopyWith<$Res> {
+  __$TeamEntryModelCopyWithImpl(this._self, this._then);
+
+  final _TeamEntryModel _self;
+  final $Res Function(_TeamEntryModel) _then;
+
+/// Create a copy of TeamEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? status = null,Object? tournament = null,}) {
+  return _then(_TeamEntryModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,tournament: null == tournament ? _self.tournament : tournament // ignore: cast_nullable_to_non_nullable
+as TournamentModel,
+  ));
+}
+
+/// Create a copy of TeamEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TournamentModelCopyWith<$Res> get tournament {
+  
+  return $TournamentModelCopyWith<$Res>(_self.tournament, (value) {
+    return _then(_self.copyWith(tournament: value));
+  });
+}
 }
 
 // dart format on

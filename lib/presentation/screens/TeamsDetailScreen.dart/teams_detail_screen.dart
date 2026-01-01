@@ -5,6 +5,7 @@ import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_request.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,8 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   //     ? ['Состав', 'Турниры', 'Приглашения']
                   //     : ['Состав', 'Турниры'];
                   final segments = isCaptain
-                      ? ['Состав', 'Приглашения']
-                      : ['Состав'];
+                      ? ['Состав', 'Турниры', 'Приглашения']
+                      : ['Состав', 'Турниры'];
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -188,17 +189,48 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     String ownerId,
     String currentUserId,
   ) {
-    List<Widget> captainWidgets = [
-      _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
-      // _buildTournamentsTab(team),
-      _buildRequestsTab(requests),
-    ];
-    List<Widget> playerWidgets = [
-      _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
-      // _buildTournamentsTab(team),
-    ];
+    if (isCaptain) {
+      switch (index) {
+        case 0:
+          return _buildRosterTab(
+            team.members,
+            isCaptain,
+            ownerId,
+            currentUserId,
+          );
+        case 1:
+          return _buildTournamentsTab(team);
+        case 2:
+          return _buildRequestsTab(requests);
+        default:
+          return const SizedBox.shrink();
+      }
+    } else {
+      switch (index) {
+        case 0:
+          return _buildRosterTab(
+            team.members,
+            isCaptain,
+            ownerId,
+            currentUserId,
+          );
+        case 1:
+          return _buildTournamentsTab(team);
+        default:
+          return const SizedBox.shrink();
+      }
+    }
+    // List<Widget> captainWidgets = [
+    //   _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
+    //   // _buildTournamentsTab(team),
+    //   _buildRequestsTab(requests),
+    // ];
+    // List<Widget> playerWidgets = [
+    //   _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
+    //   // _buildTournamentsTab(team),
+    // ];
 
-    return isCaptain ? captainWidgets[index] : playerWidgets[index];
+    // return isCaptain ? captainWidgets[index] : playerWidgets[index];
   }
 
   Widget _buildRosterTab(
@@ -227,6 +259,33 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
       },
       separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemCount: teammates.length + (isCaptain ? 1 : 0),
+    );
+  }
+
+  Widget _buildTournamentsTab(TeamModel team) {
+    if (team.entries.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 32.0),
+          child: Text(
+            'Команда еще не участвовала в турнирах',
+            style: AppTextStyles.bodyM,
+          ),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: team.entries.length,
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) {
+        final entry = team.entries[index];
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: TournamentCard(tournament: entry.tournament),
+        );
+      },
     );
   }
 

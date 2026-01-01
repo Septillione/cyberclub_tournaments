@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'team_model.freezed.dart';
@@ -14,6 +15,7 @@ abstract class TeamModel with _$TeamModel {
     required String ownerId,
     @JsonKey(name: '_count') Map<String, int>? count,
     @Default([]) List<TeamMemberModel> members,
+    @Default([]) List<TeamEntryModel> entries,
   }) = _TeamModel;
 
   factory TeamModel.fromJson(Map<String, dynamic> json) =>
@@ -56,4 +58,16 @@ abstract class TeamShortInfo with _$TeamShortInfo {
 
   factory TeamShortInfo.fromJson(Map<String, dynamic> json) =>
       _$TeamShortInfoFromJson(json);
+}
+
+@freezed
+abstract class TeamEntryModel with _$TeamEntryModel {
+  const factory TeamEntryModel({
+    required String id,
+    required String status,
+    required TournamentModel tournament,
+  }) = _TeamEntryModel;
+
+  factory TeamEntryModel.fromJson(Map<String, dynamic> json) =>
+      _$TeamEntryModelFromJson(json);
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:equatable/equatable.dart';

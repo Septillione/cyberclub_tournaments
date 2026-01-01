@@ -21,6 +21,11 @@ _TeamModel _$TeamModelFromJson(Map<String, dynamic> json) => _TeamModel(
           ?.map((e) => TeamMemberModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  entries:
+      (json['entries'] as List<dynamic>?)
+          ?.map((e) => TeamEntryModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
@@ -33,6 +38,7 @@ Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
       'ownerId': instance.ownerId,
       '_count': instance.count,
       'members': instance.members,
+      'entries': instance.entries,
     };
 
 _TeamMemberModel _$TeamMemberModelFromJson(Map<String, dynamic> json) =>
@@ -79,4 +85,20 @@ Map<String, dynamic> _$TeamShortInfoToJson(_TeamShortInfo instance) =>
       'name': instance.name,
       'tag': instance.tag,
       'avatarUrl': instance.avatarUrl,
+    };
+
+_TeamEntryModel _$TeamEntryModelFromJson(Map<String, dynamic> json) =>
+    _TeamEntryModel(
+      id: json['id'] as String,
+      status: json['status'] as String,
+      tournament: TournamentModel.fromJson(
+        json['tournament'] as Map<String, dynamic>,
+      ),
+    );
+
+Map<String, dynamic> _$TeamEntryModelToJson(_TeamEntryModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'status': instance.status,
+      'tournament': instance.tournament,
     };
