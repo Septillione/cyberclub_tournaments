@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/app.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/notification_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
   final tournamentRepository = TournamentRepository(apiClient: apiClient);
   final teamRepository = TeamRepository(apiClient: apiClient);
   final userRepository = UserRepository(apiClient: apiClient);
+  final notificationRepository = NotificationRepository(apiClient: apiClient);
 
   // Запуск приложения
   runApp(
@@ -34,6 +36,7 @@ Future<void> main() async {
       tournamentRepository: tournamentRepository,
       teamRepository: teamRepository,
       userRepository: userRepository,
+      notificationRepository: notificationRepository,
     ),
   );
 }

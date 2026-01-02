@@ -8,6 +8,7 @@ import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TournamentsFeedScreen extends StatefulWidget {
@@ -163,7 +164,7 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
               SizedBox(width: 16),
               GestureDetector(
                 onTap: () {
-                  print('Bell is pressed!');
+                  context.push('/notifications');
                 },
                 child: Icon(
                   LucideIcons.bell,

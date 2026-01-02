@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/core/routing/app_router.dart';
 import 'package:cyberclub_tournaments/core/theme/app_theme.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/notification_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
@@ -13,6 +14,7 @@ class MainApp extends StatelessWidget {
   final TournamentRepository tournamentRepository;
   final TeamRepository teamRepository;
   final UserRepository userRepository;
+  final NotificationRepository notificationRepository;
 
   const MainApp({
     super.key,
@@ -20,6 +22,7 @@ class MainApp extends StatelessWidget {
     required this.tournamentRepository,
     required this.teamRepository,
     required this.userRepository,
+    required this.notificationRepository,
   });
 
   @override
@@ -31,6 +34,7 @@ class MainApp extends StatelessWidget {
         RepositoryProvider.value(value: tournamentRepository),
         RepositoryProvider.value(value: teamRepository),
         RepositoryProvider.value(value: userRepository),
+        RepositoryProvider.value(value: notificationRepository),
       ],
       child: MaterialApp.router(
         routerConfig: AppRouter.router,
