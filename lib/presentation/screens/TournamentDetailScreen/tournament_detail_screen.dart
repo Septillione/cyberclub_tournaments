@@ -8,6 +8,7 @@ import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScree
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/general_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/participants_details.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,18 @@ class TournamentDetailScreen extends StatefulWidget {
 
 class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   int _selectedSegmentIndex = 0;
+
+  double _calculateBottomPadding(
+    TournamentModel tournament,
+    String currentUserId,
+  ) {
+    final bool isCreater = tournament.creatorId == currentUserId;
+
+    if (isCreater && tournament.status == TournamentStatus.REGISTRATION_OPEN) {
+      return 180.0;
+    }
+    return 110.0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +75,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                             child: SegmentedButtonDetails(
                               segments: const ['Общее', 'Участники', 'Сетка'],
                               initialIndex: _selectedSegmentIndex,
@@ -74,39 +87,16 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                             ),
                           ),
                           SizedBox(height: 24),
-                          Expanded(child: _buildSegmentContent(tournament)),
-                          SizedBox(height: 64),
+                          Expanded(
+                            child: _buildSegmentContent(
+                              tournament,
+                              currentUserId,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  // SafeArea(
-                  //   top: false,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(
-                  //       top: 8.0,
-                  //       left: 16.0,
-                  //       right: 16.0,
-                  //     ),
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         SegmentedButtonDetails(
-                  //           segments: const ['Общее', 'Участники', 'Сетка'],
-                  //           initialIndex: _selectedSegmentIndex,
-                  //           onSegmentTapped: (index) {
-                  //             setState(() {
-                  //               _selectedSegmentIndex = index;
-                  //             });
-                  //           },
-                  //         ),
-                  //         SizedBox(height: 24),
-                  //         _buildSegmentContent(tournament),
-                  //         SizedBox(height: 64),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             );
@@ -153,7 +143,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+                  padding: const EdgeInsets.only(top: 16.0, left: 20.0),
                   child: CustomBackButton(),
                 ),
               ],
@@ -162,8 +152,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
           Padding(
             padding: const EdgeInsets.only(
               bottom: 16.0,
-              left: 16.0,
-              right: 16.0,
+              left: 20.0,
+              right: 20.0,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -183,16 +173,24 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
     );
   }
 
-  Widget _buildSegmentContent(TournamentModel tournament) {
+  Widget _buildSegmentContent(
+    TournamentModel tournament,
+    String currentUserId,
+  ) {
+    final double bottomPadding = _calculateBottomPadding(
+      tournament,
+      currentUserId,
+    );
+
     switch (_selectedSegmentIndex) {
       case 0:
         return SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
+          padding: EdgeInsets.fromLTRB(20, 0, 20, bottomPadding),
           child: GeneralDetails(tournament: tournament),
         );
       case 1:
         return SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
+          padding: EdgeInsets.fromLTRB(20, 0, 20, bottomPadding),
           child: ParticipantsDetails(tournament: tournament),
         );
       case 2:
@@ -200,13 +198,6 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
       default:
         return const SizedBox.shrink();
     }
-    // final List<Widget> segmentContents = [
-    //   GeneralDetails(tournament: tournament),
-    //   ParticipantsDetails(tournament: tournament),
-    //   BracketDetails(),
-    // ];
-
-    // return segmentContents[_selectedSegmentIndex];
   }
 
   Widget _buildRegisterButton(
@@ -215,70 +206,47 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   ) {
     final bool isCreator = tournament.creatorId == currentUserId;
 
-    // if (isCreator && tournament.status == TournamentStatus.REGISTRATION_OPEN) {
-    //   return Container(
-    //     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-    //     child: Row(
-    //       children: [
-    //         ElevatedButton(
-    //           style: ElevatedButton.styleFrom(
-    //             backgroundColor: AppColors.statusLive,
-    //           ),
-    //           onPressed: () => context.read<TournamentDetailBloc>().add(
-    //             TournamentStartRequested(),
-    //           ),
-    //           child: const Text('ЗАПУСТИТЬ ТУРНИР'),
-    //         ),
-    //         SizedBox(width: 16),
-    //         ElevatedButton(
-    //           onPressed: () => _showJoinDialog(tournament),
-    //           child: const Text('Зарегистрироваться'),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
-
     switch (tournament.status) {
       case TournamentStatus.REGISTRATION_OPEN:
         if (isCreator) {
-          return Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            width: double.infinity,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.redColor,
+                    backgroundColor: AppColors.bgMain,
+                    side: BorderSide(color: AppColors.redColor, width: 1.5),
                   ),
                   onPressed: () => context.read<TournamentDetailBloc>().add(
                     TournamentStartRequested(),
                   ),
-                  child: const Text('ЗАПУСТИТЬ ТУРНИР'),
+                  child: const Text('Запустить турнир'),
                 ),
-              ),
-              Expanded(
-                child: ElevatedButton(
+
+                SizedBox(height: 12),
+                GradientButton(
+                  text: 'Участвовать',
                   onPressed: () => _showJoinDialog(tournament),
-                  child: const Text('Зарегистрироваться'),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else {
           return Container(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              bottom: 16.0,
-            ),
-            child: ElevatedButton(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: GradientButton(
+              text: 'Участвовать',
               onPressed: () => _showJoinDialog(tournament),
-              child: const Text('Зарегистрироваться'),
             ),
           );
         }
       case TournamentStatus.REGISTRATION_CLOSED:
         return Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ElevatedButton(
             onPressed: null,
             child: const Text('Регистрация закрыта'),
@@ -286,7 +254,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
         );
       case TournamentStatus.ANNOUNCED:
         return Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ElevatedButton(
             onPressed: null,
             child: const Text('Анонсирован'),
@@ -296,8 +264,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
         if (isCreator) {
           return Container(
             padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
+              left: 20.0,
+              right: 20.0,
               bottom: 16.0,
             ),
             child: ElevatedButton(
@@ -312,22 +280,18 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
           );
         } else {
           return Container(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              bottom: 16.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: ElevatedButton(onPressed: null, child: const Text('LIVE')),
           );
         }
       case TournamentStatus.FINISHED:
         return Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ElevatedButton(onPressed: null, child: const Text('Завершён')),
         );
       case TournamentStatus.CANCELLED:
         return Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ElevatedButton(onPressed: null, child: const Text('Отменён')),
         );
     }

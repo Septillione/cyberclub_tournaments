@@ -28,13 +28,10 @@ class ParticipantsDetails extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Участники: ${tournament.participants.current}/${tournament.participants.max}',
-              style: AppTextStyles.h3,
-            ),
+            Text('Участники:', style: AppTextStyles.h3),
             Text(
               '${tournament.participants.current}/${tournament.participants.max}',
-              style: AppTextStyles.h3.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.h3,
             ),
           ],
         ),
@@ -78,22 +75,7 @@ class ParticipantsDetails extends StatelessWidget {
               return _buildParticipantCard(name, avatarUrl, tag, isTeamMode);
             },
           ),
-          const SizedBox(height: 32),
         ],
-
-        // ListView.separated(
-        //   padding: EdgeInsets.zero,
-        //   shrinkWrap: true,
-        //   physics: const NeverScrollableScrollPhysics(),
-        //   itemCount: mockParticipants.length,
-        //   scrollDirection: Axis.vertical,
-        //   separatorBuilder: (context, index) => SizedBox(height: 16),
-        //   itemBuilder: (context, index) {
-        //     final participant = mockParticipants[index];
-        //     return _buildParticipantCard(participant);
-        //   },
-        // ),
-        SizedBox(height: 32),
       ],
     );
   }
@@ -147,34 +129,5 @@ class ParticipantsDetails extends StatelessWidget {
         ],
       ),
     );
-
-    // Widget _buildParticipantCard(Participant participant) {
-    //   return Container(
-    //     padding: EdgeInsets.all(16.0),
-    //     decoration: BoxDecoration(
-    //       color: AppColors.bgSurface,
-    //       borderRadius: BorderRadius.circular(12.0),
-    //     ),
-    //     child: Row(
-    //       children: [
-    //         CircleAvatar(
-    //           radius: 20,
-    //           backgroundColor: AppColors.bgMain,
-    //           backgroundImage: participant.avatarUrl != null
-    //               ? NetworkImage(participant.avatarUrl!)
-    //               : null,
-    //           child: participant.avatarUrl == null
-    //               ? const Icon(
-    //                   LucideIcons.userRound,
-    //                   color: AppColors.textSecondary,
-    //                 )
-    //               : null,
-    //         ),
-    //         const SizedBox(width: 12),
-    //         Text(participant.name, style: AppTextStyles.nameParticipant),
-    //       ],
-    //     ),
-    //   );
-    // }
   }
 }

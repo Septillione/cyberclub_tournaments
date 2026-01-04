@@ -37,7 +37,7 @@ class BracketDetails extends StatelessWidget {
                 Icon(
                   LucideIcons.network,
                   size: 64,
-                  color: AppColors.textDisabled.withValues(alpha: 0.5),
+                  color: AppColors.textDisabled,
                 ),
                 const SizedBox(height: 16),
                 Text(

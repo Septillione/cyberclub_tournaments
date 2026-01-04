@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 class TournamentInfoItem extends StatelessWidget {
   final String title;
   final IconData icon;
-  final Color colorIcon;
+  final Color color;
   final String bodyText;
 
   const TournamentInfoItem({
     super.key,
     required this.title,
     required this.icon,
-    required this.colorIcon,
+    required this.color,
     required this.bodyText,
   });
 
@@ -22,6 +22,7 @@ class TournamentInfoItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.0),
         color: AppColors.bgSurface,
+        border: Border.all(color: color, width: 1.5),
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -30,7 +31,7 @@ class TournamentInfoItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: colorIcon, size: 16),
+              Icon(icon, color: color, size: 16),
               const SizedBox(width: 8),
               Text(title, style: AppTextStyles.bodyM),
             ],

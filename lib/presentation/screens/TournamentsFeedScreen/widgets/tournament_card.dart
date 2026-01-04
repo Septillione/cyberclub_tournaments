@@ -80,7 +80,18 @@ class TournamentCard extends StatelessWidget {
 
   Widget _buildInfoBlock() {
     return Container(
-      color: AppColors.bgSurface,
+      decoration: BoxDecoration(
+        color: AppColors.bgSurface,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            offset: Offset(2, 2),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

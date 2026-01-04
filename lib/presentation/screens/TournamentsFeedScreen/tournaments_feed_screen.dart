@@ -1,3 +1,4 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
@@ -6,9 +7,11 @@ import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/filter_bottom_sheet.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/filter_chip.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TournamentsFeedScreen extends StatefulWidget {
@@ -80,8 +83,17 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                   const SizedBox(height: 24),
 
                   if (state is TournamentsFeedLoading)
-                    const Expanded(
-                      child: Center(child: CircularProgressIndicator()),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return const TournamentSkeletonCard();
+                          },
+                        ),
+                      ),
                     )
                   else if (state is TournamentsFeedLoaded)
                     _buildTournaments(context, state)
@@ -308,7 +320,12 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: RefreshIndicator(
+        child: LiquidPullToRefresh(
+          color: AppColors.bgMain,
+          backgroundColor: AppColors.accentPrimary,
+          height: 60,
+          animSpeedFactor: 5.0,
+          showChildOpacityTransition: false,
           onRefresh: () async {
             final newFilter = state.currentFilter;
             context.read<TournamentsFeedBloc>().add(

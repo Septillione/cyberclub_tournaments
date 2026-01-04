@@ -28,34 +28,34 @@ class GeneralDetails extends StatelessWidget {
       TournamentInfoItem(
         title: 'Дата и время',
         icon: LucideIcons.calendar,
-        colorIcon: AppColors.accentPrimary,
+        color: AppColors.blueColor,
         bodyText: formattedDate,
       ),
       if (tournament.isOnline == true) ...[
         TournamentInfoItem(
           title: 'Адрес',
           icon: LucideIcons.mapPin,
-          colorIcon: AppColors.redColor,
+          color: AppColors.redColor,
           bodyText: 'Онлайн',
         ),
       ] else ...[
         TournamentInfoItem(
           title: 'Адрес',
           icon: LucideIcons.mapPin,
-          colorIcon: AppColors.redColor,
+          color: AppColors.redColor,
           bodyText: tournament.address ?? '',
         ),
       ],
       TournamentInfoItem(
         title: 'Формат',
         icon: LucideIcons.swords,
-        colorIcon: AppColors.yellowColor,
+        color: AppColors.yellowColor,
         bodyText: tournamentFormat,
       ),
       TournamentInfoItem(
         title: 'Участников',
         icon: LucideIcons.usersRound,
-        colorIcon: AppColors.greenColor,
+        color: AppColors.greenColor,
         bodyText: participants,
       ),
     ];
@@ -125,44 +125,51 @@ class GeneralDetails extends StatelessWidget {
 
         if (tournament.prizes.isNotEmpty)
           Container(
-            padding: EdgeInsets.all(16),
-            width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.bgSurface,
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(16),
+              gradient: const LinearGradient(
+                colors: [AppColors.yellowColor, AppColors.accentPrimary],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Призы и награды', style: AppTextStyles.h3),
-                const SizedBox(height: 12),
 
-                ...tournament.prizes.map((prize) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          LucideIcons.medal,
-                          size: 20,
-                          color: AppColors.accentPrimary,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          '${prize.label}: ',
-                          style: AppTextStyles.bodyL.copyWith(
-                            color: AppColors.textSecondary,
+            padding: const EdgeInsets.all(2.0),
+
+            child: Container(
+              padding: EdgeInsets.all(16),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: AppColors.bgSurface,
+                borderRadius: BorderRadius.circular(14.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Призы и награды', style: AppTextStyles.h3),
+                  const SizedBox(height: 12),
+
+                  ...tournament.prizes.map((prize) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            LucideIcons.medal,
+                            size: 20,
+                            color: AppColors.accentPrimary,
                           ),
-                        ),
-                        Text(prize.amount, style: AppTextStyles.bodyL),
-                      ],
-                    ),
-                  );
-                }),
-              ],
+                          const SizedBox(width: 12),
+                          Text('${prize.label}: ', style: AppTextStyles.bodyL),
+                          Text(prize.amount, style: AppTextStyles.bodyL),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
             ),
           ),
-        SizedBox(height: 16),
       ],
     );
   }

@@ -44,6 +44,7 @@ class MainNavigation extends StatelessWidget {
         ),
       ],
       child: Scaffold(
+        extendBody: true,
         body: child,
         bottomNavigationBar: GoogleNavBar(
           currentIndex: _calculateSelectedIndex(context),
