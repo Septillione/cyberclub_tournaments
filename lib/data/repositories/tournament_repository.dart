@@ -21,6 +21,12 @@ class TournamentRepository {
         if (filter.teamMode != null) {
           queryParams['teamMode'] = filter.teamMode!.toJson();
         }
+        if (filter.isOnline != null) {
+          queryParams['isOnline'] = filter.isOnline.toString();
+        }
+        if (filter.sortOrder != null) {
+          queryParams['sortOrder'] = filter.sortOrder!.name;
+        }
         if (filter.searchQuery != null && filter.searchQuery!.isNotEmpty) {
           queryParams['search'] = filter.searchQuery;
         }

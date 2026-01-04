@@ -41,7 +41,7 @@ class _AuthViewState extends State<_LoginView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
-              backgroundColor: AppColors.statusError,
+              backgroundColor: AppColors.redColor,
             ),
           );
         }

@@ -13,14 +13,19 @@ class TournamentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => context.push('/tournaments/${tournament.id}'),
-      borderRadius: BorderRadius.circular(16.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_buildImage(), _buildInfoBlock()],
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(24.0),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => context.push('/tournaments/${tournament.id}'),
+        borderRadius: BorderRadius.circular(24.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_buildImage(), _buildInfoBlock()],
+          ),
         ),
       ),
     );
@@ -108,33 +113,33 @@ class TournamentCard extends StatelessWidget {
         break;
       case TournamentStatus.REGISTRATION_OPEN:
         text = 'Регистрация открыта';
-        color = AppColors.statusSuccess;
+        color = AppColors.greenColor;
         break;
       case TournamentStatus.REGISTRATION_CLOSED:
         text = 'Регистрация закрыта';
-        color = AppColors.statusFullUsers;
+        color = AppColors.yellowColor;
         break;
       case TournamentStatus.LIVE:
         text = 'Идет';
-        color = AppColors.statusLive;
+        color = AppColors.redColor;
         break;
       case TournamentStatus.FINISHED:
         text = 'Завершен';
-        color = AppColors.statusArchived;
+        color = AppColors.greyColor;
         break;
       case TournamentStatus.CANCELLED:
         text = 'Отменен';
-        color = AppColors.statusArchived.withValues(alpha: 0.5);
+        color = AppColors.greyColor.withValues(alpha: 0.5);
         break;
     }
 
     return Container(
       decoration: BoxDecoration(
-        color: color,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color, width: 1.2),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         child: Text(
           text,
           style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary),
@@ -177,7 +182,10 @@ class TournamentCard extends StatelessWidget {
 
   Widget _buildLineParticipants() {
     final double progress =
-        tournament.participants.current / tournament.participants.max;
+        (tournament.participants.current / tournament.participants.max).clamp(
+          0.0,
+          1.0,
+        );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,13 +202,30 @@ class TournamentCard extends StatelessWidget {
             ),
           ],
         ),
+
         const SizedBox(height: 8),
-        LinearProgressIndicator(
-          color: AppColors.accentPrimary,
-          backgroundColor: AppColors.bgMain,
-          value: progress,
-          minHeight: 6,
-          borderRadius: BorderRadius.circular(20),
+
+        Container(
+          height: 6,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppColors.bgMain,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: FractionallySizedBox(
+            alignment: Alignment.centerLeft,
+            widthFactor: progress,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: const LinearGradient(
+                  colors: [AppColors.gradientDark, AppColors.gradientLight],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );

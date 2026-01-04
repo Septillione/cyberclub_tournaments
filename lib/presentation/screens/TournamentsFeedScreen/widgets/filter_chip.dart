@@ -6,16 +6,27 @@ class FilterChipWidget extends StatelessWidget {
   final String label;
   final bool isSelected;
 
-  const FilterChipWidget({super.key, required this.label, this.isSelected = false});
+  const FilterChipWidget({
+    super.key,
+    required this.label,
+    this.isSelected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 16),
+      margin: const EdgeInsets.only(right: 16),
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.accentPrimary : AppColors.bgSurface,
+        color: isSelected ? null : AppColors.bgSurface,
         borderRadius: BorderRadius.circular(8),
+        gradient: isSelected
+            ? LinearGradient(
+                colors: [AppColors.gradientDark, AppColors.gradientLight],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              )
+            : null,
       ),
       child: Center(
         child: Text(

@@ -48,7 +48,7 @@ class ActiveTournamentCard extends StatelessWidget {
         Text(tournament.title, style: AppTextStyles.h3),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.statusLive,
+            color: AppColors.redColor,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(

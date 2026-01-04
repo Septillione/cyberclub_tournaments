@@ -35,27 +35,27 @@ class GeneralDetails extends StatelessWidget {
         TournamentInfoItem(
           title: 'Адрес',
           icon: LucideIcons.mapPin,
-          colorIcon: AppColors.statusLive,
+          colorIcon: AppColors.redColor,
           bodyText: 'Онлайн',
         ),
       ] else ...[
         TournamentInfoItem(
           title: 'Адрес',
           icon: LucideIcons.mapPin,
-          colorIcon: AppColors.statusLive,
+          colorIcon: AppColors.redColor,
           bodyText: tournament.address ?? '',
         ),
       ],
       TournamentInfoItem(
         title: 'Формат',
         icon: LucideIcons.swords,
-        colorIcon: AppColors.statusWarning,
+        colorIcon: AppColors.yellowColor,
         bodyText: tournamentFormat,
       ),
       TournamentInfoItem(
         title: 'Участников',
         icon: LucideIcons.usersRound,
-        colorIcon: AppColors.statusSuccess,
+        colorIcon: AppColors.greenColor,
         bodyText: participants,
       ),
     ];

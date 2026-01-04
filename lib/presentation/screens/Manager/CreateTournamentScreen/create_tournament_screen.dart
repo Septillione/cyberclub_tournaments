@@ -155,7 +155,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
-              backgroundColor: AppColors.statusError,
+              backgroundColor: AppColors.redColor,
             ),
           );
         }
@@ -517,7 +517,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
                 ),
                 IconButton(
                   onPressed: () => setState(() => _prizes.removeAt(index)),
-                  icon: Icon(LucideIcons.trash, color: AppColors.statusError),
+                  icon: Icon(LucideIcons.trash, color: AppColors.redColor),
                 ),
               ],
             ),

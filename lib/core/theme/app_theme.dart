@@ -17,7 +17,7 @@ ThemeData buildAppTheme() {
       primary: AppColors.accentPrimary,
       secondary: AppColors.accentSecondary,
       surface: AppColors.bgSurface,
-      error: AppColors.statusError,
+      error: AppColors.redColor,
       onPrimary: AppColors.textPrimary,
       onSecondary: AppColors.textPrimary,
       onSurface: AppColors.textPrimary,
@@ -40,7 +40,7 @@ ThemeData buildAppTheme() {
       showUnselectedLabels: true,
       selectedLabelStyle: AppTextStyles.caption,
       unselectedLabelStyle: AppTextStyles.caption,
-      enableFeedback: false
+      enableFeedback: false,
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(

@@ -21,6 +21,9 @@ class FilterBottomSheet extends StatefulWidget {
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
   late TournamentFilter _tempFilter;
 
+  final List<int> participants = [4, 8, 16, 32, 64];
+  final bool? isOnline = true;
+
   @override
   void initState() {
     super.initState();
@@ -30,99 +33,212 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
       decoration: const BoxDecoration(
         color: AppColors.bgSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Фильтры', style: AppTextStyles.h2),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _tempFilter = const TournamentFilter(); // Сброс
-                  });
-                },
-                child: const Text('Сбросить'),
+          const SizedBox(height: 12),
+          // 1. Drag Handle (Полоска)
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.textSecondary.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(2),
               ),
-            ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // 2. Заголовок и Сброс
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Фильтры', style: AppTextStyles.h2),
+                TextButton(
+                  onPressed: () =>
+                      setState(() => _tempFilter = const TournamentFilter()),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.redColor,
+                  ),
+                  child: const Text('Сбросить'),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
 
-          _buildSectionTitle('Дисциплина'),
-          Wrap(
-            spacing: 8,
-            children: Discipline.values.map((d) {
-              return _buildChip(
-                label: d.title,
-                isSelected: _tempFilter.discipline == d,
-                onSelected: (selected) {
-                  setState(() {
-                    _tempFilter = _tempFilter.copyWith(
-                      discipline: d,
-                      clearDiscipline: !selected,
-                    );
-                  });
-                },
-              );
-            }).toList(),
+          // 3. Контент (скроллируемый, если экран маленький)
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionTitle('Сортировка'),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _buildChip(
+                        label: 'Сначала новые',
+                        isSelected:
+                            _tempFilter.sortOrder == TournamentSort.NEWEST,
+                        onSelected: (sel) => setState(() {
+                          _tempFilter = _tempFilter.copyWith(
+                            sortOrder: sel ? TournamentSort.NEWEST : null,
+                            clearSortOrder: !sel,
+                          );
+                        }),
+                      ),
+                      _buildChip(
+                        label: 'Сначала старые',
+                        isSelected:
+                            _tempFilter.sortOrder == TournamentSort.OLDEST,
+                        onSelected: (sel) => setState(() {
+                          _tempFilter = _tempFilter.copyWith(
+                            sortOrder: sel ? TournamentSort.OLDEST : null,
+                            clearSortOrder: !sel,
+                          );
+                        }),
+                      ),
+                      _buildChip(
+                        label: 'Популярные',
+                        isSelected:
+                            _tempFilter.sortOrder == TournamentSort.POPULAR,
+                        onSelected: (sel) => setState(() {
+                          _tempFilter = _tempFilter.copyWith(
+                            sortOrder: sel ? TournamentSort.POPULAR : null,
+                            clearSortOrder: !sel,
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Дисциплина'),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: Discipline.values
+                        .map(
+                          (d) => _buildChip(
+                            label: d.title,
+                            isSelected: _tempFilter.discipline == d,
+                            onSelected: (sel) => setState(
+                              () => _tempFilter = _tempFilter.copyWith(
+                                discipline: d,
+                                clearDiscipline: !sel,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Статус'),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: TournamentStatus.values
+                        .map(
+                          (s) => _buildChip(
+                            label: s.title,
+                            isSelected: _tempFilter.status == s,
+                            onSelected: (sel) => setState(
+                              () => _tempFilter = _tempFilter.copyWith(
+                                status: s,
+                                clearStatus: !sel,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Режим'),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: TeamMode.values
+                        .map(
+                          (m) => _buildChip(
+                            label: m.title,
+                            isSelected: _tempFilter.teamMode == m,
+                            onSelected: (sel) => setState(
+                              () => _tempFilter = _tempFilter.copyWith(
+                                teamMode: m,
+                                clearTeamMode: !sel,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Место проведения'),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _buildChip(
+                        label: 'Онлайн',
+                        isSelected: _tempFilter.isOnline == true,
+                        onSelected: (sel) => setState(() {
+                          _tempFilter = _tempFilter.copyWith(
+                            isOnline: sel ? true : null,
+                            clearIsOnline: !sel,
+                          );
+                        }),
+                      ),
+                      _buildChip(
+                        label: 'Оффлайн',
+                        isSelected: _tempFilter.isOnline == false,
+                        onSelected: (sel) => setState(() {
+                          _tempFilter = _tempFilter.copyWith(
+                            isOnline: sel ? false : null,
+                            clearIsOnline: !sel,
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
           ),
 
-          const SizedBox(height: 16),
-          _buildSectionTitle('Статус'),
-          Wrap(
-            spacing: 8,
-            children: TournamentStatus.values.map((s) {
-              return _buildChip(
-                label: s.name,
-                isSelected: _tempFilter.status == s,
-                onSelected: (selected) {
-                  setState(() {
-                    _tempFilter = _tempFilter.copyWith(
-                      status: s,
-                      clearStatus: !selected,
-                    );
-                  });
-                },
-              );
-            }).toList(),
-          ),
-
-          const SizedBox(height: 16),
-          _buildSectionTitle('Режим'),
-          Wrap(
-            spacing: 8,
-            children: TeamMode.values.map((m) {
-              return _buildChip(
-                label: m.title,
-                isSelected: _tempFilter.teamMode == m,
-                onSelected: (selected) {
-                  setState(() {
-                    _tempFilter = _tempFilter.copyWith(
-                      teamMode: m,
-                      clearTeamMode: !selected,
-                    );
-                  });
-                },
-              );
-            }).toList(),
-          ),
-
-          const SizedBox(height: 32),
-          SizedBox(
-            width: double.infinity,
+          // 4. Кнопка Применить (Прибита к низу)
+          Padding(
+            padding: const EdgeInsets.all(20),
             child: ElevatedButton(
               onPressed: () {
                 widget.onApply(_tempFilter);
                 Navigator.pop(context);
               },
-              child: const Text('Применить'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accentPrimary,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text(
+                'Применить',
+                style: AppTextStyles.button.copyWith(color: Colors.white),
+              ),
             ),
           ),
         ],
@@ -132,8 +248,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(title, style: AppTextStyles.h3),
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Text(title, style: AppTextStyles.h3.copyWith(fontSize: 18)),
     );
   }
 
@@ -146,14 +262,19 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       label: Text(label),
       selected: isSelected,
       onSelected: onSelected,
+      showCheckmark: false,
       backgroundColor: AppColors.bgMain,
-      selectedColor: AppColors.accentPrimary,
-      checkmarkColor: Colors.white,
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : AppColors.textSecondary,
+      selectedColor: AppColors.accentPrimary.withOpacity(0.2),
+      labelStyle: AppTextStyles.bodyM.copyWith(
+        color: isSelected ? AppColors.accentPrimary : AppColors.textSecondary,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      side: BorderSide.none,
+      side: BorderSide(
+        color: isSelected ? AppColors.accentPrimary : Colors.transparent,
+        width: 1.5,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
     );
   }
 }

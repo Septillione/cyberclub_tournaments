@@ -42,7 +42,7 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Все поля должны быть заполнены'),
-          backgroundColor: AppColors.statusError,
+          backgroundColor: AppColors.redColor,
         ),
       );
       return;
@@ -64,7 +64,7 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
-              backgroundColor: AppColors.statusError,
+              backgroundColor: AppColors.redColor,
             ),
           );
         }

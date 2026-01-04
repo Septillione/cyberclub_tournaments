@@ -52,13 +52,13 @@ class CardRequest extends StatelessWidget {
             children: [
               _buildButtonApplication(
                 onAccept,
-                AppColors.statusSuccess,
+                AppColors.greenColor,
                 'Принять',
               ),
               const SizedBox(width: 64),
               _buildButtonApplication(
                 onReject,
-                AppColors.statusError,
+                AppColors.redColor,
                 'Отклонить',
               ),
             ],

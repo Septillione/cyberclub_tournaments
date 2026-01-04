@@ -55,7 +55,28 @@ class AppRouter {
       ),
       GoRoute(
         path: '/notifications',
-        builder: (context, state) => const NotificationScreen(),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const NotificationScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -72,15 +93,37 @@ class AppRouter {
               GoRoute(
                 path: ':tournamentId',
                 parentNavigatorKey: _rootNavigatorKey,
-                builder: (context, state) {
+                pageBuilder: (context, state) {
                   final tournamentId = state.pathParameters['tournamentId']!;
-                  return BlocProvider(
-                    create: (context) => TournamentDetailBloc(
-                      tournamentRepository: context
-                          .read<TournamentRepository>(),
-                      authRepository: context.read<AuthRepository>(),
-                    )..add(TournamentDetailStarted(tournamentId: tournamentId)),
-                    child: TournamentDetailScreen(tournamentId: tournamentId),
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: BlocProvider(
+                      create: (context) =>
+                          TournamentDetailBloc(
+                            tournamentRepository: context
+                                .read<TournamentRepository>(),
+                            authRepository: context.read<AuthRepository>(),
+                          )..add(
+                            TournamentDetailStarted(tournamentId: tournamentId),
+                          ),
+                      child: TournamentDetailScreen(tournamentId: tournamentId),
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.easeOutCubic;
+
+                          var tween = Tween(
+                            begin: begin,
+                            end: end,
+                          ).chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
                   );
                 },
               ),

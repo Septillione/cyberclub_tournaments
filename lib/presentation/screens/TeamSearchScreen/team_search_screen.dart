@@ -51,7 +51,7 @@ class _TeamSearchView extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(state.successMessage!),
-                          backgroundColor: AppColors.statusSuccess,
+                          backgroundColor: AppColors.greenColor,
                         ),
                       );
                     }
@@ -60,7 +60,7 @@ class _TeamSearchView extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(state.errorMessage),
-                          backgroundColor: AppColors.statusError,
+                          backgroundColor: AppColors.redColor,
                         ),
                       );
                     }

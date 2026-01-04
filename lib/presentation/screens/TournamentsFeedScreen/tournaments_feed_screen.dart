@@ -21,14 +21,36 @@ class TournamentsFeedScreen extends StatefulWidget {
 class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
   bool _isSearchActive = false;
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _closeSearch() {
+    if (_isSearchActive) {
+      setState(() {
+        _isSearchActive = false;
+        _searchController.clear();
+      });
+      _focusNode.unfocus();
+      context.read<TournamentsFeedBloc>().add(
+        const TouranmentFeedSearchChanged(''),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        // bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+      body: GestureDetector(
+        onTap: _closeSearch,
+        behavior: HitTestBehavior.opaque,
+        child: SafeArea(
+          // bottom: false,
           child: BlocBuilder<TournamentsFeedBloc, TournamentsFeedState>(
             builder: (context, state) {
               TournamentFilter currentFilter = const TournamentFilter();
@@ -39,8 +61,16 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildHeader(context),
-                  SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20.0,
+                      right: 20.0,
+                      top: 16.0,
+                    ),
+                    child: _buildHeader(context),
+                  ),
+
+                  SizedBox(height: 24),
 
                   if (state is TournamentsFeedLoaded)
                     _buildFilter(context, state)
@@ -60,37 +90,12 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                       child: Text(
                         'Ошибка: ${state.errorMessage}',
                         style: AppTextStyles.bodyL.copyWith(
-                          color: AppColors.statusError,
+                          color: AppColors.redColor,
                         ),
                       ),
                     ),
                 ],
               );
-
-              // switch (state) {
-              //   case TournamentsFeedLoading():
-              //     return const Center(child: CircularProgressIndicator());
-              //   case TournamentsFeedError():
-              //     return Center(
-              //       child: Text(
-              //         'Ошибка: ${state.errorMessage}',
-              //         style: AppTextStyles.bodyL.copyWith(
-              //           color: AppColors.statusError,
-              //         ),
-              //       ),
-              //     );
-              //   case TournamentsFeedLoaded():
-              //     return Column(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       children: [
-              //         _buildHeader(),
-              //         SizedBox(height: 16),
-              //         _buildFilter(context, state),
-              //         SizedBox(height: 24),
-              //         _buildTournaments(context, state),
-              //       ],
-              //     );
-              // }
             },
           ),
         ),
@@ -100,79 +105,84 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
 
   Widget _buildHeader(BuildContext context) {
     return SizedBox(
-      height: 48,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      height: 40,
+      child: Stack(
+        alignment: Alignment.centerLeft,
         children: [
-          if (_isSearchActive)
-            Expanded(
-              child: TextField(
-                controller: _searchController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Поиск турнира...',
-                  border: InputBorder.none,
-                  hintStyle: AppTextStyles.bodyL.copyWith(
-                    color: AppColors.textDisabled,
-                  ),
-                  contentPadding: EdgeInsets.zero,
-                ),
-                style: AppTextStyles.h3,
-                onChanged: (value) {
-                  context.read<TournamentsFeedBloc>().add(
-                    TouranmentFeedSearchChanged(value),
-                  );
-                },
-              ),
-            )
-          else
-            Text('CyberClub', style: AppTextStyles.h2),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (_isSearchActive)
-                GestureDetector(
-                  onTap: () {
-                    print('Search is pressed!');
-                    setState(() {
-                      _isSearchActive = false;
-                      _searchController.clear();
-                    });
-                    context.read<TournamentsFeedBloc>().add(
-                      const TouranmentFeedSearchChanged(''),
-                    );
-                  },
-                  child: Icon(
-                    LucideIcons.search,
-                    size: 24,
-                    color: AppColors.textSecondary,
+              Text('CyberClub', style: AppTextStyles.h2),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isSearchActive = !_isSearchActive;
+                      });
+                      if (!_isSearchActive) {
+                        _searchController.clear();
+                        context.read<TournamentsFeedBloc>().add(
+                          TouranmentFeedSearchChanged(''),
+                        );
+                      }
+                    },
+                    child: Icon(
+                      _isSearchActive ? LucideIcons.x : LucideIcons.search,
+                      size: 24,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                )
-              else
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _isSearchActive = true;
-                    });
-                  },
-                  child: Icon(
-                    LucideIcons.search,
-                    size: 24,
-                    color: AppColors.textSecondary,
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    onTap: () => context.push('/notifications'),
+                    child: Icon(
+                      LucideIcons.bell,
+                      size: 24,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-
-              SizedBox(width: 16),
-              GestureDetector(
-                onTap: () {
-                  context.push('/notifications');
-                },
-                child: Icon(
-                  LucideIcons.bell,
-                  size: 24,
-                  color: AppColors.textSecondary,
-                ),
+                ],
               ),
             ],
+          ),
+
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+            width: _isSearchActive
+                ? MediaQuery.of(context).size.width - 112
+                : 0,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.bgSurface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: _isSearchActive
+                  ? TextField(
+                      controller: _searchController,
+                      focusNode: _focusNode,
+                      autofocus: true,
+                      style: AppTextStyles.bodyL,
+                      decoration: const InputDecoration(
+                        hintText: 'Поиск...',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 10,
+                        ),
+                        isDense: true,
+                      ),
+                      onChanged: (value) {
+                        context.read<TournamentsFeedBloc>().add(
+                          TouranmentFeedSearchChanged(value),
+                        );
+                      },
+                    )
+                  : null,
+            ),
           ),
         ],
       ),
@@ -180,37 +190,51 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
   }
 
   Widget _buildFilter(BuildContext context, TournamentsFeedLoaded state) {
+    final selectedDiscipline = state.currentFilter.discipline;
+    List<Discipline> sortedDisciplines = List.from(Discipline.values);
+
+    if (selectedDiscipline != null) {
+      sortedDisciplines.remove(selectedDiscipline);
+      sortedDisciplines.insert(0, selectedDiscipline);
+    }
+
     return SizedBox(
       height: 32,
       child: Row(
         children: [
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (ctx) => FilterBottomSheet(
-                  currentFilter: state.currentFilter,
-                  onApply: (newFilter) {
-                    context.read<TournamentsFeedBloc>().add(
-                      TournamentFilterUpdated(newFilter),
-                    );
-                  },
-                ),
-              );
-            },
-            child: Icon(
-              LucideIcons.slidersHorizontal,
-              size: 32,
-              color: state.currentFilter.isEmpty
-                  ? AppColors.textSecondary
-                  : AppColors.accentPrimary,
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (ctx) => FilterBottomSheet(
+                    currentFilter: state.currentFilter,
+                    onApply: (newFilter) {
+                      context.read<TournamentsFeedBloc>().add(
+                        TournamentFilterUpdated(newFilter),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Icon(
+                LucideIcons.slidersHorizontal,
+                size: 32,
+                color: state.currentFilter.isEmpty
+                    ? AppColors.textSecondary
+                    : AppColors.accentPrimary,
+              ),
             ),
           ),
+
+          SizedBox(width: 16.0),
+
           Expanded(
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.only(right: 4.0),
               children: [
                 GestureDetector(
                   onTap: () {
@@ -227,15 +251,24 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                   ),
                 ),
 
-                ...Discipline.values.map((discipline) {
+                ...sortedDisciplines.map((discipline) {
                   return GestureDetector(
                     onTap: () {
-                      final newFilter = state.currentFilter.copyWith(
-                        discipline: discipline,
-                      );
-                      context.read<TournamentsFeedBloc>().add(
-                        TournamentFilterUpdated(newFilter),
-                      );
+                      if (state.currentFilter.discipline == discipline) {
+                        final newFilter = state.currentFilter.copyWith(
+                          clearDiscipline: true,
+                        );
+                        context.read<TournamentsFeedBloc>().add(
+                          TournamentFilterUpdated(newFilter),
+                        );
+                      } else {
+                        final newFilter = state.currentFilter.copyWith(
+                          discipline: discipline,
+                        );
+                        context.read<TournamentsFeedBloc>().add(
+                          TournamentFilterUpdated(newFilter),
+                        );
+                      }
                     },
                     child: FilterChipWidget(
                       label: discipline.title,
@@ -273,27 +306,30 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
       );
     }
     return Expanded(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          final newFilter = state.currentFilter;
-          context.read<TournamentsFeedBloc>().add(
-            TournamentsFeedRefreshed(newFilter),
-          );
-          await Future.delayed(const Duration(seconds: 1));
-        },
-        child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: state.tournaments.length,
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int index) {
-            final tournament = state.tournaments[index];
-
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: TournamentCard(tournament: tournament),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            final newFilter = state.currentFilter;
+            context.read<TournamentsFeedBloc>().add(
+              TournamentsFeedRefreshed(newFilter),
             );
+            await Future.delayed(const Duration(seconds: 1));
           },
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: state.tournaments.length,
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (BuildContext context, int index) {
+              final tournament = state.tournaments[index];
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: TournamentCard(tournament: tournament),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -47,7 +47,7 @@ class _RegisterViewState extends State<_RegisterView> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Пароли не совпадают'),
-          backgroundColor: AppColors.statusError,
+          backgroundColor: AppColors.redColor,
         ),
       );
       return;
@@ -57,7 +57,7 @@ class _RegisterViewState extends State<_RegisterView> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Все поля должны быть заполнены'),
-          backgroundColor: AppColors.statusError,
+          backgroundColor: AppColors.redColor,
         ),
       );
       return;
@@ -83,7 +83,7 @@ class _RegisterViewState extends State<_RegisterView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
-              backgroundColor: AppColors.statusError,
+              backgroundColor: AppColors.redColor,
             ),
           );
           print(state.errorMessage.toString());

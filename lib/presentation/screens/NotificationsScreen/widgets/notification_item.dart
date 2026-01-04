@@ -69,7 +69,7 @@ class NotificationItem extends StatelessWidget {
       case NotificationType.MATCH:
         return const Icon(
           LucideIcons.swords,
-          color: AppColors.statusLive,
+          color: AppColors.redColor,
           size: 20,
         );
       case NotificationType.SYSTEM:

@@ -194,7 +194,7 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context, true),
             child: const Text(
               'Выйти',
-              style: TextStyle(color: AppColors.statusError),
+              style: TextStyle(color: AppColors.redColor),
             ),
           ),
         ],

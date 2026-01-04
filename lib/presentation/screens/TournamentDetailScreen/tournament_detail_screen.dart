@@ -247,7 +247,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.statusLive,
+                    backgroundColor: AppColors.redColor,
                   ),
                   onPressed: () => context.read<TournamentDetailBloc>().add(
                     TournamentStartRequested(),
@@ -305,7 +305,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                 TournamentFinishRequested(),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.statusWarning,
+                backgroundColor: AppColors.yellowColor,
               ),
               child: const Text('Завершить турнир'),
             ),

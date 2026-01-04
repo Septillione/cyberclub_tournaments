@@ -69,7 +69,24 @@ enum TournamentStatus {
   REGISTRATION_CLOSED,
   LIVE,
   FINISHED,
-  CANCELLED,
+  CANCELLED;
+
+  String get title {
+    switch (this) {
+      case TournamentStatus.ANNOUNCED:
+        return 'Анонсирован';
+      case TournamentStatus.REGISTRATION_OPEN:
+        return 'Регистрация открыта';
+      case TournamentStatus.REGISTRATION_CLOSED:
+        return 'Регистрация закрыта';
+      case TournamentStatus.LIVE:
+        return 'LIVE';
+      case TournamentStatus.FINISHED:
+        return 'Завершен';
+      case TournamentStatus.CANCELLED:
+        return 'Отменен';
+    }
+  }
 }
 
 enum BracketType {
