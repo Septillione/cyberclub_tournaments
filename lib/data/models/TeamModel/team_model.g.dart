@@ -12,6 +12,9 @@ _TeamModel _$TeamModelFromJson(Map<String, dynamic> json) => _TeamModel(
   tag: json['tag'] as String,
   avatarUrl: json['avatarUrl'] as String?,
   description: json['description'] as String?,
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
   ownerId: json['ownerId'] as String,
   count: (json['_count'] as Map<String, dynamic>?)?.map(
     (k, e) => MapEntry(k, (e as num).toInt()),
@@ -35,6 +38,7 @@ Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
       'tag': instance.tag,
       'avatarUrl': instance.avatarUrl,
       'description': instance.description,
+      'createdAt': instance.createdAt?.toIso8601String(),
       'ownerId': instance.ownerId,
       '_count': instance.count,
       'members': instance.members,

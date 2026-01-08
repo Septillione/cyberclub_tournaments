@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/team_search_card.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_card.dart';
 import 'package:flutter/material.dart';
@@ -8,77 +9,170 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class UserTeamsScreen extends StatelessWidget {
+class UserTeamsScreen extends StatefulWidget {
   const UserTeamsScreen({super.key});
+
+  @override
+  State<UserTeamsScreen> createState() => _UserTeamsScreenState();
+}
+
+class _UserTeamsScreenState extends State<UserTeamsScreen> {
+  bool _isSearchActive = false;
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _closeSearch() {
+    if (_isSearchActive) {
+      setState(() {
+        _isSearchActive = false;
+        _searchController.clear();
+      });
+      _focusNode.unfocus();
+      context.read<UserTeamsBloc>().add(const UserTeamsSearchQueryChanged(''));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Мои команды', style: AppTextStyles.h2),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.push('/find-team');
-                        },
-                        child: Icon(
-                          LucideIcons.search,
-                          size: 24,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      GestureDetector(
-                        onTap: () async {
-                          await context.push('/create-team');
-                          if (context.mounted) {
-                            context.read<UserTeamsBloc>().add(
-                              UserTeamsStarted(),
-                            );
+      body: GestureDetector(
+        onTap: _closeSearch,
+        behavior: HitTestBehavior.opaque,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: BlocBuilder<UserTeamsBloc, UserTeamsState>(
+                    builder: (context, state) {
+                      switch (state) {
+                        case UserTeamsLoading():
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        case UserTeamsError():
+                          return Center(
+                            child: Text('Ошибка: ${state.errorMessage}'),
+                          );
+                        case UserTeamsLoaded():
+                          if (!_isSearchActive && state.teams.isEmpty) {
+                            return _buildEmptyState(context);
                           }
-                        },
-                        child: Icon(
-                          LucideIcons.circleFadingPlus,
-                          size: 24,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
+                          return _buildTeamList(
+                            state.teams,
+                            state.currentUserId,
+                          );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return SizedBox(
+      height: 40,
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Мои команды', style: AppTextStyles.h2),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isSearchActive = !_isSearchActive;
+                      });
+                      if (!_isSearchActive) {
+                        _searchController.clear();
+                        // context.read<UserTeamsBloc>().add(
+                        //   UserTeamsSearchQueryChanged(''),
+                        // );
+                        context.read<UserTeamsBloc>().add(UserTeamsStarted());
+                      }
+                    },
+                    child: Icon(
+                      _isSearchActive ? LucideIcons.x : LucideIcons.search,
+                      size: 24,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    onTap: () async {
+                      await context.push('/create-team');
+                      if (context.mounted) {
+                        context.read<UserTeamsBloc>().add(UserTeamsStarted());
+                      }
+                    },
+                    child: Icon(
+                      LucideIcons.circleFadingPlus,
+                      size: 24,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: BlocBuilder<UserTeamsBloc, UserTeamsState>(
-                  builder: (context, state) {
-                    switch (state) {
-                      case UserTeamsLoading():
-                        return const Center(child: CircularProgressIndicator());
-                      case UserTeamsError():
-                        return Center(
-                          child: Text('Ошибка: ${state.errorMessage}'),
-                        );
-                      case UserTeamsLoaded():
-                        if (state.teams.isEmpty) {
-                          return _buildEmptyState(context);
-                        }
-                        return _buildTeamList(state.teams, state.currentUserId);
-                    }
-                  },
-                ),
-              ),
             ],
           ),
-        ),
+
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+            width: _isSearchActive
+                ? MediaQuery.of(context).size.width - 112
+                : 0,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.bgSurface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: _isSearchActive
+                  ? TextField(
+                      controller: _searchController,
+                      focusNode: _focusNode,
+                      autofocus: true,
+                      style: AppTextStyles.bodyL,
+                      decoration: const InputDecoration(
+                        hintText: 'Поиск...',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 10,
+                        ),
+                        isDense: true,
+                      ),
+                      onChanged: (value) {
+                        context.read<UserTeamsBloc>().add(
+                          UserTeamsSearchQueryChanged(value),
+                        );
+                      },
+                    )
+                  : null,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -107,23 +201,6 @@ class UserTeamsScreen extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () async {
-                  await context.push('/create-team');
-                  if (context.mounted) {
-                    context.read<UserTeamsBloc>().add(UserTeamsStarted());
-                  }
-                },
-                child: Text('Создать команду', style: AppTextStyles.button),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/find-team');
-                },
-                child: Text('Найти команду', style: AppTextStyles.button),
-              ),
             ],
           ),
         ),
@@ -132,6 +209,17 @@ class UserTeamsScreen extends StatelessWidget {
   }
 
   Widget _buildTeamList(List<TeamModel> teams, String currentUserId) {
+    if (_isSearchActive == true && _searchController.text == '') {
+      return const SizedBox.shrink();
+    } else if (_isSearchActive == true) {
+      return ListView.builder(
+        itemCount: teams.length,
+        itemBuilder: (context, index) {
+          final team = teams[index];
+          return TeamSearchCard(team: team, currentUserId: currentUserId);
+        },
+      );
+    }
     return ListView.builder(
       itemCount: teams.length,
       itemBuilder: (context, index) {

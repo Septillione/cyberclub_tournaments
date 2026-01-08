@@ -17,18 +17,46 @@ class CardStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
         color: AppColors.bgSurface,
-        borderRadius: BorderRadius.circular(16.0),
+        border: Border.all(color: color, width: 1.2),
       ),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          Text('$title:', style: AppTextStyles.bodyL),
-          const SizedBox(height: 8),
-          Text(value, style: AppTextStyles.h3.copyWith(color: color)),
+          Center(child: Text(title, style: AppTextStyles.bodyL)),
+          SizedBox(height: 8),
+          Flexible(
+            child: Center(
+              child: Text(
+                value,
+                style: AppTextStyles.bodyL.copyWith(height: 1.2),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     padding: EdgeInsets.all(16.0),
+  //     decoration: BoxDecoration(
+  //       color: AppColors.bgSurface,
+  //       borderRadius: BorderRadius.circular(16.0),
+  //     ),
+  //     child: Column(
+  //       children: [
+  //         Text('$title:', style: AppTextStyles.bodyL),
+  //         const SizedBox(height: 8),
+  //         Text(value, style: AppTextStyles.h3.copyWith(color: color)),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

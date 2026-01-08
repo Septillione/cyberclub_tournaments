@@ -20,9 +20,9 @@ class TournamentInfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(20.0),
         color: AppColors.bgSurface,
-        border: Border.all(color: color, width: 1.5),
+        border: Border.all(color: color, width: 1.2),
       ),
       padding: const EdgeInsets.all(16.0),
       child: Column(

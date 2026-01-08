@@ -200,7 +200,12 @@ class _UserTournamentsScreenState extends State<UserTournamentsScreen> {
         Text('Завершенные', style: AppTextStyles.bodyL),
         const SizedBox(height: 16),
         if (finishedTournaments.isEmpty)
-          Center(child: Text('Нет завершенных турниров'))
+          Center(
+            child: Text(
+              'Нет завершенных турниров',
+              style: TextStyle(color: AppColors.textDisabled),
+            ),
+          )
         else
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,

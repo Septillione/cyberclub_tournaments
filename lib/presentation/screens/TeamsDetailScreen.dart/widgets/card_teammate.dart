@@ -23,7 +23,7 @@ class CardTeammate extends StatelessWidget {
     final isCurrentUser = teammate.userId == currentUserId;
 
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: AppColors.bgSurface,
         borderRadius: BorderRadius.circular(12.0),
@@ -33,11 +33,25 @@ class CardTeammate extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // CircleAvatar(
+          //   backgroundImage: user.avatarUrl != null
+          //       ? NetworkImage(user.avatarUrl!)
+          //       : null,
+          //   radius: 20,
+          // ),
           CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.bgMain,
             backgroundImage: user.avatarUrl != null
                 ? NetworkImage(user.avatarUrl!)
                 : null,
-            radius: 20,
+            child: user.avatarUrl == null
+                ? Icon(
+                    LucideIcons.userRound,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  )
+                : null,
           ),
           const SizedBox(width: 12),
           Text(user.nickname, style: AppTextStyles.h3),

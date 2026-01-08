@@ -9,3 +9,22 @@ abstract class UserTeamsEvent extends Equatable {
 }
 
 class UserTeamsStarted extends UserTeamsEvent {}
+
+class UserTeamsSearchQueryChanged extends UserTeamsEvent {
+  final String query;
+  // final bool isSearching;
+
+  const UserTeamsSearchQueryChanged(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+
+class UserTeamsSearchJoinRequested extends UserTeamsEvent {
+  final String teamId;
+
+  const UserTeamsSearchJoinRequested(this.teamId);
+
+  @override
+  List<Object> get props => [teamId];
+}

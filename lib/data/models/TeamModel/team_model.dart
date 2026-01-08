@@ -12,6 +12,7 @@ abstract class TeamModel with _$TeamModel {
     required String tag,
     String? avatarUrl,
     String? description,
+    DateTime? createdAt,
     required String ownerId,
     @JsonKey(name: '_count') Map<String, int>? count,
     @Default([]) List<TeamMemberModel> members,

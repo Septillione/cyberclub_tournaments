@@ -6,10 +6,13 @@ import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dar
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_request.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TeamsDetailScreen extends StatefulWidget {
@@ -27,7 +30,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+          padding: const EdgeInsets.only(left: 20.0, top: 16.0, right: 20.0),
           child: BlocBuilder<TeamDetailBloc, TeamDetailState>(
             builder: (context, state) {
               switch (state) {
@@ -43,18 +46,15 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   final ownerId = team.ownerId;
                   final currentUserId = state.currentUserId;
 
-                  // final segments = isCaptain
-                  //     ? ['Состав', 'Турниры', 'Приглашения']
-                  //     : ['Состав', 'Турниры'];
                   final segments = isCaptain
-                      ? ['Состав', 'Турниры', 'Приглашения']
-                      : ['Состав', 'Турниры'];
+                      ? ['Инфа', 'Состав', 'Турниры', 'Заявки']
+                      : ['Инфа', 'Состав', 'Турниры'];
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildTop(isCaptain, isMember, context),
                       _buildHeader(team),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
                       SegmentedButtonDetails(
                         segments: segments,
                         initialIndex: _selectedSegmentIndex,
@@ -75,7 +75,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                           currentUserId,
                         ),
                       ),
-                      SizedBox(height: 16),
+                      // SizedBox(height: 16),
                     ],
                   );
               }
@@ -108,6 +108,10 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                     value: 'edit',
                     child: Text('Редактировать'),
                   ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Text('Удалить команду'),
+                  ),
                 ] else if (isMember) ...[
                   PopupMenuItem<String>(
                     value: 'leave',
@@ -128,12 +132,12 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 40,
+          radius: 64,
           backgroundImage: team.avatarUrl != null
               ? NetworkImage(team.avatarUrl!)
               : null,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -144,39 +148,12 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Text('[${team.tag}]', style: AppTextStyles.h2),
+            Text(
+              '[${team.tag}]',
+              style: AppTextStyles.h2.copyWith(color: AppColors.accentPrimary),
+            ),
           ],
         ),
-        const SizedBox(height: 16),
-        // Row(
-        //   // mainAxisSize: MainAxisSize.max,
-        //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     Expanded(
-        //       child: CardStatistics(
-        //         title: 'Турниров',
-        //         value: '${team.tournamentsCount}',
-        //         color: AppColors.textPrimary,
-        //       ),
-        //     ),
-        //     SizedBox(width: 8),
-        //     Expanded(
-        //       child: CardStatistics(
-        //         title: 'Побед',
-        //         value: '${team.winsCount}',
-        //         color: AppColors.accentPrimary,
-        //       ),
-        //     ),
-        //     SizedBox(width: 8),
-        //     Expanded(
-        //       child: CardStatistics(
-        //         title: 'Winrate',
-        //         value: '${team.winrate}%',
-        //         color: AppColors.statusSuccess,
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
@@ -192,15 +169,17 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     if (isCaptain) {
       switch (index) {
         case 0:
+          return _buildInfoTab(team);
+        case 1:
           return _buildRosterTab(
             team.members,
             isCaptain,
             ownerId,
             currentUserId,
           );
-        case 1:
-          return _buildTournamentsTab(team);
         case 2:
+          return _buildTournamentsTab(team);
+        case 3:
           return _buildRequestsTab(requests);
         default:
           return const SizedBox.shrink();
@@ -208,29 +187,105 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     } else {
       switch (index) {
         case 0:
+          return _buildInfoTab(team);
+        case 1:
           return _buildRosterTab(
             team.members,
             isCaptain,
             ownerId,
             currentUserId,
           );
-        case 1:
+        case 2:
           return _buildTournamentsTab(team);
         default:
           return const SizedBox.shrink();
       }
     }
-    // List<Widget> captainWidgets = [
-    //   _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
-    //   // _buildTournamentsTab(team),
-    //   _buildRequestsTab(requests),
-    // ];
-    // List<Widget> playerWidgets = [
-    //   _buildRosterTab(team.members, isCaptain, ownerId, currentUserId),
-    //   // _buildTournamentsTab(team),
-    // ];
+  }
 
-    // return isCaptain ? captainWidgets[index] : playerWidgets[index];
+  Widget _buildInfoTab(TeamModel team) {
+    final captain = team.members.firstWhere(
+      (m) => m.userId == team.ownerId,
+      orElse: () => team.members.first,
+    );
+
+    final date = DateFormat(
+      'd MMMM yyyy',
+      'ru',
+    ).format(team.createdAt ?? DateTime.now());
+
+    final tournamentCount = team.entries.length;
+    final winsCount = 0;
+    final winrate = tournamentCount > 0
+        ? ((winsCount / tournamentCount) * 100).toStringAsFixed(0)
+        : '0';
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: CardStatistics(
+                    title: 'Турниров',
+                    value: '$tournamentCount',
+                    color: AppColors.blueColor,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: CardStatistics(
+                    title: 'Побед',
+                    value: '$winsCount',
+                    color: AppColors.redColor,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: CardStatistics(
+                    title: 'Winrate',
+                    value: '$winrate%',
+                    color: AppColors.greenColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text('Игры', style: AppTextStyles.bodyL),
+          const SizedBox(height: 16),
+          Text('Соцсети', style: AppTextStyles.bodyL),
+          const SizedBox(height: 16),
+          Text('Описание', style: AppTextStyles.bodyL),
+          const SizedBox(height: 8),
+          Text('${team.description}'),
+          const SizedBox(height: 16),
+          _buildInfoRow('Капитан', captain.user.nickname),
+          const SizedBox(height: 16),
+          _buildInfoRow('Дата создания', date),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: AppTextStyles.bodyL.copyWith(color: AppColors.textSecondary),
+        ),
+        Text(
+          value,
+          style: AppTextStyles.bodyL.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
   }
 
   Widget _buildRosterTab(
@@ -244,10 +299,11 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
         if (isCaptain && index == teammates.length) {
           return Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Пригласить игрока'),
-            ),
+            child: GradientButton(text: 'Пригласить игрока', onPressed: () {}),
+            // child: ElevatedButton(
+            //   onPressed: () {},
+            //   child: const Text('Пригласить игрока'),
+            // ),
           );
         }
         final teammate = teammates[index];
@@ -288,20 +344,6 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
       },
     );
   }
-
-  // Widget _buildTournamentsTab(TeamModel team) {
-  //   return ListView.builder(
-  //     padding: EdgeInsets.zero,
-  //     itemCount: team.tournaments.length,
-  //     itemBuilder: (context, index) {
-  //       final tournament = team.tournaments[index];
-  //       return Padding(
-  //         padding: const EdgeInsets.only(bottom: 16.0),
-  //         child: TeamTournamentCard(tournament: tournament, team: team),
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _buildRequestsTab(List<JoinRequestModel> requests) {
     if (requests.isEmpty) {

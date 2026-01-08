@@ -17,6 +17,7 @@ class TeamCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('DEBUG: Team Owner: ${team.ownerId} vs Me: $currentUserId');
+
     final isCaptain = team.ownerId == currentUserId;
     final avatarUrls = team.members
         .map((m) => m.user.avatarUrl ?? '')
@@ -25,7 +26,7 @@ class TeamCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(24.0),
         color: AppColors.bgSurface,
       ),
       margin: const EdgeInsets.only(bottom: 16.0),
@@ -36,7 +37,7 @@ class TeamCard extends StatelessWidget {
             context.read<UserTeamsBloc>().add(UserTeamsStarted());
           }
         },
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(24.0),
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
@@ -45,57 +46,111 @@ class TeamCard extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    radius: 20,
+                    radius: 36,
                     backgroundImage: team.avatarUrl != null
                         ? NetworkImage(team.avatarUrl!)
                         : null,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${team.name} [${team.tag}]',
-                    style: AppTextStyles.h3.copyWith(fontSize: 18),
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(team.name, style: AppTextStyles.h3),
+                      Text(
+                        '[${team.tag}]',
+                        style: AppTextStyles.h3.copyWith(
+                          color: AppColors.accentPrimary,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Роль: ', style: AppTextStyles.bodyM),
-                  if (isCaptain) ...[
-                    Text(
-                      'Капитан',
-                      style: AppTextStyles.bodyM.copyWith(
-                        color: AppColors.textPrimary,
+                  Row(
+                    children: [
+                      Text('Роль: ', style: AppTextStyles.bodyM),
+                      if (isCaptain)
+                        Text(
+                          'Капитан',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        )
+                      else
+                        Text(
+                          'Участник',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Text('Состав ', style: AppTextStyles.bodyM),
+                      Text(
+                        '(${team.members.length}/5)',
+                        style: AppTextStyles.bodyM.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
                       ),
-                    ),
-                  ] else ...[
-                    Text(
-                      'Участник',
-                      style: AppTextStyles.bodyM.copyWith(
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
               const Divider(color: AppColors.bgMain, height: 1),
               const SizedBox(height: 16),
-              Text(
-                'Участников: ${team.count?['members'] ?? team.members.length}',
-                style: AppTextStyles.bodyM,
-              ),
-              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  OverlappingAvatars(
-                    avatarUrls: avatarUrls,
-                    totalCount: team.count?['members'] ?? team.members.length,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: AppColors.accentPrimary,
+                      ),
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: AppColors.accentPrimary,
+                      ),
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: AppColors.accentPrimary,
+                      ),
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: AppColors.accentPrimary,
+                      ),
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: AppColors.accentPrimary,
+                      ),
+                    ],
                   ),
-                  Icon(LucideIcons.arrowRight, color: AppColors.textPrimary),
+                  const Icon(
+                    LucideIcons.arrowRight,
+                    color: AppColors.textPrimary,
+                    size: 24,
+                  ),
                 ],
               ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     OverlappingAvatars(
+              //       avatarUrls: avatarUrls,
+              //       totalCount: team.count?['members'] ?? team.members.length,
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
