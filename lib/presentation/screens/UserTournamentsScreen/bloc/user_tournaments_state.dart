@@ -13,11 +13,13 @@ final class UserTournamentsLoaded extends UserTournamentsState {
   final List<TournamentModel> activeTournaments;
   final List<TournamentModel> upcomingTournaments;
   final List<TournamentModel> finishedTournaments;
+  final String currentUserId;
 
   const UserTournamentsLoaded({
     required this.activeTournaments,
     required this.upcomingTournaments,
     required this.finishedTournaments,
+    required this.currentUserId,
   });
 
   @override
@@ -25,6 +27,7 @@ final class UserTournamentsLoaded extends UserTournamentsState {
     activeTournaments,
     upcomingTournaments,
     finishedTournaments,
+    currentUserId,
   ];
 }
 

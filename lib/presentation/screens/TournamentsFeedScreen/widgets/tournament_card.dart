@@ -131,7 +131,7 @@ class TournamentCard extends StatelessWidget {
         color = AppColors.yellowColor;
         break;
       case TournamentStatus.LIVE:
-        text = 'Идет';
+        text = 'LIVE';
         color = AppColors.redColor;
         break;
       case TournamentStatus.FINISHED:

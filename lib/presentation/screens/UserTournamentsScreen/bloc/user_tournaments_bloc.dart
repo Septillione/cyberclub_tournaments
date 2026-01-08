@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
+import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -10,11 +11,16 @@ part 'user_tournaments_event.dart';
 class UserTournamentsBloc
     extends Bloc<UserTournamentsEvent, UserTournamentsState> {
   final TournamentRepository _tournamentRepository;
+  final AuthRepository _authRepository;
 
-  UserTournamentsBloc({required TournamentRepository tournamentRepository})
-    : _tournamentRepository = tournamentRepository,
-      super(UserTournamentsLoading()) {
+  UserTournamentsBloc({
+    required TournamentRepository tournamentRepository,
+    required AuthRepository authRepository,
+  }) : _tournamentRepository = tournamentRepository,
+       _authRepository = authRepository,
+       super(UserTournamentsLoading()) {
     on<UserTournamentsStarted>(_onStarted);
+    on<UserTournamentsRefreshed>(_onRefresheUserTournaments);
   }
 
   Future<void> _onStarted(
@@ -30,6 +36,7 @@ class UserTournamentsBloc
       final List<TournamentModel> active = [];
       final List<TournamentModel> upcoming = [];
       final List<TournamentModel> finished = [];
+      final currentUserId = await _authRepository.getUserId();
 
       for (final tournament in userTournaments) {
         if (tournament.status == TournamentStatus.LIVE) {
@@ -47,6 +54,45 @@ class UserTournamentsBloc
           activeTournaments: active,
           upcomingTournaments: upcoming,
           finishedTournaments: finished,
+          currentUserId: currentUserId ?? '',
+        ),
+      );
+    } catch (e) {
+      emit(UserTournamentsError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onRefresheUserTournaments(
+    UserTournamentsRefreshed event,
+    Emitter<UserTournamentsState> emit,
+  ) async {
+    try {
+      final userTournaments = await _tournamentRepository
+          .fetchUserTournaments();
+
+      final now = DateTime.now();
+      final List<TournamentModel> active = [];
+      final List<TournamentModel> upcoming = [];
+      final List<TournamentModel> finished = [];
+      final currentUserId = await _authRepository.getUserId();
+
+      for (final tournament in userTournaments) {
+        if (tournament.status == TournamentStatus.LIVE) {
+          active.add(tournament);
+        } else if (tournament.status == TournamentStatus.FINISHED ||
+            tournament.status == TournamentStatus.CANCELLED) {
+          finished.add(tournament);
+        } else if (tournament.startDate.isAfter(now)) {
+          upcoming.add(tournament);
+        }
+      }
+
+      emit(
+        UserTournamentsLoaded(
+          activeTournaments: active,
+          upcomingTournaments: upcoming,
+          finishedTournaments: finished,
+          currentUserId: currentUserId ?? '',
         ),
       );
     } catch (e) {

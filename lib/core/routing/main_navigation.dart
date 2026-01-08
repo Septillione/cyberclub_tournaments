@@ -28,6 +28,7 @@ class MainNavigation extends StatelessWidget {
         BlocProvider(
           create: (context) => UserTournamentsBloc(
             tournamentRepository: context.read<TournamentRepository>(),
+            authRepository: context.read<AuthRepository>(),
           )..add(UserTournamentsStarted()),
         ),
         BlocProvider(

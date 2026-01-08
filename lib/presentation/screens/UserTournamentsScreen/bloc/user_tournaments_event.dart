@@ -9,3 +9,5 @@ abstract class UserTournamentsEvent extends Equatable {
 }
 
 class UserTournamentsStarted extends UserTournamentsEvent {}
+
+class UserTournamentsRefreshed extends UserTournamentsEvent {}
