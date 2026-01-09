@@ -21,7 +21,7 @@ class TournamentSkeletonCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24.0),
           // Важно: для Shimmer контейнер должен иметь цвет,
           // чтобы эффект был виден (любой, хоть черный)
-          color: Colors.black,
+          // color: Colors.black,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

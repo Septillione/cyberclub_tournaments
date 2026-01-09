@@ -25,13 +25,11 @@ class UpcomingTournamentCard extends StatelessWidget {
         (e) => e.userId == currentUserId,
       );
 
-      if (entry != null) {
-        if (tournament.teamMode == TeamMode.solo) {
-          myName = entry.user.nickname;
-        } else {
-          myName = entry.team?.name ?? 'Моя команда';
-          tag = entry.team?.tag ?? '';
-        }
+      if (tournament.teamMode == TeamMode.solo) {
+        myName = entry.user.nickname;
+      } else {
+        myName = entry.team?.name ?? 'Моя команда';
+        tag = entry.team?.tag ?? '';
       }
     } catch (e) {
       print("ERROR finding entry: $e");

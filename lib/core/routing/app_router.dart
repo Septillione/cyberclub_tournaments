@@ -33,9 +33,31 @@ class AppRouter {
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+
       GoRoute(
         path: '/create-team',
-        builder: (context, state) => const CreateTeamScreen(),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const CreateTeamScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
       ),
       GoRoute(
         path: '/find-team',
@@ -146,17 +168,46 @@ class AppRouter {
               GoRoute(
                 path: ':teamId',
                 parentNavigatorKey: _rootNavigatorKey,
-                builder: (context, state) {
+                pageBuilder: (context, state) {
                   final teamId = state.pathParameters['teamId']!;
+                  return CustomTransitionPage(
+                    child: BlocProvider(
+                      create: (context) => TeamDetailBloc(
+                        teamRepository: context.read<TeamRepository>(),
+                        authRepository: context.read<AuthRepository>(),
+                      )..add(TeamDetailStarted(teamId: teamId)),
+                      child: const TeamsDetailScreen(),
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.easeOutCubic;
 
-                  return BlocProvider(
-                    create: (context) => TeamDetailBloc(
-                      teamRepository: context.read<TeamRepository>(),
-                      authRepository: context.read<AuthRepository>(),
-                    )..add(TeamDetailStarted(teamId: teamId)),
-                    child: const TeamsDetailScreen(),
+                          var tween = Tween(
+                            begin: begin,
+                            end: end,
+                          ).chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                    key: state.pageKey,
                   );
                 },
+                // builder: (context, state) {
+                //   final teamId = state.pathParameters['teamId']!;
+
+                //   return BlocProvider(
+                //     create: (context) => TeamDetailBloc(
+                //       teamRepository: context.read<TeamRepository>(),
+                //       authRepository: context.read<AuthRepository>(),
+                //     )..add(TeamDetailStarted(teamId: teamId)),
+                //     child: const TeamsDetailScreen(),
+                //   );
+                // },
               ),
             ],
           ),

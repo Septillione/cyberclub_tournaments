@@ -40,7 +40,7 @@ class ActiveTournamentCard extends StatelessWidget {
 
     MatchModel? nextMatch;
     try {
-      if (tournament.matches != null && tournament.matches.isNotEmpty) {
+      if (tournament.matches.isNotEmpty) {
         final sortedMatches = List<MatchModel>.from(tournament.matches)
           ..sort((a, b) => a.round.compareTo(b.round));
 
@@ -50,8 +50,7 @@ class ActiveTournamentCard extends StatelessWidget {
               (m.score1 == 0 && m.score2 == 0),
           orElse: () => sortedMatches.last,
         );
-        if (nextMatch != null &&
-            (nextMatch.score1 != 0 || nextMatch.score2 != 0)) {
+        if ((nextMatch.score1 != 0 || nextMatch.score2 != 0)) {
           nextMatch = null;
         }
       }

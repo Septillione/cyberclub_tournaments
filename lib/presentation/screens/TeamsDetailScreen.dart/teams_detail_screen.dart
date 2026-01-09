@@ -220,6 +220,8 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
         ? ((winsCount / tournamentCount) * 100).toStringAsFixed(0)
         : '0';
 
+    final gamesList = team.gamesList;
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -255,17 +257,38 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
-          Text('Игры', style: AppTextStyles.bodyL),
-          const SizedBox(height: 16),
-          Text('Соцсети', style: AppTextStyles.bodyL),
-          const SizedBox(height: 16),
-          Text('Описание', style: AppTextStyles.bodyL),
+
+          const SizedBox(height: 32),
+
+          Text('Игры', style: AppTextStyles.h3),
           const SizedBox(height: 8),
-          Text('${team.description}'),
+          Row(
+            children: [
+              ...gamesList?.map(
+                    (game) => Text('$game  |  ', style: AppTextStyles.bodyM),
+                  ) ??
+                  [],
+            ],
+          ),
+
           const SizedBox(height: 16),
+
+          Text('Соцсети', style: AppTextStyles.h3),
+          const SizedBox(height: 8),
+          Text('${team.socialMedia}', style: AppTextStyles.bodyM),
+
+          const SizedBox(height: 16),
+
+          Text('Описание', style: AppTextStyles.h3),
+          const SizedBox(height: 8),
+          Text('${team.description}', style: AppTextStyles.bodyM),
+
+          const SizedBox(height: 32),
+
           _buildInfoRow('Капитан', captain.user.nickname),
+
           const SizedBox(height: 16),
+
           _buildInfoRow('Дата создания', date),
         ],
       ),
@@ -300,10 +323,6 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
           return Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: GradientButton(text: 'Пригласить игрока', onPressed: () {}),
-            // child: ElevatedButton(
-            //   onPressed: () {},
-            //   child: const Text('Пригласить игрока'),
-            // ),
           );
         }
         final teammate = teammates[index];
@@ -320,15 +339,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
 
   Widget _buildTournamentsTab(TeamModel team) {
     if (team.entries.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 32.0),
-          child: Text(
-            'Команда еще не участвовала в турнирах',
-            style: AppTextStyles.bodyM,
-          ),
-        ),
-      );
+      return Center(child: Text('Команда еще не участвовала в турнирах'));
     }
 
     return ListView.builder(

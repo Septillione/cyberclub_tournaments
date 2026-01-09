@@ -21,7 +21,14 @@ class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {
   ) async {
     emit(CreateTeamLoading());
     try {
-      await _teamRepository.createTeam(event.name, event.tag, event.avatarUrl);
+      await _teamRepository.createTeam(
+        event.name,
+        event.tag,
+        event.description,
+        event.socialMedia,
+        event.gamesList,
+        event.avatarUrl,
+      );
       emit(CreateTeamSuccess());
     } catch (e) {
       emit(CreateTeamFailure(errorMessage: e.toString()));

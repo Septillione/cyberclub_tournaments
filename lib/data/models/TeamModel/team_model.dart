@@ -12,6 +12,8 @@ abstract class TeamModel with _$TeamModel {
     required String tag,
     String? avatarUrl,
     String? description,
+    String? socialMedia,
+    @Default([]) List<String>? gamesList,
     DateTime? createdAt,
     required String ownerId,
     @JsonKey(name: '_count') Map<String, int>? count,

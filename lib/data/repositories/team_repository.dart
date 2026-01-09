@@ -7,10 +7,24 @@ class TeamRepository {
 
   TeamRepository({required ApiClient apiClient}) : _apiClient = apiClient;
 
-  Future<void> createTeam(String name, String tag, String? avatarUrl) async {
+  Future<void> createTeam(
+    String name,
+    String tag,
+    String? description,
+    String? socialMedia,
+    List<String>? gamesList,
+    String? avatarUrl,
+  ) async {
     await _apiClient.dio.post(
       '/teams',
-      data: {'name': name, 'tag': tag, 'avatarUrl': avatarUrl},
+      data: {
+        'name': name,
+        'tag': tag,
+        'description': description,
+        'socialMedia': socialMedia,
+        'gamesList': gamesList,
+        'avatarUrl': avatarUrl,
+      },
     );
   }
 

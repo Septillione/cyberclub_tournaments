@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TeamModel {
 
- String get id; String get name; String get tag; String? get avatarUrl; String? get description; DateTime? get createdAt; String get ownerId;@JsonKey(name: '_count') Map<String, int>? get count; List<TeamMemberModel> get members; List<TeamEntryModel> get entries;
+ String get id; String get name; String get tag; String? get avatarUrl; String? get description; String? get socialMedia; List<String>? get gamesList; DateTime? get createdAt; String get ownerId;@JsonKey(name: '_count') Map<String, int>? get count; List<TeamMemberModel> get members; List<TeamEntryModel> get entries;
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TeamModelCopyWith<TeamModel> get copyWith => _$TeamModelCopyWithImpl<TeamModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.count, count)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.entries, entries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.socialMedia, socialMedia) || other.socialMedia == socialMedia)&&const DeepCollectionEquality().equals(other.gamesList, gamesList)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.count, count)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.entries, entries));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,createdAt,ownerId,const DeepCollectionEquality().hash(count),const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(entries));
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,socialMedia,const DeepCollectionEquality().hash(gamesList),createdAt,ownerId,const DeepCollectionEquality().hash(count),const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(entries));
 
 @override
 String toString() {
-  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
+  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, socialMedia: $socialMedia, gamesList: $gamesList, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TeamModelCopyWith<$Res>  {
   factory $TeamModelCopyWith(TeamModel value, $Res Function(TeamModel) _then) = _$TeamModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String tag, String? avatarUrl, String? description, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
+ String id, String name, String tag, String? avatarUrl, String? description, String? socialMedia, List<String>? gamesList, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
 });
 
 
@@ -65,14 +65,16 @@ class _$TeamModelCopyWithImpl<$Res>
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? socialMedia = freezed,Object? gamesList = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,tag: null == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
 as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,socialMedia: freezed == socialMedia ? _self.socialMedia : socialMedia // ignore: cast_nullable_to_non_nullable
+as String?,gamesList: freezed == gamesList ? _self.gamesList : gamesList // ignore: cast_nullable_to_non_nullable
+as List<String>?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
 as String,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as Map<String, int>?,members: null == members ? _self.members : members // ignore: cast_nullable_to_non_nullable
@@ -162,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeamModel() when $default != null:
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
   return orElse();
 
 }
@@ -183,10 +185,10 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)  $default,) {final _that = this;
 switch (_that) {
 case _TeamModel():
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +205,10 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,) {final _that = this;
 switch (_that) {
 case _TeamModel() when $default != null:
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
   return null;
 
 }
@@ -218,7 +220,7 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 @JsonSerializable()
 
 class _TeamModel implements TeamModel {
-  const _TeamModel({required this.id, required this.name, required this.tag, this.avatarUrl, this.description, this.createdAt, required this.ownerId, @JsonKey(name: '_count') final  Map<String, int>? count, final  List<TeamMemberModel> members = const [], final  List<TeamEntryModel> entries = const []}): _count = count,_members = members,_entries = entries;
+  const _TeamModel({required this.id, required this.name, required this.tag, this.avatarUrl, this.description, this.socialMedia, final  List<String>? gamesList = const [], this.createdAt, required this.ownerId, @JsonKey(name: '_count') final  Map<String, int>? count, final  List<TeamMemberModel> members = const [], final  List<TeamEntryModel> entries = const []}): _gamesList = gamesList,_count = count,_members = members,_entries = entries;
   factory _TeamModel.fromJson(Map<String, dynamic> json) => _$TeamModelFromJson(json);
 
 @override final  String id;
@@ -226,6 +228,16 @@ class _TeamModel implements TeamModel {
 @override final  String tag;
 @override final  String? avatarUrl;
 @override final  String? description;
+@override final  String? socialMedia;
+ final  List<String>? _gamesList;
+@override@JsonKey() List<String>? get gamesList {
+  final value = _gamesList;
+  if (value == null) return null;
+  if (_gamesList is EqualUnmodifiableListView) return _gamesList;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 @override final  DateTime? createdAt;
 @override final  String ownerId;
  final  Map<String, int>? _count;
@@ -265,16 +277,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._count, _count)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._entries, _entries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.socialMedia, socialMedia) || other.socialMedia == socialMedia)&&const DeepCollectionEquality().equals(other._gamesList, _gamesList)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._count, _count)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._entries, _entries));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,createdAt,ownerId,const DeepCollectionEquality().hash(_count),const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_entries));
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,socialMedia,const DeepCollectionEquality().hash(_gamesList),createdAt,ownerId,const DeepCollectionEquality().hash(_count),const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_entries));
 
 @override
 String toString() {
-  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
+  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, socialMedia: $socialMedia, gamesList: $gamesList, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
 }
 
 
@@ -285,7 +297,7 @@ abstract mixin class _$TeamModelCopyWith<$Res> implements $TeamModelCopyWith<$Re
   factory _$TeamModelCopyWith(_TeamModel value, $Res Function(_TeamModel) _then) = __$TeamModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String tag, String? avatarUrl, String? description, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
+ String id, String name, String tag, String? avatarUrl, String? description, String? socialMedia, List<String>? gamesList, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
 });
 
 
@@ -302,14 +314,16 @@ class __$TeamModelCopyWithImpl<$Res>
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? socialMedia = freezed,Object? gamesList = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
   return _then(_TeamModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,tag: null == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
 as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,socialMedia: freezed == socialMedia ? _self.socialMedia : socialMedia // ignore: cast_nullable_to_non_nullable
+as String?,gamesList: freezed == gamesList ? _self._gamesList : gamesList // ignore: cast_nullable_to_non_nullable
+as List<String>?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_nullable_to_non_nullable
 as String,count: freezed == count ? _self._count : count // ignore: cast_nullable_to_non_nullable
 as Map<String, int>?,members: null == members ? _self._members : members // ignore: cast_nullable_to_non_nullable

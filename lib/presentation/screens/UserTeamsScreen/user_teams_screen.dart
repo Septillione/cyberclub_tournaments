@@ -1,12 +1,14 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/team_search_card.dart';
+import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_search_card.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_card.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/tournament_skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class UserTeamsScreen extends StatefulWidget {
@@ -58,8 +60,12 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
                     builder: (context, state) {
                       switch (state) {
                         case UserTeamsLoading():
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return const TournamentSkeletonCard();
+                            },
                           );
                         case UserTeamsError():
                           return Center(
@@ -69,9 +75,23 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
                           if (!_isSearchActive && state.teams.isEmpty) {
                             return _buildEmptyState(context);
                           }
-                          return _buildTeamList(
-                            state.teams,
-                            state.currentUserId,
+
+                          return LiquidPullToRefresh(
+                            color: AppColors.bgMain,
+                            backgroundColor: AppColors.accentPrimary,
+                            height: 60,
+                            animSpeedFactor: 5.0,
+                            showChildOpacityTransition: false,
+                            onRefresh: () async {
+                              context.read<UserTeamsBloc>().add(
+                                UserTeamsRefreshed(),
+                              );
+                              await Future.delayed(const Duration(seconds: 1));
+                            },
+                            child: _buildTeamList(
+                              state.teams,
+                              state.currentUserId,
+                            ),
                           );
                       }
                     },
@@ -210,7 +230,7 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
 
   Widget _buildTeamList(List<TeamModel> teams, String currentUserId) {
     if (_isSearchActive == true && _searchController.text == '') {
-      return const SizedBox.shrink();
+      return const Center(child: Text('Поиск команд...'));
     } else if (_isSearchActive == true) {
       return ListView.builder(
         itemCount: teams.length,

@@ -2,7 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/bloc/team_search_bloc.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/team_search_card.dart';
+import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_search_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -28,3 +28,5 @@ class UserTeamsSearchJoinRequested extends UserTeamsEvent {
   @override
   List<Object> get props => [teamId];
 }
+
+class UserTeamsRefreshed extends UserTeamsEvent {}

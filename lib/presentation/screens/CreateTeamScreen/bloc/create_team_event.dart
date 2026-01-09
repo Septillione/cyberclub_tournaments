@@ -11,14 +11,27 @@ abstract class CreateTeamEvent extends Equatable {
 class CreateTeamSubmitted extends CreateTeamEvent {
   final String name;
   final String tag;
+  final String? description;
+  final String? socialMedia;
+  final List<String>? gamesList;
   final String? avatarUrl;
 
   const CreateTeamSubmitted({
     required this.name,
     required this.tag,
+    this.description,
+    this.socialMedia,
+    this.gamesList,
     this.avatarUrl,
   });
 
   @override
-  List<Object> get props => [name, tag, ?avatarUrl];
+  List<Object> get props => [
+    name,
+    tag,
+    ?description,
+    ?socialMedia,
+    ?gamesList,
+    ?avatarUrl,
+  ];
 }

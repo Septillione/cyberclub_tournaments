@@ -3,7 +3,6 @@ import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FinishedTournamentCard extends StatelessWidget {
   final TournamentModel tournament;
@@ -25,13 +24,11 @@ class FinishedTournamentCard extends StatelessWidget {
         (e) => e.userId == currentUserId,
       );
 
-      if (entry != null) {
-        if (tournament.teamMode == TeamMode.solo) {
-          myName = entry.user.nickname;
-        } else {
-          myName = entry.team?.name ?? 'Моя команда';
-          tag = entry.team?.tag ?? '';
-        }
+      if (tournament.teamMode == TeamMode.solo) {
+        myName = entry.user.nickname;
+      } else {
+        myName = entry.team?.name ?? 'Моя команда';
+        tag = entry.team?.tag ?? '';
       }
     } catch (e) {
       print("ERROR finding entry: $e");

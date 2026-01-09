@@ -1,7 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/bloc/team_search_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ class TeamSearchCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMember = team.members.any((m) => m.userId == currentUserId);
     final isOwner = team.ownerId == currentUserId;
+    final gamesList = team.gamesList;
 
     return Container(
       decoration: BoxDecoration(
@@ -62,7 +62,15 @@ class TeamSearchCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Text('Игры: ${team.description}'),
+              Row(
+                children: [
+                  ...gamesList?.map(
+                        (game) =>
+                            Text('$game  |  ', style: AppTextStyles.bodyM),
+                      ) ??
+                      [],
+                ],
+              ),
               const SizedBox(height: 16),
               if (isMember || isOwner) ...[
                 Padding(

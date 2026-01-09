@@ -31,6 +31,7 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
       transformer: debounce(_duration),
     );
     on<UserTeamsSearchJoinRequested>(_onJoinRequested);
+    on<UserTeamsRefreshed>(_onRefreshed);
   }
 
   Future<void> _onStarted(
@@ -93,6 +94,20 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
       } catch (e) {
         emit(UserTeamsError('$e'));
       }
+    }
+  }
+
+  Future<void> _onRefreshed(
+    UserTeamsEvent event,
+    Emitter<UserTeamsState> emit,
+  ) async {
+    emit(UserTeamsLoading());
+    try {
+      final List<TeamModel> teams = await _teamRepository.fetchUserTeams();
+      final currentUserId = await _authRepository.getUserId();
+      emit(UserTeamsLoaded(teams: teams, currentUserId: currentUserId ?? ''));
+    } catch (e) {
+      emit(UserTeamsError(e.toString()));
     }
   }
 }
