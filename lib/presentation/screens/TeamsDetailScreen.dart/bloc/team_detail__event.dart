@@ -45,3 +45,13 @@ class TeamDetailJoinRequested extends TeamDetailEvent {
   @override
   List<Object> get props => [teamId];
 }
+
+class TeamDetailLeaveClicked extends TeamDetailEvent {
+  final String teamId;
+  const TeamDetailLeaveClicked({required this.teamId});
+}
+
+class TeamDetailDeleteClicked extends TeamDetailEvent {
+  final String teamId;
+  const TeamDetailDeleteClicked({required this.teamId});
+}

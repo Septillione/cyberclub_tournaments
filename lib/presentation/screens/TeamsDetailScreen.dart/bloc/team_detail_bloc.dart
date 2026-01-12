@@ -22,6 +22,8 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
     on<TeamDetailStarted>(_onStarted);
     on<AcceptRequestClicked>(_onAcceptRequest);
     on<RejectRequestClicked>(_onRejectRequest);
+    on<TeamDetailLeaveClicked>(_onLeaveTeam);
+    on<TeamDetailDeleteClicked>(_onDeleteTeam);
   }
 
   Future<void> _onStarted(
@@ -81,6 +83,28 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
         final teamId = (state as TeamDetailLoaded).team.id;
         add(TeamDetailStarted(teamId: teamId));
       }
+    } catch (e) {
+      emit(TeamDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onLeaveTeam(
+    TeamDetailLeaveClicked event,
+    Emitter<TeamDetailState> emit,
+  ) async {
+    try {
+      await _teamRepository.leaveTeam(event.teamId);
+    } catch (e) {
+      emit(TeamDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onDeleteTeam(
+    TeamDetailDeleteClicked event,
+    Emitter<TeamDetailState> emit,
+  ) async {
+    try {
+      await _teamRepository.deleteTeam(event.teamId);
     } catch (e) {
       emit(TeamDetailError(errorMessage: e.toString()));
     }

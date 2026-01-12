@@ -220,6 +220,7 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
+                  useRootNavigator: true,
                   builder: (ctx) => FilterBottomSheet(
                     currentFilter: state.currentFilter,
                     onApply: (newFilter) {

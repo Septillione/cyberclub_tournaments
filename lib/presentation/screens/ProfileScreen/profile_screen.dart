@@ -4,6 +4,7 @@ import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/card_setting.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -27,17 +28,55 @@ class ProfileScreen extends StatelessWidget {
                   return Center(child: Text('Ошибка: ${state.errorMessage}'));
                 case ProfileLoaded():
                   final user = state.userProfile;
+
+                  final tournamentCount = user.entries.length;
+                  final winsCount = 0;
+                  final winrate = tournamentCount > 0
+                      ? ((winsCount / tournamentCount) * 100).toStringAsFixed(0)
+                      : '0';
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildTop(context),
+                      const SizedBox(height: 24),
                       Expanded(
                         child: ListView(
                           children: [
                             _buildHeader(user),
                             const SizedBox(height: 24),
 
-                            const SizedBox(height: 16),
+                            IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(
+                                    child: CardStatistics(
+                                      title: 'Турниров',
+                                      value: '$tournamentCount',
+                                      color: AppColors.blueColor,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: CardStatistics(
+                                      title: 'Побед',
+                                      value: '$winsCount',
+                                      color: AppColors.redColor,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: CardStatistics(
+                                      title: 'Winrate',
+                                      value: '$winrate%',
+                                      color: AppColors.greenColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 24),
                             CardSetting(
                               icon: LucideIcons.bell,
                               title: 'Уведомления',
@@ -128,12 +167,12 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Column _buildHeader(UserProfileModel user) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _buildHeader(UserProfileModel user) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
-          radius: 40,
+          radius: 72,
           backgroundImage: user.avatarUrl != null
               ? NetworkImage(user.avatarUrl!)
               : null,
@@ -141,43 +180,75 @@ class ProfileScreen extends StatelessWidget {
               ? null
               : const Icon(LucideIcons.circleUserRound, size: 80),
         ),
-        const SizedBox(height: 24),
-        Text(
-          user.nickname,
-          style: AppTextStyles.h2,
-          textAlign: TextAlign.center,
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user.nickname,
+                style: AppTextStyles.h2,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text('${user.bio}'),
+            ],
+          ),
         ),
-        const SizedBox(height: 16),
-        // Row(
-        //   children: [
-        //     Expanded(
-        //       child: CardStatistics(
-        //         title: 'Турниры',
-        //         value: '${user.tournamentsPlayed}',
-        //         color: AppColors.textPrimary,
-        //       ),
-        //     ),
-        //     SizedBox(width: 8),
-        //     Expanded(
-        //       child: CardStatistics(
-        //         title: 'Победы',
-        //         value: '${user.tournamentsWon}',
-        //         color: AppColors.accentPrimary,
-        //       ),
-        //     ),
-        //     SizedBox(width: 8),
-        //     Expanded(
-        //       child: CardStatistics(
-        //         title: 'Winrate',
-        //         value: '${user.winrate}%',
-        //         color: AppColors.statusSuccess,
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
+
+  // Column _buildHead(UserProfileModel user) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     children: [
+  //       CircleAvatar(
+  //         radius: 72,
+  //         backgroundImage: user.avatarUrl != null
+  //             ? NetworkImage(user.avatarUrl!)
+  //             : null,
+  //         child: user.avatarUrl != null
+  //             ? null
+  //             : const Icon(LucideIcons.circleUserRound, size: 80),
+  //       ),
+  //       const SizedBox(height: 24),
+  //       Text(
+  //         user.nickname,
+  //         style: AppTextStyles.h2,
+  //         textAlign: TextAlign.center,
+  //       ),
+  //       const SizedBox(height: 16),
+  //       // Row(
+  //       //   children: [
+  //       //     Expanded(
+  //       //       child: CardStatistics(
+  //       //         title: 'Турниры',
+  //       //         value: '${user.tournamentsPlayed}',
+  //       //         color: AppColors.textPrimary,
+  //       //       ),
+  //       //     ),
+  //       //     SizedBox(width: 8),
+  //       //     Expanded(
+  //       //       child: CardStatistics(
+  //       //         title: 'Победы',
+  //       //         value: '${user.tournamentsWon}',
+  //       //         color: AppColors.accentPrimary,
+  //       //       ),
+  //       //     ),
+  //       //     SizedBox(width: 8),
+  //       //     Expanded(
+  //       //       child: CardStatistics(
+  //       //         title: 'Winrate',
+  //       //         value: '${user.winrate}%',
+  //       //         color: AppColors.statusSuccess,
+  //       //       ),
+  //       //     ),
+  //       //   ],
+  //       // ),
+  //     ],
+  //   );
+  // }
 
   Future<void> _onLogout(BuildContext context) async {
     final shouldLogout = await showDialog(

@@ -3,6 +3,7 @@ import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/CreateTeamScreen/bloc/create_team_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/avatar_picker.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
       );
       return;
     }
+
+    print("SENDING AVATAR URL: $avatarUrl");
 
     context.read<CreateTeamBloc>().add(
       CreateTeamSubmitted(
@@ -145,41 +148,47 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
                           child: ListView(
                             scrollDirection: Axis.vertical,
                             children: [
-                              Center(
-                                child: Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 50,
-                                      backgroundColor: AppColors.bgSurface,
-                                      backgroundImage:
-                                          _avatarUrlController.text.isNotEmpty
-                                          ? NetworkImage(
-                                              _avatarUrlController.text,
-                                            )
-                                          : null,
-                                      child: _avatarUrlController.text.isEmpty
-                                          ? const Icon(
-                                              LucideIcons.imagePlus,
-                                              size: 40,
-                                              color: AppColors.textSecondary,
-                                            )
-                                          : null,
-                                    ),
-                                  ],
-                                ),
+                              // Center(
+                              //   child: Stack(
+                              //     children: [
+                              //       CircleAvatar(
+                              //         radius: 50,
+                              //         backgroundColor: AppColors.bgSurface,
+                              //         backgroundImage:
+                              //             _avatarUrlController.text.isNotEmpty
+                              //             ? NetworkImage(
+                              //                 _avatarUrlController.text,
+                              //               )
+                              //             : null,
+                              //         child: _avatarUrlController.text.isEmpty
+                              //             ? const Icon(
+                              //                 LucideIcons.imagePlus,
+                              //                 size: 40,
+                              //                 color: AppColors.textSecondary,
+                              //               )
+                              //             : null,
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              AvatarPicker(
+                                initialUrl: null,
+                                onUploadComplete: (url) {
+                                  print("URL RECEIVED IN SCREEN: $url");
+                                  _avatarUrlController.text = url;
+                                },
                               ),
 
-                              const SizedBox(height: 16),
+                              // const SizedBox(height: 16),
 
-                              TextFormField(
-                                controller: _avatarUrlController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Ссылка на логотип (URL)',
-                                  prefixIcon: Icon(LucideIcons.link),
-                                ),
-                                onChanged: (value) => setState(() {}),
-                              ),
-
+                              // TextFormField(
+                              //   controller: _avatarUrlController,
+                              //   decoration: const InputDecoration(
+                              //     labelText: 'Ссылка на логотип (URL)',
+                              //     prefixIcon: Icon(LucideIcons.link),
+                              //   ),
+                              //   onChanged: (value) => setState(() {}),
+                              // ),
                               const SizedBox(height: 24),
 
                               Row(

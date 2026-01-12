@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_request.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
@@ -12,6 +13,7 @@ import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart'
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -52,7 +54,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTop(isCaptain, isMember, context),
+                      _buildTop(isCaptain, isMember, context, team),
                       _buildHeader(team),
                       const SizedBox(height: 24),
                       SegmentedButtonDetails(
@@ -86,7 +88,12 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     );
   }
 
-  Row _buildTop(bool isCaptain, bool isMember, BuildContext context) {
+  Row _buildTop(
+    bool isCaptain,
+    bool isMember,
+    BuildContext context,
+    TeamModel team,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -111,11 +118,23 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   PopupMenuItem<String>(
                     value: 'delete',
                     child: Text('Удалить команду'),
+                    onTap: () {
+                      context.pop();
+                      context.read<TeamDetailBloc>().add(
+                        TeamDetailDeleteClicked(teamId: team.id),
+                      );
+                    },
                   ),
                 ] else if (isMember) ...[
                   PopupMenuItem<String>(
                     value: 'leave',
                     child: Text('Покинуть команду'),
+                    onTap: () {
+                      context.pop();
+                      context.read<TeamDetailBloc>().add(
+                        TeamDetailLeaveClicked(teamId: team.id),
+                      );
+                    },
                   ),
                 ] else
                   ...[],
@@ -131,13 +150,42 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 64,
-          backgroundImage: team.avatarUrl != null
-              ? NetworkImage(team.avatarUrl!)
-              : null,
+        Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [AppColors.gradientDark, AppColors.gradientLight],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          padding: const EdgeInsets.all(3.0),
+
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.bgMain,
+            ),
+            padding: EdgeInsets.all(6.0),
+            child: CircleAvatar(
+              radius: 64,
+              backgroundColor: AppColors.bgMain,
+              backgroundImage: team.avatarUrl != null
+                  ? NetworkImage(team.avatarUrl!)
+                  : null,
+              child: team.avatarUrl == null
+                  ? const Icon(
+                      LucideIcons.users,
+                      size: 40,
+                      color: AppColors.textSecondary,
+                    )
+                  : null,
+            ),
+          ),
         ),
+
         const SizedBox(height: 12),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -317,23 +365,40 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
     String ownerId,
     String currentUserId,
   ) {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        if (isCaptain && index == teammates.length) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: GradientButton(text: 'Пригласить игрока', onPressed: () {}),
-          );
-        }
-        final teammate = teammates[index];
-        return CardTeammate(
-          teammate: teammate,
-          ownerId: ownerId,
-          currentUserId: currentUserId,
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
-      itemCount: teammates.length + (isCaptain ? 1 : 0),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Участники:', style: AppTextStyles.h3),
+            Text('${teammates.length.toString()}/5', style: AppTextStyles.h3),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              if (isCaptain && index == teammates.length) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: GradientButton(
+                    text: 'Пригласить игрока',
+                    onPressed: () {},
+                  ),
+                );
+              }
+              final teammate = teammates[index];
+              return CardTeammate(
+                teammate: teammate,
+                ownerId: ownerId,
+                currentUserId: currentUserId,
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: 16),
+            itemCount: teammates.length + (isCaptain ? 1 : 0),
+          ),
+        ),
+      ],
     );
   }
 

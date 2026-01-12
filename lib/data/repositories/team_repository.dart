@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
+import 'package:dio/dio.dart';
 
 class TeamRepository {
   final ApiClient _apiClient;
@@ -44,7 +45,11 @@ class TeamRepository {
   }
 
   Future<void> leaveTeam(String teamId) async {
-    await _apiClient.dio.delete('/teams/$teamId/leave');
+    await _apiClient.dio.post('/teams/$teamId/leave');
+  }
+
+  Future<void> deleteTeam(String teamId) async {
+    await _apiClient.dio.post('/teams/$teamId/delete');
   }
 
   Future<List<TeamModel>> searchTeams(String query) async {
@@ -82,5 +87,29 @@ class TeamRepository {
 
   Future<void> rejectJoinRequest(String requestId) async {
     await _apiClient.dio.post('/teams/requests/$requestId/reject');
+  }
+
+  Future<String?> uploadImage(String filePath) async {
+    try {
+      String fileName = filePath.split('/').last;
+
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(filePath, filename: fileName),
+      });
+
+      print('UPLOADING: $filePath');
+      final response = await _apiClient.dio.post('/uploads', data: formData);
+      print('UPLOAD RESPONSE: ${response.data}');
+
+      final String relativeUrl = response.data['url'];
+
+      final baseUrl = _apiClient.dio.options.baseUrl.replaceAll('/api/v1', '');
+
+      print('FULL URL: $baseUrl$relativeUrl');
+      return '$baseUrl$relativeUrl';
+    } catch (e) {
+      print('Upload error: $e');
+      return null;
+    }
   }
 }
