@@ -2,7 +2,6 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
-import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_request.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/card_teammate.dart';
@@ -104,6 +103,13 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
               print('Settings team is pressed!');
             },
             child: PopupMenuButton<String>(
+              elevation: 4,
+              color: AppColors.bgSurface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: AppColors.bgMain, width: 1),
+              ),
+              offset: const Offset(0, 50),
               icon: Icon(
                 LucideIcons.settings,
                 size: 24,
@@ -113,11 +119,41 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                 if (isCaptain) ...[
                   PopupMenuItem<String>(
                     value: 'edit',
-                    child: Text('Редактировать'),
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.pencil,
+                          size: 20,
+                          color: AppColors.textPrimary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Редактировать',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   PopupMenuItem<String>(
                     value: 'delete',
-                    child: Text('Удалить команду'),
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.fireExtinguisher,
+                          size: 20,
+                          color: AppColors.redColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Удалить команду',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
                     onTap: () {
                       context.pop();
                       context.read<TeamDetailBloc>().add(
@@ -128,7 +164,22 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                 ] else if (isMember) ...[
                   PopupMenuItem<String>(
                     value: 'leave',
-                    child: Text('Покинуть команду'),
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.fireExtinguisher,
+                          size: 20,
+                          color: AppColors.redColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Покинуть команду',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
                     onTap: () {
                       context.pop();
                       context.read<TeamDetailBloc>().add(

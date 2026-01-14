@@ -20,6 +20,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
        super(ProfileLoading()) {
     on<ProfileStarted>(_onStarted);
     on<ProfileUpdateRequested>(_onUpdateRequested);
+    on<ProfilePasswordChangeRequested>(_onPasswordChangeRequested);
   }
 
   Future<void> _onStarted(
@@ -49,7 +50,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         avatarUrl: event.avatarUrl,
       );
       add(ProfileStarted());
+      print('Profile was updated');
     } catch (e) {
+      print("CRITICAL PROFILE ERROR: $e");
       emit(ProfileError(errorMessage: e.toString()));
       add(ProfileStarted());
     }
@@ -64,7 +67,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         event.oldPassword,
         event.newPassword,
       );
+      print('Password was changed in bloc');
     } catch (e) {
+      print("CRITICAL PASSWORD ERROR: $e");
       emit(ProfileError(errorMessage: e.toString()));
       add(ProfileStarted());
     }

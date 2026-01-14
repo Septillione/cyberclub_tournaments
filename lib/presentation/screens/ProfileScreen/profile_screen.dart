@@ -4,6 +4,8 @@ import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/card_setting.dart';
+import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/change_password_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/edit_profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,14 +82,22 @@ class ProfileScreen extends StatelessWidget {
                             CardSetting(
                               icon: LucideIcons.bell,
                               title: 'Уведомления',
-                              onTap: () {},
+                              onTap: () => context.push('/notifications'),
                             ),
                             const SizedBox(height: 16),
                             CardSetting(
                               icon: LucideIcons.userCog,
                               title: 'Редактировать профиль',
                               onTap: () =>
-                                  _showEditProfileDialog(context, user),
+                                  context.push('/profile/edit', extra: user),
+                              // _showEditProfileDialog(context, user),
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) =>
+                              //         EditProfileScreen(userProfile: user),
+                              //   ),
+                              // ),
                             ),
                             const SizedBox(height: 16),
                             if (user.role == UserRole.manager ||
@@ -104,7 +114,13 @@ class ProfileScreen extends StatelessWidget {
                             CardSetting(
                               icon: LucideIcons.keyRound,
                               title: 'Сменить пароль',
-                              onTap: () => _showChangePasswordDialog(context),
+                              onTap: () => context.push('/change-password'),
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => ChangePasswordScreen(),
+                              //   ),
+                              // ),
                             ),
                             const SizedBox(height: 16),
                             CardSetting(
@@ -146,6 +162,13 @@ class ProfileScreen extends StatelessWidget {
       children: [
         Text('Профиль', style: AppTextStyles.h2),
         PopupMenuButton<String>(
+          elevation: 4,
+          color: AppColors.bgSurface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: AppColors.bgMain, width: 1),
+          ),
+          offset: const Offset(0, 50),
           icon: Icon(
             LucideIcons.settings,
             size: 24,
@@ -159,7 +182,22 @@ class ProfileScreen extends StatelessWidget {
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
             PopupMenuItem<String>(
               value: 'leave',
-              child: Text('Выйти из аккаунта'),
+              child: Row(
+                children: [
+                  Icon(
+                    LucideIcons.fireExtinguisher,
+                    size: 20,
+                    color: AppColors.redColor,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Выйти из аккаунта',
+                    style: AppTextStyles.bodyM.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -178,7 +216,11 @@ class ProfileScreen extends StatelessWidget {
               : null,
           child: user.avatarUrl != null
               ? null
-              : const Icon(LucideIcons.circleUserRound, size: 80),
+              : const Icon(
+                  LucideIcons.circleUserRound,
+                  size: 80,
+                  color: AppColors.textSecondary,
+                ),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -282,58 +324,58 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
-  void _showEditProfileDialog(BuildContext context, UserProfileModel user) {
-    final nicknameController = TextEditingController(text: user.nickname);
-    final bioController = TextEditingController(text: user.bio);
-    final avatarController = TextEditingController(text: user.avatarUrl);
+  // void _showEditProfileDialog(BuildContext context, UserProfileModel user) {
+  //   final nicknameController = TextEditingController(text: user.nickname);
+  //   final bioController = TextEditingController(text: user.bio);
+  //   final avatarController = TextEditingController(text: user.avatarUrl);
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Редактировать профиль'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nicknameController,
-                decoration: const InputDecoration(labelText: 'Никнейм'),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: bioController,
-                decoration: const InputDecoration(labelText: 'О себе'),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: avatarController,
-                decoration: const InputDecoration(labelText: 'URL аватара'),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Отмена'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.read<ProfileBloc>().add(
-                ProfileUpdateRequested(
-                  nickname: nicknameController.text,
-                  bio: bioController.text,
-                  avatarUrl: avatarController.text,
-                ),
-              );
-              Navigator.pop(ctx);
-            },
-            child: const Text('Сохранить'),
-          ),
-        ],
-      ),
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (ctx) => AlertDialog(
+  //       title: const Text('Редактировать профиль'),
+  //       content: SingleChildScrollView(
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             TextField(
+  //               controller: nicknameController,
+  //               decoration: const InputDecoration(labelText: 'Никнейм'),
+  //             ),
+  //             const SizedBox(height: 16),
+  //             TextField(
+  //               controller: bioController,
+  //               decoration: const InputDecoration(labelText: 'О себе'),
+  //             ),
+  //             const SizedBox(height: 16),
+  //             TextField(
+  //               controller: avatarController,
+  //               decoration: const InputDecoration(labelText: 'URL аватара'),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(ctx),
+  //           child: const Text('Отмена'),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: () {
+  //             context.read<ProfileBloc>().add(
+  //               ProfileUpdateRequested(
+  //                 nickname: nicknameController.text,
+  //                 bio: bioController.text,
+  //                 avatarUrl: avatarController.text,
+  //               ),
+  //             );
+  //             Navigator.pop(ctx);
+  //           },
+  //           child: const Text('Сохранить'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _showChangePasswordDialog(BuildContext context) {
     final oldPasswordController = TextEditingController();

@@ -109,29 +109,16 @@ class TeamCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
+                    children: avatarUrls.map((url) {
+                      return CircleAvatar(
                         radius: 16,
-                        backgroundColor: AppColors.accentPrimary,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: AppColors.accentPrimary,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: AppColors.accentPrimary,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: AppColors.accentPrimary,
-                      ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: AppColors.accentPrimary,
-                      ),
-                    ],
+                        backgroundImage: NetworkImage(url),
+                        child: const Icon(
+                          LucideIcons.user,
+                          color: AppColors.textSecondary,
+                        ),
+                      );
+                    }).toList(),
                   ),
                   const Icon(
                     LucideIcons.arrowRight,

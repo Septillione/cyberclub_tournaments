@@ -89,7 +89,7 @@ class TeamRepository {
     await _apiClient.dio.post('/teams/requests/$requestId/reject');
   }
 
-  Future<String?> uploadImage(String filePath) async {
+  Future<String?> uploadTeamLogo(String filePath) async {
     try {
       String fileName = filePath.split('/').last;
 

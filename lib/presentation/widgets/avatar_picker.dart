@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
-import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,10 +11,13 @@ class AvatarPicker extends StatefulWidget {
   final String? initialUrl;
   final Function(String) onUploadComplete;
 
+  final Future<String?> Function(String filePath)? uploadFunction;
+
   const AvatarPicker({
     super.key,
     this.initialUrl,
     required this.onUploadComplete,
+    this.uploadFunction,
   });
 
   @override
@@ -45,8 +47,14 @@ class _AvatarPickerState extends State<AvatarPicker> {
         _isUploading = true;
       });
 
-      final repo = context.read<TeamRepository>();
-      final uploadedUrl = await repo.uploadImage(image.path);
+      String? uploadedUrl;
+
+      if (widget.uploadFunction != null) {
+        uploadedUrl = await widget.uploadFunction!(image.path);
+      } else {
+        final repo = context.read<TeamRepository>();
+        uploadedUrl = await repo.uploadTeamLogo(image.path);
+      }
 
       // final apiClient = context.read<ApiClient>();
       // final uploadedUrl = await apiClient.uploadImage(image.path);
