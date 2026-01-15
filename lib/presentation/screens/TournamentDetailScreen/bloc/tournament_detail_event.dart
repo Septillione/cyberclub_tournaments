@@ -19,8 +19,9 @@ class TournamentDetailStarted extends TournamentDetailEvent {
 
 class TournamentRegisterRequested extends TournamentDetailEvent {
   final String? teamId;
+  final List<String>? rosterIds;
 
-  const TournamentRegisterRequested({this.teamId});
+  const TournamentRegisterRequested({this.teamId, this.rosterIds});
 
   @override
   List<Object> get props => [?teamId];

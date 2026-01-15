@@ -7,11 +7,13 @@ import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScree
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/bracket_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/general_details.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/participants_details.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/widgets/roster_selection_dialog.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
   final String tournamentId;
@@ -300,6 +302,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   }
 
   void _showJoinDialog(TournamentModel tournament) {
+    final bloc = context.read<TournamentDetailBloc>();
+
     if (tournament.teamMode == TeamMode.solo) {
       showDialog(
         context: context,
@@ -314,9 +318,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                context.read<TournamentDetailBloc>().add(
-                  TournamentRegisterRequested(),
-                );
+                bloc.add(TournamentRegisterRequested());
                 Navigator.pop(context);
               },
               child: const Text('Да, участвую'),
@@ -366,12 +368,44 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                         ),
                         title: Text(team.name, style: AppTextStyles.bodyL),
                         subtitle: Text(team.tag, style: AppTextStyles.caption),
-                        onTap: () {
-                          this.context.read<TournamentDetailBloc>().add(
-                            TournamentRegisterRequested(teamId: team.id),
+                        onTap: () async {
+                          Navigator.pop(
+                            dialogContext,
+                          ); // Закрываем выбор команды
+
+                          // Открываем выбор состава
+                          final requiredCount =
+                              tournament.teamMode == TeamMode.duo
+                              ? 2
+                              : 5; // Простая логика, можно улучшить
+
+                          final rosterIds = await showDialog<List<String>>(
+                            context: context, // Используем внешний контекст!
+                            builder: (_) => RosterSelectionDialog(
+                              teamId: team.id,
+                              requiredCount: requiredCount,
+                            ),
                           );
-                          Navigator.pop(dialogContext);
+
+                          if (rosterIds != null) {
+                            // Используем сохраненную ссылку на BLoC (см. Решение 1)
+                            // Либо, если мы уже закрыли диалог, context здесь снова валиден
+                            context.read<TournamentDetailBloc>().add(
+                              TournamentRegisterRequested(
+                                teamId: team.id,
+                                rosterIds: rosterIds, // Передаем список в ивент
+                              ),
+                            );
+                          }
+
+                          // final selectedPlayers = await showDialog<List<String>>(context: context, builder: (_) => RosterSelectionDialog());
                         },
+                        // onTap: () {
+                        //   this.context.read<TournamentDetailBloc>().add(
+                        //     TournamentRegisterRequested(teamId: team.id),
+                        //   );
+                        //   Navigator.pop(dialogContext);
+                        // },
                       );
                     },
                   );
@@ -389,4 +423,6 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
       );
     }
   }
+
+  void _showRegisterSelectionDialog() {}
 }
