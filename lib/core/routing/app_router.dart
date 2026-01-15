@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
@@ -16,6 +17,7 @@ import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets
 import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/team_search_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/invite_player_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/tournament_detail_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/tournaments_feed_screen.dart';
@@ -42,6 +44,71 @@ class AppRouter {
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             child: const CreateTeamScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/edit-team',
+        pageBuilder: (context, state) {
+          final teamToEdit = state.extra as TeamModel;
+          return CustomTransitionPage(
+            // key: state.pageKey,
+            // child: BlocProvider(
+            //   create: (context) =>
+            //       CreateTeamBloc(
+            //         teamRepository: context.read<TeamRepository>(),
+            //       )..add(
+            //         UpdateTeamSubmitted(
+            //           teamId: teamToEdit.id,
+            //           name: teamToEdit.name,
+            //           tag: teamToEdit.tag,
+            //         ),
+            //       ),
+            //   child: CreateTeamScreen(teamToEdit: teamToEdit),
+            // ),
+            child: CreateTeamScreen(teamToEdit: teamToEdit),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+          );
+        },
+      ),
+      GoRoute(
+        path: '/find-user',
+        pageBuilder: (context, state) {
+          final teamId = state.extra as String;
+          return CustomTransitionPage(
+            child: InvitePlayerScreen(teamId: teamId),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
                   const begin = Offset(1.0, 0.0);
@@ -174,6 +241,7 @@ class AppRouter {
                 pageBuilder: (context, state) {
                   final teamId = state.pathParameters['teamId']!;
                   return CustomTransitionPage(
+                    key: state.pageKey,
                     child: BlocProvider(
                       create: (context) => TeamDetailBloc(
                         teamRepository: context.read<TeamRepository>(),
@@ -197,20 +265,8 @@ class AppRouter {
                             child: child,
                           );
                         },
-                    key: state.pageKey,
                   );
                 },
-                // builder: (context, state) {
-                //   final teamId = state.pathParameters['teamId']!;
-
-                //   return BlocProvider(
-                //     create: (context) => TeamDetailBloc(
-                //       teamRepository: context.read<TeamRepository>(),
-                //       authRepository: context.read<AuthRepository>(),
-                //     )..add(TeamDetailStarted(teamId: teamId)),
-                //     child: const TeamsDetailScreen(),
-                //   );
-                // },
               ),
             ],
           ),

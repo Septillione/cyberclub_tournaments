@@ -55,3 +55,23 @@ class TeamDetailDeleteClicked extends TeamDetailEvent {
   final String teamId;
   const TeamDetailDeleteClicked({required this.teamId});
 }
+
+class UpdateTeamDetailClicked extends TeamDetailEvent {
+  final String teamId;
+  final String? name;
+  final String? tag;
+  final String? avatarUrl;
+  final String? description;
+  final String? socialMedia;
+  final List<String>? gamesList;
+
+  const UpdateTeamDetailClicked({
+    required this.teamId,
+    this.name,
+    this.tag,
+    this.avatarUrl,
+    this.description,
+    this.socialMedia,
+    this.gamesList,
+  });
+}

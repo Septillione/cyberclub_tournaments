@@ -4,8 +4,6 @@ import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/card_setting.dart';
-import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/change_password_screen.dart';
-import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/edit_profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/card_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

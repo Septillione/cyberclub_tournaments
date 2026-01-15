@@ -66,6 +66,28 @@ class TeamRepository {
     }
   }
 
+  Future<List<TeamUserShort>> searchUser(String query) async {
+    try {
+      final response = await _apiClient.dio.get(
+        '/users',
+        queryParameters: {'search': query},
+      );
+      final List list = response.data;
+      print('USER LIST: $list');
+      return list.map((e) => TeamUserShort.fromJson(e)).toList();
+    } catch (e) {
+      print('Ошибка поиска пользователей: $e');
+      return [];
+    }
+  }
+
+  Future<void> inviteUserToTeam(String teamId, String userId) async {
+    await _apiClient.dio.post(
+      '/teams/$teamId/invite',
+      data: {'userId': userId},
+    );
+  }
+
   Future<void> sendJoinRequest(String teamId) async {
     await _apiClient.dio.post('/teams/$teamId/request');
   }
@@ -111,5 +133,25 @@ class TeamRepository {
       print('Upload error: $e');
       return null;
     }
+  }
+
+  Future<void> updateTeam(
+    String teamId,
+    String name,
+    String tag,
+    String? avatarUrl,
+    String? description,
+    String? socialMedia,
+    List<String>? gamesList,
+  ) async {
+    final data = <String, dynamic>{};
+    if (name != null) data['name'] = name;
+    if (tag != null) data['tag'] = tag;
+    if (avatarUrl != null) data['avatarUrl'] = avatarUrl;
+    if (description != null) data['description'] = description;
+    if (socialMedia != null) data['socialMedia'] = socialMedia;
+    if (gamesList != null) data['gamesList'] = gamesList;
+
+    await _apiClient.dio.patch('/teams/$teamId', data: data);
   }
 }

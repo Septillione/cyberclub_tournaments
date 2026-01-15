@@ -135,6 +135,9 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                         ),
                       ],
                     ),
+                    onTap: () {
+                      context.push('/edit-team', extra: team);
+                    },
                   ),
                   PopupMenuItem<String>(
                     value: 'delete',
@@ -271,6 +274,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
           return _buildInfoTab(team);
         case 1:
           return _buildRosterTab(
+            team,
             team.members,
             isCaptain,
             ownerId,
@@ -289,6 +293,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
           return _buildInfoTab(team);
         case 1:
           return _buildRosterTab(
+            team,
             team.members,
             isCaptain,
             ownerId,
@@ -361,10 +366,12 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
 
           Text('Игры', style: AppTextStyles.h3),
           const SizedBox(height: 8),
-          Row(
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 4.0,
             children: [
               ...gamesList?.map(
-                    (game) => Text('$game  |  ', style: AppTextStyles.bodyM),
+                    (game) => Text('$game  |', style: AppTextStyles.bodyM),
                   ) ??
                   [],
             ],
@@ -411,6 +418,7 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
   }
 
   Widget _buildRosterTab(
+    TeamModel team,
     List<TeamMemberModel> teammates,
     bool isCaptain,
     String ownerId,
@@ -434,7 +442,9 @@ class _TeamsDetailScreenState extends State<TeamsDetailScreen> {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: GradientButton(
                     text: 'Пригласить игрока',
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push('/find-user', extra: team.id);
+                    },
                   ),
                 );
               }

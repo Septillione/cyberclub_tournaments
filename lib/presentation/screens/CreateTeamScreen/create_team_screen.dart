@@ -1,8 +1,11 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/CreateTeamScreen/bloc/create_team_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/avatar_picker.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
@@ -12,20 +15,22 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CreateTeamScreen extends StatelessWidget {
-  const CreateTeamScreen({super.key});
+  final TeamModel? teamToEdit;
+  const CreateTeamScreen({super.key, this.teamToEdit});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           CreateTeamBloc(teamRepository: context.read<TeamRepository>()),
-      child: const _CreateTeamView(),
+      child: _CreateTeamView(teamToEdit: teamToEdit),
     );
   }
 }
 
 class _CreateTeamView extends StatefulWidget {
-  const _CreateTeamView();
+  final TeamModel? teamToEdit;
+  const _CreateTeamView({this.teamToEdit});
 
   @override
   State<_CreateTeamView> createState() => _CreateTeamViewState();
@@ -37,11 +42,35 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
   final _descriptionController = TextEditingController();
   final _socialMediaController = TextEditingController();
   final _avatarUrlController = TextEditingController();
-  final List<Discipline> _gamesList = [];
+  late List<Discipline> _gamesList;
 
   final _formKey = GlobalKey<FormState>();
 
-  void _onCreateTeam() {
+  @override
+  void initState() {
+    super.initState();
+    _gamesList = [];
+
+    if (widget.teamToEdit != null) {
+      final t = widget.teamToEdit!;
+      _nameController.text = t.name;
+      _tagController.text = t.tag;
+      _avatarUrlController.text = t.avatarUrl ?? '';
+      _descriptionController.text = t.description ?? '';
+      _socialMediaController.text = t.socialMedia ?? '';
+
+      if (t.gamesList != null) {
+        for (var gName in t.gamesList!) {
+          try {
+            final disc = Discipline.values.firstWhere((e) => e.name == gName);
+            _gamesList.add(disc);
+          } catch (_) {}
+        }
+      }
+    }
+  }
+
+  void _onSubmit() {
     final name = _nameController.text.trim();
     final tag = _tagController.text.trim();
     final description = _descriptionController.text.trim();
@@ -63,16 +92,32 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
 
     print("SENDING AVATAR URL: $avatarUrl");
 
-    context.read<CreateTeamBloc>().add(
-      CreateTeamSubmitted(
-        name: name,
-        tag: tag,
-        description: description,
-        socialMedia: socialMedia,
-        avatarUrl: avatarUrl.isNotEmpty ? avatarUrl : null,
-        gamesList: gamesList,
-      ),
-    );
+    final gamesStr = _gamesList.map((e) => e.name).toList();
+
+    if (widget.teamToEdit != null) {
+      context.read<CreateTeamBloc>().add(
+        UpdateTeamSubmitted(
+          teamId: widget.teamToEdit!.id,
+          name: name,
+          tag: tag,
+          avatarUrl: avatarUrl,
+          description: description,
+          socialMedia: socialMedia,
+          gamesList: gamesStr,
+        ),
+      );
+    } else {
+      context.read<CreateTeamBloc>().add(
+        CreateTeamSubmitted(
+          name: name,
+          tag: tag,
+          description: description,
+          socialMedia: socialMedia,
+          avatarUrl: avatarUrl.isNotEmpty ? avatarUrl : null,
+          gamesList: gamesList,
+        ),
+      );
+    }
   }
 
   void _toggleGame(Discipline game) {
@@ -87,10 +132,19 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.teamToEdit != null;
     return BlocListener<CreateTeamBloc, CreateTeamState>(
       listener: (context, state) {
         if (state is CreateTeamSuccess) {
-          context.pop();
+          context.go('/my-teams');
+          if (isEditing) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Команда успешно обновлена!'),
+                backgroundColor: AppColors.greenColor,
+              ),
+            );
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Команда успешно создана!'),
@@ -127,19 +181,31 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
                   return Form(
                     key: _formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          alignment: Alignment.centerLeft,
-                          children: [
-                            CustomBackButton(),
-                            Center(
-                              child: Text(
-                                'Создать Команду',
-                                style: AppTextStyles.h2,
-                              ),
-                            ),
-                          ],
+                        // Stack(
+                        //   alignment: Alignment.centerLeft,
+                        //   children: [
+                        //     CustomBackButton(),
+                        //     Center(
+                        //       child: Text(
+                        //         isEditing
+                        //             ? 'Редактировать команду'
+                        //             : 'Создать Команду',
+                        //         style: AppTextStyles.h2,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        CustomBackButton(),
+
+                        const SizedBox(height: 16),
+
+                        Text(
+                          isEditing
+                              ? 'Редактировать команду'
+                              : 'Создать Команду',
+                          style: AppTextStyles.h2,
                         ),
 
                         const SizedBox(height: 32),
@@ -148,47 +214,14 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
                           child: ListView(
                             scrollDirection: Axis.vertical,
                             children: [
-                              // Center(
-                              //   child: Stack(
-                              //     children: [
-                              //       CircleAvatar(
-                              //         radius: 50,
-                              //         backgroundColor: AppColors.bgSurface,
-                              //         backgroundImage:
-                              //             _avatarUrlController.text.isNotEmpty
-                              //             ? NetworkImage(
-                              //                 _avatarUrlController.text,
-                              //               )
-                              //             : null,
-                              //         child: _avatarUrlController.text.isEmpty
-                              //             ? const Icon(
-                              //                 LucideIcons.imagePlus,
-                              //                 size: 40,
-                              //                 color: AppColors.textSecondary,
-                              //               )
-                              //             : null,
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
                               AvatarPicker(
-                                initialUrl: null,
+                                initialUrl: widget.teamToEdit?.avatarUrl,
                                 onUploadComplete: (url) {
                                   print("URL RECEIVED IN SCREEN: $url");
                                   _avatarUrlController.text = url;
                                 },
                               ),
 
-                              // const SizedBox(height: 16),
-
-                              // TextFormField(
-                              //   controller: _avatarUrlController,
-                              //   decoration: const InputDecoration(
-                              //     labelText: 'Ссылка на логотип (URL)',
-                              //     prefixIcon: Icon(LucideIcons.link),
-                              //   ),
-                              //   onChanged: (value) => setState(() {}),
-                              // ),
                               const SizedBox(height: 24),
 
                               Row(
@@ -315,8 +348,10 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
                               const SizedBox(height: 40),
 
                               GradientButton(
-                                text: 'Создать команду',
-                                onPressed: () => _onCreateTeam(),
+                                text: isEditing
+                                    ? 'Сохранить изменения'
+                                    : 'Создать команду',
+                                onPressed: () => _onSubmit(),
                               ),
                             ],
                           ),

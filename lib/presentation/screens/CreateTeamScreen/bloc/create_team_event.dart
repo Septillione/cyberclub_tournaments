@@ -35,3 +35,23 @@ class CreateTeamSubmitted extends CreateTeamEvent {
     ?avatarUrl,
   ];
 }
+
+class UpdateTeamSubmitted extends CreateTeamEvent {
+  final String teamId;
+  final String name;
+  final String tag;
+  final String? description;
+  final String? socialMedia;
+  final String? avatarUrl;
+  final List<String>? gamesList;
+
+  const UpdateTeamSubmitted({
+    required this.teamId,
+    required this.name,
+    required this.tag,
+    this.description,
+    this.socialMedia,
+    this.avatarUrl,
+    this.gamesList,
+  });
+}
