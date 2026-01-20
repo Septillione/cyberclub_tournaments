@@ -77,6 +77,22 @@ class ProfileScreen extends StatelessWidget {
                             ),
 
                             const SizedBox(height: 24),
+                            if (user.role == UserRole.manager ||
+                                user.role == UserRole.admin) ...[
+                              CardSetting(
+                                icon: LucideIcons.box,
+                                title: 'Панель Организатора',
+                                onTap: () {
+                                  if (user.role == UserRole.manager) {
+                                    context.push('/manager-dashboard');
+                                  }
+                                  if (user.role == UserRole.admin) {
+                                    context.push('/admin-dashboard');
+                                  }
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                            ],
                             CardSetting(
                               icon: LucideIcons.bell,
                               title: 'Уведомления',
@@ -88,37 +104,13 @@ class ProfileScreen extends StatelessWidget {
                               title: 'Редактировать профиль',
                               onTap: () =>
                                   context.push('/profile/edit', extra: user),
-                              // _showEditProfileDialog(context, user),
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) =>
-                              //         EditProfileScreen(userProfile: user),
-                              //   ),
-                              // ),
                             ),
                             const SizedBox(height: 16),
-                            if (user.role == UserRole.manager ||
-                                user.role == UserRole.admin) ...[
-                              CardSetting(
-                                icon: LucideIcons.box,
-                                title: 'Панель Организатора',
-                                onTap: () {
-                                  context.push('/manager-dashboard');
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                            ],
+
                             CardSetting(
                               icon: LucideIcons.keyRound,
                               title: 'Сменить пароль',
                               onTap: () => context.push('/change-password'),
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ChangePasswordScreen(),
-                              //   ),
-                              // ),
                             ),
                             const SizedBox(height: 16),
                             CardSetting(
@@ -239,57 +231,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Column _buildHead(UserProfileModel user) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     children: [
-  //       CircleAvatar(
-  //         radius: 72,
-  //         backgroundImage: user.avatarUrl != null
-  //             ? NetworkImage(user.avatarUrl!)
-  //             : null,
-  //         child: user.avatarUrl != null
-  //             ? null
-  //             : const Icon(LucideIcons.circleUserRound, size: 80),
-  //       ),
-  //       const SizedBox(height: 24),
-  //       Text(
-  //         user.nickname,
-  //         style: AppTextStyles.h2,
-  //         textAlign: TextAlign.center,
-  //       ),
-  //       const SizedBox(height: 16),
-  //       // Row(
-  //       //   children: [
-  //       //     Expanded(
-  //       //       child: CardStatistics(
-  //       //         title: 'Турниры',
-  //       //         value: '${user.tournamentsPlayed}',
-  //       //         color: AppColors.textPrimary,
-  //       //       ),
-  //       //     ),
-  //       //     SizedBox(width: 8),
-  //       //     Expanded(
-  //       //       child: CardStatistics(
-  //       //         title: 'Победы',
-  //       //         value: '${user.tournamentsWon}',
-  //       //         color: AppColors.accentPrimary,
-  //       //       ),
-  //       //     ),
-  //       //     SizedBox(width: 8),
-  //       //     Expanded(
-  //       //       child: CardStatistics(
-  //       //         title: 'Winrate',
-  //       //         value: '${user.winrate}%',
-  //       //         color: AppColors.statusSuccess,
-  //       //       ),
-  //       //     ),
-  //       //   ],
-  //       // ),
-  //     ],
-  //   );
-  // }
-
   Future<void> _onLogout(BuildContext context) async {
     final shouldLogout = await showDialog(
       context: context,
@@ -321,59 +262,6 @@ class ProfileScreen extends StatelessWidget {
       }
     }
   }
-
-  // void _showEditProfileDialog(BuildContext context, UserProfileModel user) {
-  //   final nicknameController = TextEditingController(text: user.nickname);
-  //   final bioController = TextEditingController(text: user.bio);
-  //   final avatarController = TextEditingController(text: user.avatarUrl);
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (ctx) => AlertDialog(
-  //       title: const Text('Редактировать профиль'),
-  //       content: SingleChildScrollView(
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             TextField(
-  //               controller: nicknameController,
-  //               decoration: const InputDecoration(labelText: 'Никнейм'),
-  //             ),
-  //             const SizedBox(height: 16),
-  //             TextField(
-  //               controller: bioController,
-  //               decoration: const InputDecoration(labelText: 'О себе'),
-  //             ),
-  //             const SizedBox(height: 16),
-  //             TextField(
-  //               controller: avatarController,
-  //               decoration: const InputDecoration(labelText: 'URL аватара'),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(ctx),
-  //           child: const Text('Отмена'),
-  //         ),
-  //         ElevatedButton(
-  //           onPressed: () {
-  //             context.read<ProfileBloc>().add(
-  //               ProfileUpdateRequested(
-  //                 nickname: nicknameController.text,
-  //                 bio: bioController.text,
-  //                 avatarUrl: avatarController.text,
-  //               ),
-  //             );
-  //             Navigator.pop(ctx);
-  //           },
-  //           child: const Text('Сохранить'),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   void _showChangePasswordDialog(BuildContext context) {
     final oldPasswordController = TextEditingController();

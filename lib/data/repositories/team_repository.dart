@@ -52,13 +52,15 @@ class TeamRepository {
     await _apiClient.dio.post('/teams/$teamId/delete');
   }
 
-  Future<List<TeamModel>> searchTeams(String query) async {
+  Future<List<TeamModel>> searchTeams(String? query) async {
     try {
       final response = await _apiClient.dio.get(
         '/teams',
-        queryParameters: {'search': query},
+        queryParameters: query != null && query.isNotEmpty
+            ? {'search': query}
+            : null,
       );
-      if (response.data == null) return [];
+
       final List list = response.data;
       return list.map((json) => TeamModel.fromJson(json)).toList();
     } catch (e) {
@@ -145,8 +147,8 @@ class TeamRepository {
     List<String>? gamesList,
   ) async {
     final data = <String, dynamic>{};
-    if (name != null) data['name'] = name;
-    if (tag != null) data['tag'] = tag;
+    data['name'] = name;
+    data['tag'] = tag;
     if (avatarUrl != null) data['avatarUrl'] = avatarUrl;
     if (description != null) data['description'] = description;
     if (socialMedia != null) data['socialMedia'] = socialMedia;

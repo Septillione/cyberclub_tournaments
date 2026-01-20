@@ -1,0 +1,135 @@
+import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
+import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stream_transform/stream_transform.dart';
+
+part 'admin_dashboard_state.dart';
+part 'admin_dashboard_event.dart';
+
+const _duration = Duration(milliseconds: 500);
+EventTransformer<Event> debounce<Event>(Duration duration) {
+  return (events, mapper) => events.debounce(duration).switchMap(mapper);
+}
+
+class AdminDashboardBloc
+    extends Bloc<AdminDashboardEvent, AdminDashboardState> {
+  final TournamentRepository _tournamentRepository;
+  final UserRepository _userRepository;
+  final TeamRepository _teamRepository;
+
+  AdminDashboardBloc({
+    required TournamentRepository tournamentRepository,
+    required UserRepository userRepository,
+    required TeamRepository teamRepository,
+  }) : _tournamentRepository = tournamentRepository,
+       _userRepository = userRepository,
+       _teamRepository = teamRepository,
+       super(AdminDashboardLoading()) {
+    on<AdminDashboardStarted>(_onStarted);
+    on<AdminDashboardRefreshed>(_onStarted);
+
+    on<AdminDashboardQueryChanged>(
+      _onSearchChanged,
+      transformer: debounce(_duration),
+    );
+
+    on<AdminDeleteTournament>(_onDeleteTournament);
+    on<AdminDeleteTeam>(_onDeleteTeam);
+    on<AdminBanUser>(_onBanUser);
+  }
+
+  Future<void> _onStarted(
+    AdminDashboardEvent event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    emit(AdminDashboardLoading());
+    try {
+      final results = await Future.wait([
+        _tournamentRepository.fetchTournaments(),
+        _userRepository.fetchUsersForAdminDashboard(null),
+        _teamRepository.searchTeams(''),
+        _tournamentRepository.getAdminStats(),
+      ]);
+
+      emit(
+        AdminDashboardLoaded(
+          tournaments: results[0] as List<TournamentModel>,
+          users: results[1] as List<TeamUserShort>,
+          teams: results[2] as List<TeamModel>,
+          stats: results[3] as Map<String, dynamic>,
+        ),
+      );
+    } catch (e) {
+      emit(AdminDashboardError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onSearchChanged(
+    AdminDashboardQueryChanged event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! AdminDashboardLoaded) return;
+
+    try {
+      if (event.tabIndex == 0) {
+        final tournaments = await _tournamentRepository.fetchTournaments(
+          filter: TournamentFilter(searchQuery: event.query),
+        );
+        emit(currentState.copyWith(tournaments: tournaments));
+      } else if (event.tabIndex == 1) {
+        final users = await _userRepository.fetchUsersForAdminDashboard(
+          event.query,
+        );
+        emit(currentState.copyWith(users: users));
+      } else if (event.tabIndex == 2) {
+        final teams = await _teamRepository.searchTeams(event.query);
+        emit(currentState.copyWith(teams: teams));
+      }
+    } catch (e) {
+      print('Search error: $e');
+    }
+  }
+
+  Future<void> _onDeleteTournament(
+    AdminDeleteTournament event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _tournamentRepository.deleteTournament(event.tournamentId);
+      add(AdminDashboardStarted());
+    } catch (e) {
+      print('Delete tournament error: $e');
+    }
+  }
+
+  Future<void> _onDeleteTeam(
+    AdminDeleteTeam event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _teamRepository.deleteTeam(event.teamId);
+      add(AdminDashboardStarted());
+    } catch (e) {
+      print('Delete team error: $e');
+    }
+  }
+
+  Future<void> _onBanUser(
+    AdminBanUser event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _userRepository.banUser(event.userId);
+      add(AdminDashboardStarted());
+    } catch (e) {
+      print('Ban user error: $e');
+    }
+  }
+}

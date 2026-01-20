@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 import 'package:dio/dio.dart';
@@ -58,5 +59,34 @@ class UserRepository {
       data: {'oldPassword': oldPassword, 'newPassword': newPassword},
     );
     print('Password was changed in repository');
+  }
+
+  Future<List<TeamUserShort>> fetchUsersForAdminDashboard(String? query) async {
+    try {
+      final response = await _apiClient.dio.get(
+        '/users',
+        queryParameters: query != null && query.isNotEmpty
+            ? {'search': query}
+            : null,
+      );
+
+      final List list = response.data;
+      print('USER LIST: $list');
+      return list.map((e) => TeamUserShort.fromJson(e)).toList();
+    } catch (e) {
+      print('Ошибка поиска пользователей: $e');
+      return [];
+    }
+  }
+
+  Future<void> banUser(String userId) async {
+    await _apiClient.dio.post('/admin/users/$userId/ban');
+  }
+
+  Future<void> changeUserRole(String userId, String newRole) async {
+    await _apiClient.dio.patch(
+      'admin/users/$userId/role',
+      data: {'role': newRole},
+    );
   }
 }

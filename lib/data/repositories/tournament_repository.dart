@@ -151,4 +151,25 @@ class TournamentRepository {
   Future<void> finishTournament(String tournamentId) async {
     await _apiClient.dio.post('/tournaments/$tournamentId/finish');
   }
+
+  Future<Map<String, dynamic>> getAdminStats() async {
+    try {
+      final response = await _apiClient.dio.get('/tournaments/statistics');
+
+      print(response.data);
+      return response.data as Map<String, dynamic>;
+    } catch (e) {
+      print('Ошибка $e');
+
+      return {
+        'tournaments': {'total': 0, 'live': 0, 'open': 0},
+        'users': {'total': 0, 'inTeams': 0},
+        'teams': {'total': 0, 'active': 0},
+      };
+    }
+  }
+
+  Future<void> deleteTournament(String tournamentId) async {
+    await _apiClient.dio.delete('/tournaments/$tournamentId');
+  }
 }

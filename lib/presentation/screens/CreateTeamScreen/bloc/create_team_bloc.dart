@@ -1,5 +1,4 @@
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -8,12 +8,14 @@ import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScre
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/CreateTeamScreen/create_team_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/admin_dashboard_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/create_tournament_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/ManagerDashboardScreen/manager_dashboard_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/NotificationsScreen/notification_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/change_password_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/edit_profile_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/public_profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/team_search_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
@@ -69,20 +71,6 @@ class AppRouter {
         pageBuilder: (context, state) {
           final teamToEdit = state.extra as TeamModel;
           return CustomTransitionPage(
-            // key: state.pageKey,
-            // child: BlocProvider(
-            //   create: (context) =>
-            //       CreateTeamBloc(
-            //         teamRepository: context.read<TeamRepository>(),
-            //       )..add(
-            //         UpdateTeamSubmitted(
-            //           teamId: teamToEdit.id,
-            //           name: teamToEdit.name,
-            //           tag: teamToEdit.tag,
-            //         ),
-            //       ),
-            //   child: CreateTeamScreen(teamToEdit: teamToEdit),
-            // ),
             child: CreateTeamScreen(teamToEdit: teamToEdit),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
@@ -130,6 +118,32 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: '/user/:userId',
+        pageBuilder: (context, state) {
+          final userId = state.extra as String;
+          return CustomTransitionPage(
+            child: PublicProfileScreen(userId: userId),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
+      ),
+      GoRoute(
         path: '/find-team',
         builder: (context, state) => const TeamSearchScreen(),
       ),
@@ -139,7 +153,53 @@ class AppRouter {
       ),
       GoRoute(
         path: '/manager-dashboard',
-        builder: (context, state) => const ManagerDashboardScreen(),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const ManagerDashboardScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/admin-dashboard',
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            child: const AdminDashboardScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
       ),
       GoRoute(
         path: '/create-tournament',

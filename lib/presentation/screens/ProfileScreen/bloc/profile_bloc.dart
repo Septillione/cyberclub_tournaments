@@ -21,6 +21,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileStarted>(_onStarted);
     on<ProfileUpdateRequested>(_onUpdateRequested);
     on<ProfilePasswordChangeRequested>(_onPasswordChangeRequested);
+    on<PublicProfileRequested>(_onPublicProfileRequested);
   }
 
   Future<void> _onStarted(
@@ -72,6 +73,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       print("CRITICAL PASSWORD ERROR: $e");
       emit(ProfileError(errorMessage: e.toString()));
       add(ProfileStarted());
+    }
+  }
+
+  Future<void> _onPublicProfileRequested(
+    PublicProfileRequested event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      final user = await _userRepository.fetchUserProfile(event.userId);
+      emit(ProfileLoaded(userProfile: user));
+    } catch (e) {
+      emit(ProfileError(errorMessage: e.toString()));
     }
   }
 }

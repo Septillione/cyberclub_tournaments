@@ -62,7 +62,9 @@ class TeamSearchCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
+              Wrap(
+                spacing: 8.0,
+                runSpacing: 4.0,
                 children: [
                   ...gamesList?.map(
                         (game) =>

@@ -8,8 +8,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TournamentCard extends StatelessWidget {
   final TournamentModel tournament;
+  final bool? isManager;
 
-  const TournamentCard({super.key, required this.tournament});
+  const TournamentCard({super.key, required this.tournament, this.isManager});
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +97,57 @@ class TournamentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            tournament.title,
-            style: AppTextStyles.h3,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+          if (isManager == true || isManager != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    tournament.title,
+                    style: AppTextStyles.h3,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                PopupMenuButton<String>(
+                  elevation: 4,
+                  color: AppColors.bgSurface,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(color: AppColors.bgMain, width: 1),
+                  ),
+                  offset: const Offset(0, 50),
+                  child: const Icon(LucideIcons.ellipsisVertical, size: 24),
+                  itemBuilder: (context) => [
+                    PopupMenuItem<String>(
+                      value: 'edit',
+                      child: Text(
+                        'Редактировать',
+                        style: AppTextStyles.bodyM.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'cancel',
+                      child: Text(
+                        'Отменить',
+                        style: AppTextStyles.bodyM.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          else
+            Text(
+              tournament.title,
+              style: AppTextStyles.h3,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           SizedBox(height: 8),
           _buildStatusTag(tournament.status),
           SizedBox(height: 16),
@@ -145,15 +191,18 @@ class TournamentCard extends StatelessWidget {
     }
 
     return Container(
+      width: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: color, width: 1.2),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-        child: Text(
-          text,
-          style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          child: Text(
+            text,
+            style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary),
+          ),
         ),
       ),
     );

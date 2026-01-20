@@ -30,3 +30,9 @@ class ProfilePasswordChangeRequested extends ProfileEvent {
     required this.newPassword,
   });
 }
+
+class PublicProfileRequested extends ProfileEvent {
+  final String userId;
+
+  const PublicProfileRequested({required this.userId});
+}
