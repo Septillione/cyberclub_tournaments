@@ -11,9 +11,10 @@
 
 ## 📱 Скриншоты
 
-| Лента турниров | Турнирная сетка | Детали команды | Админ-панель |
+| Лента турниров | Детали турнира | Детали команды | Админ-панель |
 |:---:|:---:|:---:|:---:|
-| <img src="screenshots/feed.png" width="200" /> | <img src="screenshots/bracket.png" width="200" /> | <img src="screenshots/team.png" width="200" /> | <img src="screenshots/admin.png" width="200" /> |
+| <img width="200" alt="Screenshot_1769102463" src="https://github.com/user-attachments/assets/cdf415c0-b5a3-4a37-8829-5da89295d144" />
+ |  | <img src="screenshots/team.png" width="200" /> | <img src="screenshots/admin.png" width="200" /> |
 
 ---
 
@@ -55,3 +56,4 @@
 ### ⚙️ DevOps
 *   **Containerization:** Docker & Docker Compose (Full stack setup in one command).
 *   **Environment:** Strict separation of Dev/Prod configs using `.env`.
+
