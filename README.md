@@ -11,10 +11,10 @@
 
 ## 📱 Скриншоты
 
-| Лента турниров | Детали турнира | Детали команды | Админ-панель |
-|:---:|:---:|:---:|:---:|
-| <img width="200" alt="Screenshot_1769102463" src="https://github.com/user-attachments/assets/cdf415c0-b5a3-4a37-8829-5da89295d144" />
- |  | <img src="screenshots/team.png" width="200" /> | <img src="screenshots/admin.png" width="200" /> |
+| Лента турниров | Детали турнира | Мои турниры | Мои команды | Профиль |
+|:---:|:---:|:---:|:---:|:---:|
+| <img width="200" alt="Screenshot_1769102463" src="https://github.com/user-attachments/assets/cdf415c0-b5a3-4a37-8829-5da89295d144" /> | <img width="200" alt="Screenshot_1769102757" src="https://github.com/user-attachments/assets/41bcff61-4e23-4e9f-9c00-d25997d4a5f3" /> | <img width="200" alt="Screenshot_1769103441" src="https://github.com/user-attachments/assets/9795f4f1-99a4-48a8-a6fb-b64122d673d7" /> | <img width="200" alt="Screenshot_1769104725" src="https://github.com/user-attachments/assets/af681a8c-a92d-406b-b80f-77f3aefab3ab" /> | <img width="200" alt="Screenshot_1769104239" src="https://github.com/user-attachments/assets/a4f39e52-26e2-450e-abbf-206e260ab336" />
+
 
 ---
 
@@ -56,4 +56,5 @@
 ### ⚙️ DevOps
 *   **Containerization:** Docker & Docker Compose (Full stack setup in one command).
 *   **Environment:** Strict separation of Dev/Prod configs using `.env`.
+
 
