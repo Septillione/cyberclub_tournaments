@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class Participant {
@@ -61,18 +62,28 @@ class ParticipantsDetails extends StatelessWidget {
               final String name;
               final String? avatarUrl;
               final String? tag;
+              final String targetId;
 
               if (isTeamMode && entry.team != null) {
                 name = entry.team!.name;
                 tag = '[${entry.team!.tag}]';
                 avatarUrl = entry.team!.avatarUrl;
+                targetId = entry.team!.id;
               } else {
                 name = entry.user.nickname;
                 tag = null;
                 avatarUrl = entry.user.avatarUrl;
+                targetId = entry.user.id;
               }
 
-              return _buildParticipantCard(name, avatarUrl, tag, isTeamMode);
+              return _buildParticipantCard(
+                name,
+                avatarUrl,
+                tag,
+                isTeamMode,
+                targetId,
+                context,
+              );
             },
           ),
         ],
@@ -85,48 +96,62 @@ class ParticipantsDetails extends StatelessWidget {
     String? avatarUrl,
     String? subTitle,
     bool isTeam,
+    String id,
+    BuildContext context,
   ) {
-    return Container(
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: AppColors.bgSurface,
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: AppColors.bgMain,
-            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
-            child: avatarUrl == null
-                ? Icon(
-                    isTeam ? LucideIcons.shield : LucideIcons.userRound,
-                    color: AppColors.textSecondary,
-                    size: 20,
-                  )
-                : null,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: AppTextStyles.nameParticipant.copyWith(fontSize: 16),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (subTitle != null)
-                  Text(
-                    subTitle,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.accentPrimary,
-                    ),
-                  ),
-              ],
+    return InkWell(
+      borderRadius: BorderRadius.circular(12.0),
+      onTap: () {
+        if (isTeam) {
+          context.push('/my-teams/$id');
+        } else {
+          context.push('/profile/$id');
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: AppColors.bgSurface,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColors.bgMain,
+              backgroundImage: avatarUrl != null
+                  ? NetworkImage(avatarUrl)
+                  : null,
+              child: avatarUrl == null
+                  ? Icon(
+                      isTeam ? LucideIcons.shield : LucideIcons.userRound,
+                      color: AppColors.textSecondary,
+                      size: 20,
+                    )
+                  : null,
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: AppTextStyles.nameParticipant.copyWith(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (subTitle != null)
+                    Text(
+                      subTitle,
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.accentPrimary,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

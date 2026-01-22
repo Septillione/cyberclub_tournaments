@@ -62,7 +62,9 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -110,6 +112,14 @@ class TeamCardForAdmin extends StatelessWidget {
               ),
               offset: const Offset(0, 50),
               icon: const Icon(LucideIcons.ellipsisVertical, size: 24),
+              onSelected: (value) {
+                if (value == 'edit') {
+                  context.push('/edit-team', extra: team);
+                }
+                if (value == 'ban') {
+                  _showBanDialog(context, team.isBanned);
+                }
+              },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   value: 'edit',
@@ -130,25 +140,46 @@ class TeamCardForAdmin extends StatelessWidget {
                     ],
                   ),
                 ),
-                PopupMenuItem<String>(
-                  value: 'ban',
-                  child: Row(
-                    children: [
-                      Icon(
-                        LucideIcons.fireExtinguisher,
-                        size: 20,
-                        color: AppColors.redColor,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Забанить',
-                        style: AppTextStyles.bodyM.copyWith(
-                          color: AppColors.textPrimary,
+                if (!team.isBanned)
+                  PopupMenuItem<String>(
+                    value: 'ban',
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.fireExtinguisher,
+                          size: 20,
+                          color: AppColors.redColor,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Text(
+                          'Забанить',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  PopupMenuItem<String>(
+                    value: 'ban',
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.fireExtinguisher,
+                          size: 20,
+                          color: AppColors.redColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Разбанить',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ],
@@ -156,4 +187,118 @@ class TeamCardForAdmin extends StatelessWidget {
       ),
     );
   }
+
+  void _showBanDialog(BuildContext context, bool isBanned) {
+    final bloc = context.read<AdminDashboardBloc>();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  isBanned
+                      ? 'Вы уверены что хотите разбанить ${team.name}?'
+                      : 'Вы уверены что хотите забанить ${team.name}?',
+                  style: AppTextStyles.h3,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isBanned
+                              ? AppColors.greenColor
+                              : AppColors.redColor,
+                        ),
+                        onPressed: () {
+                          bloc.add(AdminToggleBanTeam(team.id, !isBanned));
+                          context.pop();
+                        },
+                        child: Text(isBanned ? 'Разбанить' : 'Забанить'),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => context.pop(),
+                        child: Text('Отклонить'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // void _showBanDialog(BuildContext context, bool isBanned) {
+  //   final bloc = context.read<AdminDashboardBloc>();
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadiusGeometry.circular(16),
+  //         ),
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Text(
+  //                 isBanned
+  //                     ? 'Вы уверены что хотите разбанить ${team.name}?'
+  //                     : 'Вы уверены что хотите забанить ${team.name}?',
+  //                 style: AppTextStyles.h3,
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //               const SizedBox(height: 24),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: ElevatedButton(
+  //                       style: ElevatedButton.styleFrom(
+  //                         backgroundColor: isBanned
+  //                             ? AppColors.greenColor
+  //                             : AppColors.redColor,
+  //                       ),
+  //                       onPressed: () {
+  //                         bloc.add(AdminToggleBanTeam(team.id, !isBanned));
+  //                         context.pop();
+  //                       },
+  //                       child: Text(isBanned ? 'Разбанить' : 'Забанить'),
+  //                     ),
+  //                   ),
+  //                   const SizedBox(width: 16),
+  //                   Expanded(
+  //                     child: OutlinedButton(
+  //                       onPressed: () => context.pop(),
+  //                       child: Text('Отклонить'),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }

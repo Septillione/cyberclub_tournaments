@@ -79,13 +79,16 @@ class UserRepository {
     }
   }
 
-  Future<void> banUser(String userId) async {
-    await _apiClient.dio.post('/admin/users/$userId/ban');
+  Future<void> banUser(String userId, bool isBanned) async {
+    await _apiClient.dio.patch(
+      '/admin/users/$userId/ban',
+      data: {'isBanned': isBanned},
+    );
   }
 
   Future<void> changeUserRole(String userId, String newRole) async {
     await _apiClient.dio.patch(
-      'admin/users/$userId/role',
+      '/admin/users/$userId/role',
       data: {'role': newRole},
     );
   }

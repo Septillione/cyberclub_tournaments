@@ -33,6 +33,7 @@ _TeamModel _$TeamModelFromJson(Map<String, dynamic> json) => _TeamModel(
           ?.map((e) => TeamEntryModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  isBanned: json['isBanned'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
@@ -49,6 +50,7 @@ Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
       '_count': instance.count,
       'members': instance.members,
       'entries': instance.entries,
+      'isBanned': instance.isBanned,
     };
 
 _TeamMemberModel _$TeamMemberModelFromJson(Map<String, dynamic> json) =>
@@ -72,6 +74,7 @@ _TeamUserShort _$TeamUserShortFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       nickname: json['nickname'] as String,
       avatarUrl: json['avatarUrl'] as String?,
+      isBanned: json['isBanned'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$TeamUserShortToJson(_TeamUserShort instance) =>
@@ -79,6 +82,7 @@ Map<String, dynamic> _$TeamUserShortToJson(_TeamUserShort instance) =>
       'id': instance.id,
       'nickname': instance.nickname,
       'avatarUrl': instance.avatarUrl,
+      'isBanned': instance.isBanned,
     };
 
 _TeamShortInfo _$TeamShortInfoFromJson(Map<String, dynamic> json) =>

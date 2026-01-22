@@ -172,4 +172,15 @@ class TournamentRepository {
   Future<void> deleteTournament(String tournamentId) async {
     await _apiClient.dio.delete('/tournaments/$tournamentId');
   }
+
+  Future<void> cancelTournament(String tournamentId) async {
+    await _apiClient.dio.patch('/tournaments/$tournamentId/cancel');
+  }
+
+  Future<void> updateTournament(
+    String tournamentId,
+    Map<String, dynamic> data,
+  ) async {
+    await _apiClient.dio.patch('/tournaments/$tournamentId', data: data);
+  }
 }

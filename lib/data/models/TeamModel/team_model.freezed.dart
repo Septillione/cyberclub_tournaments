@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TeamModel {
 
- String get id; String get name; String get tag; String? get avatarUrl; String? get description; String? get socialMedia; List<String>? get gamesList; DateTime? get createdAt; String get ownerId;@JsonKey(name: '_count') Map<String, int>? get count; List<TeamMemberModel> get members; List<TeamEntryModel> get entries;
+ String get id; String get name; String get tag; String? get avatarUrl; String? get description; String? get socialMedia; List<String>? get gamesList; DateTime? get createdAt; String get ownerId;@JsonKey(name: '_count') Map<String, int>? get count; List<TeamMemberModel> get members; List<TeamEntryModel> get entries; bool get isBanned;
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TeamModelCopyWith<TeamModel> get copyWith => _$TeamModelCopyWithImpl<TeamModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.socialMedia, socialMedia) || other.socialMedia == socialMedia)&&const DeepCollectionEquality().equals(other.gamesList, gamesList)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.count, count)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.entries, entries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.socialMedia, socialMedia) || other.socialMedia == socialMedia)&&const DeepCollectionEquality().equals(other.gamesList, gamesList)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other.count, count)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.entries, entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,socialMedia,const DeepCollectionEquality().hash(gamesList),createdAt,ownerId,const DeepCollectionEquality().hash(count),const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(entries));
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,socialMedia,const DeepCollectionEquality().hash(gamesList),createdAt,ownerId,const DeepCollectionEquality().hash(count),const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(entries),isBanned);
 
 @override
 String toString() {
-  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, socialMedia: $socialMedia, gamesList: $gamesList, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
+  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, socialMedia: $socialMedia, gamesList: $gamesList, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries, isBanned: $isBanned)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TeamModelCopyWith<$Res>  {
   factory $TeamModelCopyWith(TeamModel value, $Res Function(TeamModel) _then) = _$TeamModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String tag, String? avatarUrl, String? description, String? socialMedia, List<String>? gamesList, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
+ String id, String name, String tag, String? avatarUrl, String? description, String? socialMedia, List<String>? gamesList, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries, bool isBanned
 });
 
 
@@ -65,7 +65,7 @@ class _$TeamModelCopyWithImpl<$Res>
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? socialMedia = freezed,Object? gamesList = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? socialMedia = freezed,Object? gamesList = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,Object? isBanned = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -79,7 +79,8 @@ as DateTime?,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_
 as String,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as Map<String, int>?,members: null == members ? _self.members : members // ignore: cast_nullable_to_non_nullable
 as List<TeamMemberModel>,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
-as List<TeamEntryModel>,
+as List<TeamEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries,  bool isBanned)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeamModel() when $default != null:
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries,_that.isBanned);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries,  bool isBanned)  $default,) {final _that = this;
 switch (_that) {
 case _TeamModel():
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries,_that.isBanned);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String tag,  String? avatarUrl,  String? description,  String? socialMedia,  List<String>? gamesList,  DateTime? createdAt,  String ownerId, @JsonKey(name: '_count')  Map<String, int>? count,  List<TeamMemberModel> members,  List<TeamEntryModel> entries,  bool isBanned)?  $default,) {final _that = this;
 switch (_that) {
 case _TeamModel() when $default != null:
-return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries);case _:
+return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,_that.socialMedia,_that.gamesList,_that.createdAt,_that.ownerId,_that.count,_that.members,_that.entries,_that.isBanned);case _:
   return null;
 
 }
@@ -220,7 +221,7 @@ return $default(_that.id,_that.name,_that.tag,_that.avatarUrl,_that.description,
 @JsonSerializable()
 
 class _TeamModel implements TeamModel {
-  const _TeamModel({required this.id, required this.name, required this.tag, this.avatarUrl, this.description, this.socialMedia, final  List<String>? gamesList = const [], this.createdAt, required this.ownerId, @JsonKey(name: '_count') final  Map<String, int>? count, final  List<TeamMemberModel> members = const [], final  List<TeamEntryModel> entries = const []}): _gamesList = gamesList,_count = count,_members = members,_entries = entries;
+  const _TeamModel({required this.id, required this.name, required this.tag, this.avatarUrl, this.description, this.socialMedia, final  List<String>? gamesList = const [], this.createdAt, required this.ownerId, @JsonKey(name: '_count') final  Map<String, int>? count, final  List<TeamMemberModel> members = const [], final  List<TeamEntryModel> entries = const [], this.isBanned = false}): _gamesList = gamesList,_count = count,_members = members,_entries = entries;
   factory _TeamModel.fromJson(Map<String, dynamic> json) => _$TeamModelFromJson(json);
 
 @override final  String id;
@@ -263,6 +264,7 @@ class _TeamModel implements TeamModel {
   return EqualUnmodifiableListView(_entries);
 }
 
+@override@JsonKey() final  bool isBanned;
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
@@ -277,16 +279,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.socialMedia, socialMedia) || other.socialMedia == socialMedia)&&const DeepCollectionEquality().equals(other._gamesList, _gamesList)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._count, _count)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._entries, _entries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.description, description) || other.description == description)&&(identical(other.socialMedia, socialMedia) || other.socialMedia == socialMedia)&&const DeepCollectionEquality().equals(other._gamesList, _gamesList)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&const DeepCollectionEquality().equals(other._count, _count)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._entries, _entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,socialMedia,const DeepCollectionEquality().hash(_gamesList),createdAt,ownerId,const DeepCollectionEquality().hash(_count),const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_entries));
+int get hashCode => Object.hash(runtimeType,id,name,tag,avatarUrl,description,socialMedia,const DeepCollectionEquality().hash(_gamesList),createdAt,ownerId,const DeepCollectionEquality().hash(_count),const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_entries),isBanned);
 
 @override
 String toString() {
-  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, socialMedia: $socialMedia, gamesList: $gamesList, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries)';
+  return 'TeamModel(id: $id, name: $name, tag: $tag, avatarUrl: $avatarUrl, description: $description, socialMedia: $socialMedia, gamesList: $gamesList, createdAt: $createdAt, ownerId: $ownerId, count: $count, members: $members, entries: $entries, isBanned: $isBanned)';
 }
 
 
@@ -297,7 +299,7 @@ abstract mixin class _$TeamModelCopyWith<$Res> implements $TeamModelCopyWith<$Re
   factory _$TeamModelCopyWith(_TeamModel value, $Res Function(_TeamModel) _then) = __$TeamModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String tag, String? avatarUrl, String? description, String? socialMedia, List<String>? gamesList, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries
+ String id, String name, String tag, String? avatarUrl, String? description, String? socialMedia, List<String>? gamesList, DateTime? createdAt, String ownerId,@JsonKey(name: '_count') Map<String, int>? count, List<TeamMemberModel> members, List<TeamEntryModel> entries, bool isBanned
 });
 
 
@@ -314,7 +316,7 @@ class __$TeamModelCopyWithImpl<$Res>
 
 /// Create a copy of TeamModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? socialMedia = freezed,Object? gamesList = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? tag = null,Object? avatarUrl = freezed,Object? description = freezed,Object? socialMedia = freezed,Object? gamesList = freezed,Object? createdAt = freezed,Object? ownerId = null,Object? count = freezed,Object? members = null,Object? entries = null,Object? isBanned = null,}) {
   return _then(_TeamModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -328,7 +330,8 @@ as DateTime?,ownerId: null == ownerId ? _self.ownerId : ownerId // ignore: cast_
 as String,count: freezed == count ? _self._count : count // ignore: cast_nullable_to_non_nullable
 as Map<String, int>?,members: null == members ? _self._members : members // ignore: cast_nullable_to_non_nullable
 as List<TeamMemberModel>,entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
-as List<TeamEntryModel>,
+as List<TeamEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -629,7 +632,7 @@ $TeamUserShortCopyWith<$Res> get user {
 /// @nodoc
 mixin _$TeamUserShort {
 
- String get id; String get nickname; String? get avatarUrl;
+ String get id; String get nickname; String? get avatarUrl; bool get isBanned;
 /// Create a copy of TeamUserShort
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -642,16 +645,16 @@ $TeamUserShortCopyWith<TeamUserShort> get copyWith => _$TeamUserShortCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamUserShort&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TeamUserShort&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,avatarUrl);
+int get hashCode => Object.hash(runtimeType,id,nickname,avatarUrl,isBanned);
 
 @override
 String toString() {
-  return 'TeamUserShort(id: $id, nickname: $nickname, avatarUrl: $avatarUrl)';
+  return 'TeamUserShort(id: $id, nickname: $nickname, avatarUrl: $avatarUrl, isBanned: $isBanned)';
 }
 
 
@@ -662,7 +665,7 @@ abstract mixin class $TeamUserShortCopyWith<$Res>  {
   factory $TeamUserShortCopyWith(TeamUserShort value, $Res Function(TeamUserShort) _then) = _$TeamUserShortCopyWithImpl;
 @useResult
 $Res call({
- String id, String nickname, String? avatarUrl
+ String id, String nickname, String? avatarUrl, bool isBanned
 });
 
 
@@ -679,12 +682,13 @@ class _$TeamUserShortCopyWithImpl<$Res>
 
 /// Create a copy of TeamUserShort
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? avatarUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? avatarUrl = freezed,Object? isBanned = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -769,10 +773,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String? avatarUrl,  bool isBanned)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TeamUserShort() when $default != null:
-return $default(_that.id,_that.nickname,_that.avatarUrl);case _:
+return $default(_that.id,_that.nickname,_that.avatarUrl,_that.isBanned);case _:
   return orElse();
 
 }
@@ -790,10 +794,10 @@ return $default(_that.id,_that.nickname,_that.avatarUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String? avatarUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String? avatarUrl,  bool isBanned)  $default,) {final _that = this;
 switch (_that) {
 case _TeamUserShort():
-return $default(_that.id,_that.nickname,_that.avatarUrl);case _:
+return $default(_that.id,_that.nickname,_that.avatarUrl,_that.isBanned);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -810,10 +814,10 @@ return $default(_that.id,_that.nickname,_that.avatarUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String? avatarUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String? avatarUrl,  bool isBanned)?  $default,) {final _that = this;
 switch (_that) {
 case _TeamUserShort() when $default != null:
-return $default(_that.id,_that.nickname,_that.avatarUrl);case _:
+return $default(_that.id,_that.nickname,_that.avatarUrl,_that.isBanned);case _:
   return null;
 
 }
@@ -825,12 +829,13 @@ return $default(_that.id,_that.nickname,_that.avatarUrl);case _:
 @JsonSerializable()
 
 class _TeamUserShort implements TeamUserShort {
-  const _TeamUserShort({required this.id, required this.nickname, this.avatarUrl});
+  const _TeamUserShort({required this.id, required this.nickname, this.avatarUrl, this.isBanned = false});
   factory _TeamUserShort.fromJson(Map<String, dynamic> json) => _$TeamUserShortFromJson(json);
 
 @override final  String id;
 @override final  String nickname;
 @override final  String? avatarUrl;
+@override@JsonKey() final  bool isBanned;
 
 /// Create a copy of TeamUserShort
 /// with the given fields replaced by the non-null parameter values.
@@ -845,16 +850,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamUserShort&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TeamUserShort&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,avatarUrl);
+int get hashCode => Object.hash(runtimeType,id,nickname,avatarUrl,isBanned);
 
 @override
 String toString() {
-  return 'TeamUserShort(id: $id, nickname: $nickname, avatarUrl: $avatarUrl)';
+  return 'TeamUserShort(id: $id, nickname: $nickname, avatarUrl: $avatarUrl, isBanned: $isBanned)';
 }
 
 
@@ -865,7 +870,7 @@ abstract mixin class _$TeamUserShortCopyWith<$Res> implements $TeamUserShortCopy
   factory _$TeamUserShortCopyWith(_TeamUserShort value, $Res Function(_TeamUserShort) _then) = __$TeamUserShortCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String nickname, String? avatarUrl
+ String id, String nickname, String? avatarUrl, bool isBanned
 });
 
 
@@ -882,12 +887,13 @@ class __$TeamUserShortCopyWithImpl<$Res>
 
 /// Create a copy of TeamUserShort
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? avatarUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? avatarUrl = freezed,Object? isBanned = null,}) {
   return _then(_TeamUserShort(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

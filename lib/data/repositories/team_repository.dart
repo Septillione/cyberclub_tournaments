@@ -156,4 +156,11 @@ class TeamRepository {
 
     await _apiClient.dio.patch('/teams/$teamId', data: data);
   }
+
+  Future<void> banTeam(String teamId, bool isBanned) async {
+    await _apiClient.dio.patch(
+      '/admin/teams/$teamId/ban',
+      data: {'isBanned': isBanned},
+    );
+  }
 }

@@ -12,6 +12,7 @@ import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboar
 import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/create_tournament_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/ManagerDashboardScreen/manager_dashboard_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/NotificationsScreen/notification_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/change_password_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/edit_profile_screen.dart';
@@ -118,11 +119,11 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/user/:userId',
+        path: '/change-password',
+        parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (context, state) {
-          final userId = state.extra as String;
           return CustomTransitionPage(
-            child: PublicProfileScreen(userId: userId),
+            child: const ChangePasswordScreen(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
                   const begin = Offset(1.0, 0.0);
@@ -143,6 +144,7 @@ class AppRouter {
           );
         },
       ),
+
       GoRoute(
         path: '/find-team',
         builder: (context, state) => const TeamSearchScreen(),
@@ -341,9 +343,44 @@ class AppRouter {
                 path: 'edit',
                 parentNavigatorKey: _rootNavigatorKey,
                 pageBuilder: (context, state) {
-                  final userProfile = state.extra as UserProfileModel;
+                  // final userProfile = state.extra as UserProfileModel;
+
+                  final extras = state.extra as Map<String, dynamic>;
+                  final userProfile = extras['user'] as UserProfileModel;
+                  final profileBloc = extras['bloc'] as ProfileBloc;
+
                   return CustomTransitionPage(
-                    child: EditProfileScreen(userProfile: userProfile),
+                    child: BlocProvider.value(
+                      value: profileBloc,
+                      child: EditProfileScreen(userProfile: userProfile),
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.easeOutCubic;
+
+                          var tween = Tween(
+                            begin: begin,
+                            end: end,
+                          ).chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                    key: state.pageKey,
+                  );
+                },
+              ),
+              GoRoute(
+                path: ':userId',
+                parentNavigatorKey: _rootNavigatorKey,
+                pageBuilder: (context, state) {
+                  final userId = state.pathParameters['userId']!;
+                  return CustomTransitionPage(
+                    child: PublicProfileScreen(userId: userId),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                           const begin = Offset(1.0, 0.0);
@@ -365,32 +402,6 @@ class AppRouter {
                 },
               ),
             ],
-          ),
-
-          GoRoute(
-            path: '/change-password',
-            pageBuilder: (context, state) {
-              return CustomTransitionPage(
-                child: const ChangePasswordScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                      const begin = Offset(1.0, 0.0);
-                      const end = Offset.zero;
-                      const curve = Curves.easeOutCubic;
-
-                      var tween = Tween(
-                        begin: begin,
-                        end: end,
-                      ).chain(CurveTween(curve: curve));
-
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
-                    },
-                key: state.pageKey,
-              );
-            },
           ),
         ],
       ),

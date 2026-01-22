@@ -24,8 +24,9 @@ class CardTeammate extends StatelessWidget {
     final isCurrentUser = teammate.userId == currentUserId;
 
     return InkWell(
+      borderRadius: BorderRadius.circular(12.0),
       onTap: () {
-        context.push('/user/${user.id}', extra: user.id);
+        context.push('/profile/${user.id}');
       },
       child: Container(
         padding: EdgeInsets.all(12.0),

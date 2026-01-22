@@ -1,7 +1,10 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class UserCardForAdmin extends StatelessWidget {
@@ -47,6 +50,13 @@ class UserCardForAdmin extends StatelessWidget {
               ),
               offset: const Offset(0, 50),
               icon: const Icon(LucideIcons.ellipsisVertical, size: 24),
+              onSelected: (value) {
+                if (value == 'ban') {
+                  _showBanDialog(context, user.isBanned);
+                } else if (value == 'change_role') {
+                  _showRoleDialog(context, user);
+                }
+              },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   value: 'change_role',
@@ -91,6 +101,83 @@ class UserCardForAdmin extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showRoleDialog(BuildContext context, TeamUserShort user) {
+    showDialog(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('Выберите роль'),
+        children: ['USER', 'MANAGER', 'ADMIN'].map((role) {
+          return SimpleDialogOption(
+            onPressed: () {
+              context.read<AdminDashboardBloc>().add(
+                AdminChangeUserRole(user.id, role),
+              );
+              Navigator.pop(ctx);
+            },
+            child: Text(role),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  void _showBanDialog(BuildContext context, bool isBanned) {
+    final bloc = context.read<AdminDashboardBloc>();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  isBanned
+                      ? 'Вы уверены что хотите разбанить ${user.nickname}?'
+                      : 'Вы уверены что хотите забанить ${user.nickname}?',
+                  style: AppTextStyles.h3,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isBanned
+                              ? AppColors.greenColor
+                              : AppColors.redColor,
+                        ),
+                        onPressed: () {
+                          bloc.add(AdminToggleBanUser(user.id, !isBanned));
+                          context.pop();
+                        },
+                        child: Text(isBanned ? 'Разбанить' : 'Забанить'),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => context.pop(),
+                        child: Text('Отклонить'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

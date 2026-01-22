@@ -5,6 +5,8 @@ class ApiClient {
   // static const String _baseUrl = 'https://cctournaments.ccmanager.ru/api/v1';
   static const String _baseUrl = 'http://10.0.2.2:3000/api/v1';
 
+  // static const String _localIp = 'http://192.168.1.42:3000/api/v1';
+
   final Dio _dio;
   final TokenStorage _tokenStorage;
 
@@ -13,6 +15,7 @@ class ApiClient {
       _dio = Dio(
         BaseOptions(
           baseUrl: _baseUrl,
+          // baseUrl: _localIp,
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
           headers: {
@@ -70,6 +73,7 @@ class ApiClient {
 
     try {
       final dio = Dio(BaseOptions(baseUrl: _baseUrl));
+      // final dio = Dio(BaseOptions(baseUrl: _localIp));
 
       final response = await dio.post(
         '/auth/refresh',

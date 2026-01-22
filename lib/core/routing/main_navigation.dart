@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/bloc/tournaments_feed_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
@@ -42,6 +43,13 @@ class MainNavigation extends StatelessWidget {
             userRepository: context.read<UserRepository>(),
             authRepository: context.read<AuthRepository>(),
           )..add(ProfileStarted()),
+        ),
+        BlocProvider(
+          create: (context) => AdminDashboardBloc(
+            tournamentRepository: context.read<TournamentRepository>(),
+            userRepository: context.read<UserRepository>(),
+            teamRepository: context.read<TeamRepository>(),
+          ),
         ),
       ],
       child: Scaffold(

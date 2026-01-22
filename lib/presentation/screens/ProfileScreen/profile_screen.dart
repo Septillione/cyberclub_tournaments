@@ -52,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: CardStatistics(
                                       title: 'Турниров',
-                                      value: '$tournamentCount',
+                                      value: '8',
                                       color: AppColors.blueColor,
                                     ),
                                   ),
@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: CardStatistics(
                                       title: 'Побед',
-                                      value: '$winsCount',
+                                      value: '5',
                                       color: AppColors.redColor,
                                     ),
                                   ),
@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: CardStatistics(
                                       title: 'Winrate',
-                                      value: '$winrate%',
+                                      value: '62,5%',
                                       color: AppColors.greenColor,
                                     ),
                                   ),
@@ -102,8 +102,13 @@ class ProfileScreen extends StatelessWidget {
                             CardSetting(
                               icon: LucideIcons.userCog,
                               title: 'Редактировать профиль',
-                              onTap: () =>
-                                  context.push('/profile/edit', extra: user),
+                              onTap: () => context.push(
+                                '/profile/edit',
+                                extra: {
+                                  'user': user,
+                                  'bloc': context.read<ProfileBloc>(),
+                                },
+                              ),
                             ),
                             const SizedBox(height: 16),
 
@@ -199,19 +204,53 @@ class ProfileScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
-          radius: 72,
-          backgroundImage: user.avatarUrl != null
-              ? NetworkImage(user.avatarUrl!)
-              : null,
-          child: user.avatarUrl != null
-              ? null
-              : const Icon(
-                  LucideIcons.circleUserRound,
-                  size: 80,
-                  color: AppColors.textSecondary,
-                ),
+        Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [AppColors.gradientDark, AppColors.gradientLight],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          padding: const EdgeInsets.all(3.0),
+
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.bgMain,
+            ),
+            padding: EdgeInsets.all(6.0),
+            child: CircleAvatar(
+              radius: 64,
+              backgroundColor: AppColors.bgMain,
+              backgroundImage: user.avatarUrl != null
+                  ? NetworkImage(user.avatarUrl!)
+                  : null,
+              child: user.avatarUrl == null
+                  ? const Icon(
+                      LucideIcons.user,
+                      size: 40,
+                      color: AppColors.textSecondary,
+                    )
+                  : null,
+            ),
+          ),
         ),
+        // CircleAvatar(
+        //   radius: 72,
+        //   backgroundColor: AppColors.bgMain,
+        //   backgroundImage: user.avatarUrl != null
+        //       ? NetworkImage(user.avatarUrl!)
+        //       : null,
+        //   child: user.avatarUrl != null
+        //       ? null
+        //       : const Icon(
+        //           LucideIcons.user,
+        //           size: 48,
+        //           color: AppColors.textSecondary,
+        //         ),
+        // ),
         const SizedBox(width: 16),
         Expanded(
           child: Column(

@@ -19,6 +19,7 @@ _UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => UserEntryModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isBanned: json['isBanned'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserProfileModelToJson(_UserProfileModel instance) =>
@@ -30,6 +31,7 @@ Map<String, dynamic> _$UserProfileModelToJson(_UserProfileModel instance) =>
       'avatarUrl': instance.avatarUrl,
       'bio': instance.bio,
       'entries': instance.entries,
+      'isBanned': instance.isBanned,
     };
 
 const _$UserRoleEnumMap = {

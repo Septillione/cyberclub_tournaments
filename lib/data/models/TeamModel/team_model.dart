@@ -19,6 +19,7 @@ abstract class TeamModel with _$TeamModel {
     @JsonKey(name: '_count') Map<String, int>? count,
     @Default([]) List<TeamMemberModel> members,
     @Default([]) List<TeamEntryModel> entries,
+    @Default(false) bool isBanned,
   }) = _TeamModel;
 
   factory TeamModel.fromJson(Map<String, dynamic> json) =>
@@ -44,6 +45,7 @@ abstract class TeamUserShort with _$TeamUserShort {
     required String id,
     required String nickname,
     String? avatarUrl,
+    @Default(false) bool isBanned,
   }) = _TeamUserShort;
 
   factory TeamUserShort.fromJson(Map<String, dynamic> json) =>

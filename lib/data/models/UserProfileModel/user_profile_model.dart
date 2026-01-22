@@ -23,6 +23,7 @@ abstract class UserProfileModel with _$UserProfileModel {
     String? avatarUrl,
     required String? bio,
     @Default([]) List<UserEntryModel> entries,
+    @Default(false) bool isBanned,
   }) = _UserProfileModel;
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>

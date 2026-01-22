@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfileModel {
 
- String get id; String get nickname; String get email; UserRole get role; String? get avatarUrl; String? get bio; List<UserEntryModel> get entries;
+ String get id; String get nickname; String get email; UserRole get role; String? get avatarUrl; String? get bio; List<UserEntryModel> get entries; bool get isBanned;
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserProfileModelCopyWith<UserProfileModel> get copyWith => _$UserProfileModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other.entries, entries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other.entries, entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(entries));
+int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(entries),isBanned);
 
 @override
 String toString() {
-  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries)';
+  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserProfileModelCopyWith<$Res>  {
   factory $UserProfileModelCopyWith(UserProfileModel value, $Res Function(UserProfileModel) _then) = _$UserProfileModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries
+ String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned
 });
 
 
@@ -65,7 +65,7 @@ class _$UserProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non
 as UserRole,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
-as List<UserEntryModel>,
+as List<UserEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfileModel() when $default != null:
-return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries);case _:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileModel():
-return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries);case _:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileModel() when $default != null:
-return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries);case _:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_
 @JsonSerializable()
 
 class _UserProfileModel implements UserProfileModel {
-  const _UserProfileModel({required this.id, required this.nickname, required this.email, required this.role, this.avatarUrl, required this.bio, final  List<UserEntryModel> entries = const []}): _entries = entries;
+  const _UserProfileModel({required this.id, required this.nickname, required this.email, required this.role, this.avatarUrl, required this.bio, final  List<UserEntryModel> entries = const [], this.isBanned = false}): _entries = entries;
   factory _UserProfileModel.fromJson(Map<String, dynamic> json) => _$UserProfileModelFromJson(json);
 
 @override final  String id;
@@ -231,6 +232,7 @@ class _UserProfileModel implements UserProfileModel {
   return EqualUnmodifiableListView(_entries);
 }
 
+@override@JsonKey() final  bool isBanned;
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other._entries, _entries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other._entries, _entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(_entries));
+int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(_entries),isBanned);
 
 @override
 String toString() {
-  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries)';
+  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$UserProfileModelCopyWith<$Res> implements $UserProfileMod
   factory _$UserProfileModelCopyWith(_UserProfileModel value, $Res Function(_UserProfileModel) _then) = __$UserProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries
+ String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned
 });
 
 
@@ -282,7 +284,7 @@ class __$UserProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,}) {
   return _then(_UserProfileModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
@@ -291,7 +293,8 @@ as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non
 as UserRole,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
-as List<UserEntryModel>,
+as List<UserEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

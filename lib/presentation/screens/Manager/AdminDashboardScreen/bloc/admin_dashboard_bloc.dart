@@ -41,7 +41,11 @@ class AdminDashboardBloc
 
     on<AdminDeleteTournament>(_onDeleteTournament);
     on<AdminDeleteTeam>(_onDeleteTeam);
-    on<AdminBanUser>(_onBanUser);
+
+    on<AdminToggleBanUser>(_onBanUser);
+    on<AdminChangeUserRole>(_onChangeUserRole);
+    on<AdminToggleBanTeam>(_onBanTeam);
+    on<AdminCancelTournament>(_onCancelTournament);
   }
 
   Future<void> _onStarted(
@@ -122,14 +126,50 @@ class AdminDashboardBloc
   }
 
   Future<void> _onBanUser(
-    AdminBanUser event,
+    AdminToggleBanUser event,
     Emitter<AdminDashboardState> emit,
   ) async {
     try {
-      await _userRepository.banUser(event.userId);
+      await _userRepository.banUser(event.userId, event.ban);
       add(AdminDashboardStarted());
     } catch (e) {
       print('Ban user error: $e');
+    }
+  }
+
+  Future<void> _onChangeUserRole(
+    AdminChangeUserRole event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _userRepository.changeUserRole(event.userId, event.newRole);
+      add(AdminDashboardStarted());
+    } catch (e) {
+      print('Change user role error: $e');
+    }
+  }
+
+  Future<void> _onBanTeam(
+    AdminToggleBanTeam event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _teamRepository.banTeam(event.teamId, event.ban);
+      add(AdminDashboardStarted());
+    } catch (e) {
+      print('Ban team error: $e');
+    }
+  }
+
+  Future<void> _onCancelTournament(
+    AdminCancelTournament event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _tournamentRepository.cancelTournament(event.tournamentId);
+      add(AdminDashboardStarted());
+    } catch (e) {
+      print('Cancel tournament error: $e');
     }
   }
 }

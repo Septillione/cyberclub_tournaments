@@ -34,8 +34,25 @@ class AdminDeleteTeam extends AdminDashboardEvent {
   const AdminDeleteTeam(this.teamId);
 }
 
-class AdminBanUser extends AdminDashboardEvent {
+class AdminChangeUserRole extends AdminDashboardEvent {
   final String userId;
+  final String newRole; // 'USER', 'MANAGER', 'ADMIN'
+  const AdminChangeUserRole(this.userId, this.newRole);
+}
 
-  const AdminBanUser(this.userId);
+class AdminToggleBanUser extends AdminDashboardEvent {
+  final String userId;
+  final bool ban; // true = забанить, false = разбанить
+  const AdminToggleBanUser(this.userId, this.ban);
+}
+
+class AdminCancelTournament extends AdminDashboardEvent {
+  final String tournamentId;
+  const AdminCancelTournament(this.tournamentId);
+}
+
+class AdminToggleBanTeam extends AdminDashboardEvent {
+  final String teamId;
+  final bool ban;
+  const AdminToggleBanTeam(this.teamId, this.ban);
 }
