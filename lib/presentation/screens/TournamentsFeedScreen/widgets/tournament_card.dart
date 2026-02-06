@@ -127,6 +127,8 @@ class TournamentCard extends StatelessWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
+                      onTap: () =>
+                          context.push('/create-tournament', extra: tournament),
                     ),
                     PopupMenuItem<String>(
                       value: 'cancel',

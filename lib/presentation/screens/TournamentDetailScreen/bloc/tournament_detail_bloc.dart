@@ -24,6 +24,7 @@ class TournamentDetailBloc
     on<TournamentRegisterRequested>(_onRegisterRequested);
     on<TournamentStartRequested>(_onStartRequested);
     on<MatchScoreUpdated>(_onScoreUpdated);
+    on<MatchDisqualified>(_onDisqualified);
     on<TournamentFinishRequested>(_onFinishRequested);
   }
 
@@ -147,6 +148,24 @@ class TournamentDetailBloc
         event.matchId,
         event.score1,
         event.score2,
+      );
+      add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } catch (e) {
+      emit(TournamentDetailError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onDisqualified(
+    MatchDisqualified event,
+    Emitter<TournamentDetailState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! TournamentDetailLoaded) return;
+
+    try {
+      await _tournamentRepository.disqualifyParticipant(
+        event.matchId,
+        event.loserPosition,
       );
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
     } catch (e) {

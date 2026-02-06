@@ -14,10 +14,11 @@ class CreateTournamentBloc
   CreateTournamentBloc({required TournamentRepository tournamentRepository})
     : _tournamentRepository = tournamentRepository,
       super(CreateTournamentInitial()) {
-    on<CreateTournamentSubmitted>(_onSubmitted);
+    on<CreateTournamentSubmitted>(_onCreateSubmitted);
+    on<UpdateTournamentSubmitted>(_onUpdateSubmitted);
   }
 
-  Future<void> _onSubmitted(
+  Future<void> _onCreateSubmitted(
     CreateTournamentSubmitted event,
     Emitter<CreateTournamentState> emit,
   ) async {
@@ -40,6 +41,34 @@ class CreateTournamentBloc
       emit(CreateTournamentSuccess());
     } catch (e) {
       emit(CreateTournamentFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onUpdateSubmitted(
+    UpdateTournamentSubmitted event,
+    Emitter<CreateTournamentState> emit,
+  ) async {
+    try {
+      await _tournamentRepository.updateTournament(
+        event.id,
+        event.title,
+        event.description,
+        event.rules,
+        event.discipline,
+        event.startDate,
+        event.maxParticipants,
+        event.bracketType,
+        event.teamMode,
+        event.isOnline,
+        event.address,
+        event.imageUrl,
+        event.prizes,
+      );
+      print('Tournament was updated!');
+      emit(CreateTournamentSuccess());
+    } catch (e) {
+      emit(CreateTournamentFailure(errorMessage: e.toString()));
+      print('Error updating tournament: $e');
     }
   }
 }

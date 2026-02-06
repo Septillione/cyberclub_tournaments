@@ -44,4 +44,14 @@ class MatchScoreUpdated extends TournamentDetailEvent {
   List<Object> get props => [matchId, score1, score2];
 }
 
+class MatchDisqualified extends TournamentDetailEvent {
+  final String matchId;
+  final int loserPosition;
+
+  const MatchDisqualified({required this.matchId, required this.loserPosition});
+
+  @override
+  List<Object> get props => [matchId, loserPosition];
+}
+
 class TournamentFinishRequested extends TournamentDetailEvent {}

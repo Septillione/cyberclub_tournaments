@@ -180,6 +180,63 @@ class BracketDetails extends StatelessWidget {
     );
   }
 
+  // void _showScoreDialog(BuildContext context, TournamentMatch match) {
+  //   final s1Controller = TextEditingController(text: match.scoreTeamA);
+  //   final s2Controller = TextEditingController(text: match.scoreTeamB);
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (ctx) => AlertDialog(
+  //       title: Text("Счет матча"),
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           // Text("${match.teamA} vs ${match.teamB}"),
+  //           Row(
+  //             children: [
+  //               Expanded(
+  //                 child: TextField(
+  //                   controller: s1Controller,
+  //                   keyboardType: TextInputType.number,
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 16),
+  //               Expanded(
+  //                 child: TextField(
+  //                   controller: s2Controller,
+  //                   keyboardType: TextInputType.number,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(ctx),
+  //           child: const Text("Отмена"),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: () {
+  //             // Отправляем Event
+  //             // Важно: нужен context, который имеет доступ к BLoC.
+  //             // Если диалог не видит BLoC, передай context снаружи или используй BlocProvider.value
+  //             context.read<TournamentDetailBloc>().add(
+  //               MatchScoreUpdated(
+  //                 matchId: match.id,
+  //                 score1: int.parse(s1Controller.text),
+  //                 score2: int.parse(s2Controller.text),
+  //               ),
+  //             );
+  //             Navigator.pop(ctx);
+  //           },
+  //           child: const Text("Сохранить"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   void _showScoreDialog(BuildContext context, TournamentMatch match) {
     final s1Controller = TextEditingController(text: match.scoreTeamA);
     final s2Controller = TextEditingController(text: match.scoreTeamB);
@@ -187,24 +244,78 @@ class BracketDetails extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("Счет матча"),
+        backgroundColor: AppColors.bgSurface,
+        title: const Text("Редактирование матча"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("${match.teamA} vs ${match.teamB}"),
+            // --- Участник 1 ---
             Row(
               children: [
                 Expanded(
+                  child: Text(
+                    match.teamA ?? "...",
+                    style: AppTextStyles.bodyL,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(
+                  width: 50,
                   child: TextField(
                     controller: s1Controller,
                     keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(width: 16),
+                // Кнопка дисквалификации 1
+                IconButton(
+                  icon: const Icon(
+                    LucideIcons.skull,
+                    color: AppColors.redColor,
+                  ),
+                  tooltip: "Дисквалифицировать (Тех. поражение)",
+                  onPressed: () => _confirmDisqualification(
+                    context,
+                    ctx,
+                    match,
+                    1,
+                    match.teamA,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            // --- Участник 2 ---
+            Row(
+              children: [
                 Expanded(
+                  child: Text(
+                    match.teamB ?? "...",
+                    style: AppTextStyles.bodyL,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(
+                  width: 50,
                   child: TextField(
                     controller: s2Controller,
                     keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                // Кнопка дисквалификации 2
+                IconButton(
+                  icon: const Icon(
+                    LucideIcons.skull,
+                    color: AppColors.redColor,
+                  ),
+                  tooltip: "Дисквалифицировать (Тех. поражение)",
+                  onPressed: () => _confirmDisqualification(
+                    context,
+                    ctx,
+                    match,
+                    2,
+                    match.teamB,
                   ),
                 ),
               ],
@@ -218,19 +329,54 @@ class BracketDetails extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Отправляем Event
-              // Важно: нужен context, который имеет доступ к BLoC.
-              // Если диалог не видит BLoC, передай context снаружи или используй BlocProvider.value
+              // Обычное сохранение счета
               context.read<TournamentDetailBloc>().add(
                 MatchScoreUpdated(
                   matchId: match.id,
-                  score1: int.parse(s1Controller.text),
-                  score2: int.parse(s2Controller.text),
+                  score1: int.tryParse(s1Controller.text) ?? 0,
+                  score2: int.tryParse(s2Controller.text) ?? 0,
                 ),
               );
               Navigator.pop(ctx);
             },
-            child: const Text("Сохранить"),
+            child: const Text("Сохранить счет"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmDisqualification(
+    BuildContext parentContext,
+    BuildContext dialogContext,
+    TournamentMatch match,
+    int loserPosition,
+    String? teamName,
+  ) {
+    showDialog(
+      context: dialogContext,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Подтверждение'),
+        content: Text(
+          'Вы уверены, что хотите засчитать техническое поражение команде $teamName?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("Нет"),
+          ),
+          TextButton(
+            onPressed: () {
+              parentContext.read<TournamentDetailBloc>().add(
+                MatchDisqualified(
+                  matchId: match.id,
+                  loserPosition: loserPosition,
+                ),
+              );
+              Navigator.pop(ctx);
+              Navigator.pop(dialogContext);
+            },
+            child: const Text("Да, дисквалифицировать"),
           ),
         ],
       ),

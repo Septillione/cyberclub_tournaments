@@ -63,7 +63,7 @@ class UserCardForAdmin extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(
-                        LucideIcons.fireExtinguisher,
+                        LucideIcons.pen,
                         size: 20,
                         color: AppColors.redColor,
                       ),
@@ -82,7 +82,7 @@ class UserCardForAdmin extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(
-                        LucideIcons.fireExtinguisher,
+                        LucideIcons.ban,
                         size: 20,
                         color: AppColors.redColor,
                       ),

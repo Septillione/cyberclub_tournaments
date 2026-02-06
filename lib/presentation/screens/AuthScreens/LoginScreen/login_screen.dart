@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/bloc/login_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -77,7 +78,8 @@ class _AuthViewState extends State<_LoginView> {
                       obscureText: true,
                     ),
                     const SizedBox(height: 24),
-                    ElevatedButton(
+                    GradientButton(
+                      text: 'Войти',
                       onPressed: () {
                         context.read<LoginBloc>().add(
                           LoginSubmitted(
@@ -86,7 +88,6 @@ class _AuthViewState extends State<_LoginView> {
                           ),
                         );
                       },
-                      child: const Text('Войти'),
                     ),
                     const SizedBox(height: 16),
                     TextButton(

@@ -1,5 +1,6 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
@@ -205,7 +206,30 @@ class AppRouter {
       ),
       GoRoute(
         path: '/create-tournament',
-        builder: (context, state) => const CreateTournamentScreen(),
+        pageBuilder: (context, state) {
+          final tournament = state.extra as TournamentModel?;
+
+          return CustomTransitionPage(
+            child: CreateTournamentScreen(tournamentToEdit: tournament),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeOutCubic;
+
+                  var tween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+            key: state.pageKey,
+          );
+        },
       ),
       GoRoute(
         path: '/notifications',

@@ -179,8 +179,41 @@ class TournamentRepository {
 
   Future<void> updateTournament(
     String tournamentId,
-    Map<String, dynamic> data,
+    String title,
+    String description,
+    String rules,
+    Discipline discipline,
+    DateTime startDate,
+    int maxParticipants,
+    BracketType bracketType,
+    TeamMode teamMode,
+    bool isOnline,
+    String? address,
+    String? imageUrl,
+    List<PrizeItem>? prizes,
   ) async {
+    final data = <String, dynamic>{};
+    data['title'] = title;
+    data['description'] = description;
+    data['rules'] = rules;
+    data['discipline'] = discipline.name;
+    data['startDate'] = startDate.toIso8601String();
+    data['maxParticipants'] = maxParticipants;
+    data['bracketType'] = bracketType.name;
+    data['teamMode'] = teamMode.toJson();
+    data['isOnline'] = isOnline;
+    if (address != null) data['address'] = address;
+    if (imageUrl != null) data['imageUrl'] = imageUrl;
+    if (prizes != null) {
+      data['prizes'] = prizes.map((prize) => prize.toJson()).toList();
+    }
     await _apiClient.dio.patch('/tournaments/$tournamentId', data: data);
+  }
+
+  Future<void> disqualifyParticipant(String matchId, int loserPosition) async {
+    await _apiClient.dio.patch(
+      '/tournaments/matches/$matchId/disqualify',
+      data: {'loserPosition': loserPosition},
+    );
   }
 }

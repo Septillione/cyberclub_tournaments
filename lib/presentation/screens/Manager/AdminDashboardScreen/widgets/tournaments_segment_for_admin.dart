@@ -2,8 +2,10 @@ import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class TournamentsSegmentForAdmin extends StatefulWidget {
@@ -130,16 +132,31 @@ class _TournamentsSegmentForAdminState
         const SizedBox(height: 16),
 
         Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) {
-              final t = widget.tournaments[index];
-              return TournamentCard(tournament: t, isManager: true);
-            },
-            separatorBuilder: (_, __) => const SizedBox(height: 16),
-            itemCount: widget.tournaments.length,
+          child: Scaffold(
+            floatingActionButton: _buildCreateTournamentButton(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: ListView.separated(
+              itemBuilder: (context, index) {
+                final t = widget.tournaments[index];
+                return TournamentCard(tournament: t, isManager: true);
+              },
+              separatorBuilder: (_, __) => const SizedBox(height: 16),
+              itemCount: widget.tournaments.length,
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildCreateTournamentButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      child: GradientButton(
+        text: 'Создать турнир',
+        onPressed: () => context.push('/create-tournament'),
+      ),
     );
   }
 }

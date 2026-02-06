@@ -28,6 +28,10 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await _tokenStorage.getAccessToken();
+          print(
+            'Interceptor: Token is ${token != null ? "PRESENT" : "NULL"}',
+          ); // <--- Добавь это
+          print('Interceptor: Path is ${options.path}');
 
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';

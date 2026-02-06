@@ -3,6 +3,8 @@ import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
+import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -30,7 +32,8 @@ class PrizeInput {
 }
 
 class CreateTournamentScreen extends StatelessWidget {
-  const CreateTournamentScreen({super.key});
+  final TournamentModel? tournamentToEdit;
+  const CreateTournamentScreen({super.key, this.tournamentToEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +41,14 @@ class CreateTournamentScreen extends StatelessWidget {
       create: (context) => CreateTournamentBloc(
         tournamentRepository: context.read<TournamentRepository>(),
       ),
-      child: _CreateTournamentView(),
+      child: _CreateTournamentView(tournamentToEdit: tournamentToEdit),
     );
   }
 }
 
 class _CreateTournamentView extends StatefulWidget {
-  const _CreateTournamentView();
+  final TournamentModel? tournamentToEdit;
+  const _CreateTournamentView({required this.tournamentToEdit});
 
   @override
   State<_CreateTournamentView> createState() => _CreateTournamentViewState();
@@ -61,7 +65,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
   bool _isOnline = true;
   final _addressController = TextEditingController();
 
-  final List<PrizeInput> _prizes = [
+  List<PrizeInput> _prizes = [
     PrizeInput(label: '1 место', amount: ''),
     PrizeInput(label: '2 место', amount: ''),
     PrizeInput(label: '3 место', amount: ''),
@@ -95,7 +99,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
     if (time != null) setState(() => _startTime = time);
   }
 
-  void _onCreateTournament() {
+  void _onSubmit() {
     if (!_formKey.currentState!.validate()) return;
 
     final fullDate = DateTime(
@@ -103,7 +107,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
       _startDate.month,
       _startDate.day,
       _startTime.hour,
-      _startDate.minute,
+      _startTime.minute,
     );
 
     final prizesToSend = _prizes
@@ -111,22 +115,42 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
         .map((p) => PrizeItem(label: p.label, amount: p.amount))
         .toList();
 
-    context.read<CreateTournamentBloc>().add(
-      CreateTournamentSubmitted(
-        title: _titleController.text.trim(),
-        description: _descriptionController.text.trim(),
-        rules: _rulesController.text.trim(),
-        discipline: _discipline,
-        startDate: fullDate,
-        maxParticipants: _maxParticipants,
-        bracketType: _bracketType,
-        teamMode: _teamMode,
-        imageUrl: _selectedImageUrl,
-        isOnline: _isOnline,
-        address: _addressController.text.trim(),
-        prizes: prizesToSend,
-      ),
-    );
+    if (widget.tournamentToEdit != null) {
+      context.read<CreateTournamentBloc>().add(
+        UpdateTournamentSubmitted(
+          id: widget.tournamentToEdit!.id,
+          title: _titleController.text.trim(),
+          description: _descriptionController.text.trim(),
+          rules: _rulesController.text.trim(),
+          discipline: _discipline,
+          startDate: fullDate,
+          maxParticipants: _maxParticipants,
+          bracketType: _bracketType,
+          teamMode: _teamMode,
+          imageUrl: _selectedImageUrl,
+          isOnline: _isOnline,
+          address: _addressController.text.trim(),
+          prizes: prizesToSend,
+        ),
+      );
+    } else {
+      context.read<CreateTournamentBloc>().add(
+        CreateTournamentSubmitted(
+          title: _titleController.text.trim(),
+          description: _descriptionController.text.trim(),
+          rules: _rulesController.text.trim(),
+          discipline: _discipline,
+          startDate: fullDate,
+          maxParticipants: _maxParticipants,
+          bracketType: _bracketType,
+          teamMode: _teamMode,
+          imageUrl: _selectedImageUrl,
+          isOnline: _isOnline,
+          address: _addressController.text.trim(),
+          prizes: prizesToSend,
+        ),
+      );
+    }
   }
 
   void _updateCoverPresets() {
@@ -142,6 +166,26 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
   void initState() {
     super.initState();
     _updateCoverPresets();
+    if (widget.tournamentToEdit != null) {
+      final t = widget.tournamentToEdit!;
+      _titleController.text = t.title;
+      _descriptionController.text = t.description;
+      _rulesController.text = t.rules;
+      _selectedImageUrl = t.imageUrl;
+      _isOnline = t.isOnline;
+      _addressController.text = t.address ?? '';
+
+      _discipline = t.discipline;
+      _teamMode = t.teamMode;
+      _maxParticipants = t.participants.max;
+      _bracketType = t.bracketType;
+      _startDate = t.startDate;
+      _startTime = TimeOfDay.fromDateTime(t.startDate);
+
+      _prizes = t.prizes
+          .map((p) => PrizeInput(label: p.label, amount: p.amount))
+          .toList();
+    }
   }
 
   @override
@@ -171,12 +215,30 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
+                final isEditing = widget.tournamentToEdit != null;
+
                 return SingleChildScrollView(
                   child: Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomBackButton(),
+                            if (isEditing)
+                              Text(
+                                'Редактировать турнир',
+                                style: AppTextStyles.h3,
+                              )
+                            else
+                              Text('Создать турнир', style: AppTextStyles.h3),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
                         Text('Основное', style: AppTextStyles.h3),
 
                         const SizedBox(height: 16),
@@ -461,10 +523,17 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
 
                         const SizedBox(height: 32),
 
-                        ElevatedButton(
-                          onPressed: _onCreateTournament,
-                          child: const Text('Создать турнир'),
+                        GradientButton(
+                          text: isEditing
+                              ? 'Редактировать турнир'
+                              : 'Создать турнир',
+                          onPressed: _onSubmit,
                         ),
+
+                        // ElevatedButton(
+                        //   onPressed: _onCreateTournament,
+                        //   child: const Text('Создать турнир'),
+                        // ),
                       ],
                     ),
                   ),
