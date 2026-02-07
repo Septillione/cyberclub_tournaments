@@ -224,8 +224,12 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                   builder: (ctx) => FilterBottomSheet(
                     currentFilter: state.currentFilter,
                     onApply: (newFilter) {
+                      final mergedFilter = newFilter.copyWith(
+                        searchQuery: _searchController.text,
+                      );
+
                       context.read<TournamentsFeedBloc>().add(
-                        TournamentFilterUpdated(newFilter),
+                        TournamentFilterUpdated(mergedFilter),
                       );
                     },
                   ),
@@ -250,8 +254,11 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    final currentSearch = _searchController.text;
+
                     final newFilter = state.currentFilter.copyWith(
                       clearDiscipline: true,
+                      searchQuery: currentSearch,
                     );
                     context.read<TournamentsFeedBloc>().add(
                       TournamentFilterUpdated(newFilter),
@@ -266,9 +273,12 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                 ...sortedDisciplines.map((discipline) {
                   return GestureDetector(
                     onTap: () {
+                      final currentSearch = _searchController.text;
+
                       if (state.currentFilter.discipline == discipline) {
                         final newFilter = state.currentFilter.copyWith(
                           clearDiscipline: true,
+                          searchQuery: currentSearch,
                         );
                         context.read<TournamentsFeedBloc>().add(
                           TournamentFilterUpdated(newFilter),
@@ -276,6 +286,7 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
                       } else {
                         final newFilter = state.currentFilter.copyWith(
                           discipline: discipline,
+                          searchQuery: currentSearch,
                         );
                         context.read<TournamentsFeedBloc>().add(
                           TournamentFilterUpdated(newFilter),
@@ -327,7 +338,10 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
           animSpeedFactor: 5.0,
           showChildOpacityTransition: false,
           onRefresh: () async {
-            final newFilter = state.currentFilter;
+            final newFilter = state.currentFilter.copyWith(
+              searchQuery: _searchController.text,
+            );
+
             context.read<TournamentsFeedBloc>().add(
               TournamentsFeedRefreshed(newFilter),
             );
