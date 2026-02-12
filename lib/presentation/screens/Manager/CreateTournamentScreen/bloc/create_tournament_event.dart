@@ -85,3 +85,12 @@ class UpdateTournamentSubmitted extends CreateTournamentEvent {
     this.prizes,
   });
 }
+
+class CancelTournamentSubmitted extends CreateTournamentEvent {
+  final String touranmentId;
+
+  const CancelTournamentSubmitted({required this.touranmentId});
+
+  @override
+  List<Object> get props => [touranmentId];
+}

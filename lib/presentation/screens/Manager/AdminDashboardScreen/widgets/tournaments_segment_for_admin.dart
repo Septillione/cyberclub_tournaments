@@ -1,6 +1,7 @@
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,15 @@ class _TournamentsSegmentForAdminState
             body: ListView.separated(
               itemBuilder: (context, index) {
                 final t = widget.tournaments[index];
-                return TournamentCard(tournament: t, isManager: true);
+                return TournamentCard(
+                  tournament: t,
+                  isManager: true,
+                  onCancelTournament: (id) {
+                    context.read<CreateTournamentBloc>().add(
+                      CancelTournamentSubmitted(touranmentId: t.id),
+                    );
+                  },
+                );
               },
               separatorBuilder: (_, __) => const SizedBox(height: 16),
               itemCount: widget.tournaments.length,

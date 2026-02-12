@@ -1,5 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/ManagerDashboardScreen/bloc/manager_dashboard_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/widgets/tournament_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
@@ -8,16 +9,66 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+// class ManagerDashboardScreen extends StatelessWidget {
+//   const ManagerDashboardScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (context) => ManagerDashboardBloc(
+//         tournamentRepository: context.read<TournamentRepository>(),
+//       )..add(ManagerDashboardStarted()),
+//       child: _ManagerDashboardView(),
+//     );
+//   }
+// }
+
 class ManagerDashboardScreen extends StatelessWidget {
   const ManagerDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ManagerDashboardBloc(
-        tournamentRepository: context.read<TournamentRepository>(),
-      )..add(ManagerDashboardStarted()),
-      child: _ManagerDashboardView(),
+    // ИСПОЛЬЗУЕМ MultiBlocProvider
+    return MultiBlocProvider(
+      providers: [
+        // 1. Блок Менеджера
+        BlocProvider(
+          create: (context) => ManagerDashboardBloc(
+            tournamentRepository: context.read<TournamentRepository>(),
+          )..add(ManagerDashboardStarted()),
+        ),
+        // 2. Блок Создания/Отмены
+        BlocProvider(
+          create: (context) => CreateTournamentBloc(
+            tournamentRepository: context.read<TournamentRepository>(),
+          ),
+        ),
+      ],
+      // Слушаем успех
+      child: BlocListener<CreateTournamentBloc, CreateTournamentState>(
+        listener: (context, state) {
+          if (state is CreateTournamentSuccess) {
+            // Обновляем список менеджера
+            context.read<ManagerDashboardBloc>().add(ManagerDashboardStarted());
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Успешно выполнено'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+          if (state is CreateTournamentFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Ошибка: ${state.errorMessage}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: const _ManagerDashboardView(),
+      ),
     );
   }
 }
@@ -67,9 +118,17 @@ class __ManagerDashboardViewState extends State<_ManagerDashboardView> {
                             child: ListView.builder(
                               itemCount: tournaments.length,
                               itemBuilder: (context, index) {
+                                final t = tournaments[index];
                                 return TournamentCard(
-                                  tournament: tournaments[index],
+                                  tournament: t,
                                   isManager: true,
+                                  onCancelTournament: (id) {
+                                    context.read<CreateTournamentBloc>().add(
+                                      CancelTournamentSubmitted(
+                                        touranmentId: t.id,
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),

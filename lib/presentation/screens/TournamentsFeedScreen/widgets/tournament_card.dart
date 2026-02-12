@@ -1,7 +1,9 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -9,8 +11,14 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 class TournamentCard extends StatelessWidget {
   final TournamentModel tournament;
   final bool? isManager;
+  final Function(String id)? onCancelTournament;
 
-  const TournamentCard({super.key, required this.tournament, this.isManager});
+  const TournamentCard({
+    super.key,
+    required this.tournament,
+    this.isManager,
+    this.onCancelTournament,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +146,8 @@ class TournamentCard extends StatelessWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
+                      onTap: () =>
+                          showCancelTournamentDialog(context, tournament.id),
                     ),
                   ],
                 ),
@@ -290,6 +300,129 @@ class TournamentCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void showCancelTournamentDialog(BuildContext context, String tournamentId) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: AppColors.bgSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: AppColors.bgMain, width: 1),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Иконка предупреждения
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.redColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  LucideIcons.triangleAlert,
+                  size: 32,
+                  color: AppColors.redColor,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Заголовок
+              Text(
+                'Отменить турнир?',
+                style: AppTextStyles.h3,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+
+              // Текст предупреждения
+              Text(
+                'Вы уверены, что хотите отменить этот турнир? Это действие необратимо. Статус турнира изменится на "Отменен", а участники получат уведомление.',
+                style: AppTextStyles.bodyM.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+
+              // Кнопки
+              Row(
+                children: [
+                  // Кнопка отмены (Назад)
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        side: BorderSide(color: AppColors.textSecondary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop(ctx),
+                      child: Text(
+                        'Назад',
+                        style: AppTextStyles.bodyM.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+
+                  // Кнопка подтверждения (Удалить)
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.redColor,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Вызов события BLoC
+                        // context.read<TournamentBloc>().add(CancelTournamentEvent(tournamentId));
+                        context.read<CreateTournamentBloc>().add(
+                          CancelTournamentSubmitted(touranmentId: tournamentId),
+                        );
+
+                        // if (onCancelTournament != null) {
+                        //   onCancelTournament!(tournamentId);
+                        // }
+
+                        Navigator.pop(ctx); // Закрываем диалог
+
+                        // Можно показать SnackBar
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: AppColors.bgSurface,
+                            content: Text(
+                              'Турнир отменен',
+                              style: TextStyle(color: AppColors.textPrimary),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Отменить',
+                        style: AppTextStyles.bodyM.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

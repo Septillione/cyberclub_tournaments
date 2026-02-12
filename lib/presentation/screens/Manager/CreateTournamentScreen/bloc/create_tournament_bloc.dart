@@ -16,6 +16,7 @@ class CreateTournamentBloc
       super(CreateTournamentInitial()) {
     on<CreateTournamentSubmitted>(_onCreateSubmitted);
     on<UpdateTournamentSubmitted>(_onUpdateSubmitted);
+    on<CancelTournamentSubmitted>(_onCancelSubmitted);
   }
 
   Future<void> _onCreateSubmitted(
@@ -69,6 +70,21 @@ class CreateTournamentBloc
     } catch (e) {
       emit(CreateTournamentFailure(errorMessage: e.toString()));
       print('Error updating tournament: $e');
+    }
+  }
+
+  Future<void> _onCancelSubmitted(
+    CancelTournamentSubmitted event,
+    Emitter<CreateTournamentState> emit,
+  ) async {
+    emit(CreateTournamentLoading());
+    try {
+      await _tournamentRepository.cancelTournament(event.touranmentId);
+      print('Tournament was cancelled!');
+      emit(CreateTournamentSuccess());
+    } catch (e) {
+      print('Error cancelling tournament: $e');
+      emit(CreateTournamentFailure(errorMessage: e.toString()));
     }
   }
 }

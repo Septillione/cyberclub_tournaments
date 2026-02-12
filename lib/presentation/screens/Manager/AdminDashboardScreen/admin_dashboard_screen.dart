@@ -6,6 +6,7 @@ import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboar
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/widgets/players_segment_for_admin.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/widgets/teams_segment_for_admin.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/widgets/tournaments_segment_for_admin.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/segmented_button_details.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,46 @@ class AdminDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AdminDashboardBloc(
-        tournamentRepository: context.read<TournamentRepository>(),
-        userRepository: context.read<UserRepository>(),
-        teamRepository: context.read<TeamRepository>(),
-      )..add(AdminDashboardStarted()),
-      child: _AdminDashboardView(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AdminDashboardBloc(
+            tournamentRepository: context.read<TournamentRepository>(),
+            userRepository: context.read<UserRepository>(),
+            teamRepository: context.read<TeamRepository>(),
+          )..add(AdminDashboardStarted()),
+          // child: _AdminDashboardView(),
+        ),
+        BlocProvider(
+          create: (context) => CreateTournamentBloc(
+            tournamentRepository: context.read<TournamentRepository>(),
+          ),
+        ),
+      ],
+      child: BlocListener<CreateTournamentBloc, CreateTournamentState>(
+        listener: (context, state) {
+          if (state is CreateTournamentSuccess) {
+            // Обновляем список админа
+            context.read<AdminDashboardBloc>().add(AdminDashboardStarted());
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Успешно выполнено'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+          if (state is CreateTournamentFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Ошибка: ${state.errorMessage}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: const _AdminDashboardView(),
+      ),
     );
   }
 }
