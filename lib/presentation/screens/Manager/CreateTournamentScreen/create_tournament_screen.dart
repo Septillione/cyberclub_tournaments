@@ -12,13 +12,14 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 final Map<Discipline, List<String>> _coverPresets = {
   Discipline.DOTA2: [
-    'assets/images/covers/dota2_1.jpeg',
-    'https://via.placeholder.com/300',
+    'assets/images/covers/dota2/dota2_1.jpeg',
+    'assets/images/covers/dota2/dota2_2.jpg',
+    'assets/images/covers/dota2/dota2_3.jpg',
   ],
   Discipline.CS2: [
-    'assets/images/covers/cs2_1.jpg',
-    'assets/images/covers/mk1_1.jpg',
-    'assets/images/covers/mk1_1.jpg',
+    'assets/images/covers/cs2/cs2_1.jpg',
+    // 'assets/images/covers/cs2/cs2_2.jpg',
+    // 'assets/images/covers/cs2/cs2_3.jpg',
   ],
   Discipline.MORTAL_KOMBAT: ['assets/images/covers/mk1_1.jpg'],
 };
@@ -529,11 +530,6 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
                               : 'Создать турнир',
                           onPressed: _onSubmit,
                         ),
-
-                        // ElevatedButton(
-                        //   onPressed: _onCreateTournament,
-                        //   child: const Text('Создать турнир'),
-                        // ),
                       ],
                     ),
                   ),
@@ -558,6 +554,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
           final prize = entry.value;
 
           return Padding(
+            key: UniqueKey(),
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Row(
               children: [
@@ -585,7 +582,12 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => setState(() => _prizes.removeAt(index)),
+                  onPressed: () => setState(() {
+                    _prizes.removeAt(index);
+                    for (int i = 0; i < _prizes.length; i++) {
+                      _prizes[i].label = '${i + 1} место';
+                    }
+                  }),
                   icon: Icon(LucideIcons.trash, color: AppColors.redColor),
                 ),
               ],

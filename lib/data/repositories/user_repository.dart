@@ -79,11 +79,25 @@ class UserRepository {
     }
   }
 
-  Future<void> banUser(String userId, bool isBanned) async {
-    await _apiClient.dio.patch(
-      '/admin/users/$userId/ban',
-      data: {'isBanned': isBanned},
+  Future<void> banUser({
+    required String userId,
+    required String reason,
+    int? days, // null = навсегда
+  }) async {
+    // Эндпоинт из BanController: @Post('user')
+    await _apiClient.dio.post(
+      '/ban/user',
+      data: {
+        'userId': userId,
+        'reason': reason,
+        if (days != null) 'days': days,
+      },
     );
+  }
+
+  Future<void> unbanUser(String userId) async {
+    // Эндпоинт из BanController: @Post('unban/user/:userId')
+    await _apiClient.dio.post('/ban/unban/user/$userId');
   }
 
   Future<void> changeUserRole(String userId, String newRole) async {

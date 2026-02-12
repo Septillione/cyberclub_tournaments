@@ -42,8 +42,15 @@ class AdminChangeUserRole extends AdminDashboardEvent {
 
 class AdminToggleBanUser extends AdminDashboardEvent {
   final String userId;
-  final bool ban; // true = забанить, false = разбанить
-  const AdminToggleBanUser(this.userId, this.ban);
+  final String reason;
+  final int? days;
+
+  AdminToggleBanUser({required this.userId, required this.reason, this.days});
+}
+
+class AdminUnbanUser extends AdminDashboardEvent {
+  final String userId;
+  AdminUnbanUser(this.userId);
 }
 
 class AdminCancelTournament extends AdminDashboardEvent {

@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/routing/app_router.dart';
 import 'package:cyberclub_tournaments/data/services/token_storage.dart';
 import 'package:dio/dio.dart';
 
@@ -40,6 +41,14 @@ class ApiClient {
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
+          if (error.response?.statusCode == 403) {
+            final message = error.response?.data['message'] ?? '';
+
+            if (message.contains('заблокирован')) {
+              await _tokenStorage.clearTokens();
+              AppRouter.router.go('/ban', extra: message);
+            }
+          }
           if (error.response?.statusCode == 401 &&
               !error.requestOptions.path.contains('auth')) {
             try {

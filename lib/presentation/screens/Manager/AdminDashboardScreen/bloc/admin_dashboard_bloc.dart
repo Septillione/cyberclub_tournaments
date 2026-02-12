@@ -125,15 +125,45 @@ class AdminDashboardBloc
     }
   }
 
+  // Future<void> _onBanUser(
+  //   AdminToggleBanUser event,
+  //   Emitter<AdminDashboardState> emit,
+  // ) async {
+  //   try {
+  //     await _userRepository.banUser(event.userId, event.reason, event.days);
+  //     add(AdminDashboardStarted());
+  //   } catch (e) {
+  //     print('Ban user error: $e');
+  //   }
+  // }
+
   Future<void> _onBanUser(
     AdminToggleBanUser event,
     Emitter<AdminDashboardState> emit,
   ) async {
     try {
-      await _userRepository.banUser(event.userId, event.ban);
-      add(AdminDashboardStarted());
+      // emit(Loading...) если нужно
+      await _userRepository.banUser(
+        userId: event.userId,
+        reason: event.reason,
+        days: event.days,
+      );
+      add(AdminDashboardStarted()); // Перезагружаем список
     } catch (e) {
       print('Ban user error: $e');
+      // emit(Error...)
+    }
+  }
+
+  Future<void> _onUnbanUser(
+    AdminUnbanUser event,
+    Emitter<AdminDashboardState> emit,
+  ) async {
+    try {
+      await _userRepository.unbanUser(event.userId);
+      add(AdminDashboardStarted()); // Перезагружаем список
+    } catch (e) {
+      print('Unban user error: $e');
     }
   }
 

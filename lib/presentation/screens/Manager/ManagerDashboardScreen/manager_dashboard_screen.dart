@@ -33,52 +33,56 @@ class __ManagerDashboardViewState extends State<_ManagerDashboardView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _buildCreateTournamentButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, top: 16.0, right: 20.0),
-          child: BlocBuilder<ManagerDashboardBloc, ManagerDashboardState>(
-            builder: (context, state) {
-              if (state is ManagerDashboardLoading) {
-                return const CircularProgressIndicator();
-              }
+          child: Column(
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 16.0),
+              BlocBuilder<ManagerDashboardBloc, ManagerDashboardState>(
+                builder: (context, state) {
+                  if (state is ManagerDashboardLoading) {
+                    return const CircularProgressIndicator();
+                  }
 
-              if (state is ManagerDashboardError) {
-                return const Text('Ошибка загрузки турниров');
-              }
+                  if (state is ManagerDashboardError) {
+                    return const Text('Ошибка загрузки турниров');
+                  }
 
-              if (state is ManagerDashboardLoaded) {
-                final tournaments = state.tournaments;
+                  if (state is ManagerDashboardLoaded) {
+                    final tournaments = state.tournaments;
 
-                if (tournaments.isEmpty) {
-                  return const Text('Турниры отсутствуют');
-                }
+                    if (tournaments.isEmpty) {
+                      return const Text('Турниры отсутствуют');
+                    }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildHeader(),
-
-                    const SizedBox(height: 16.0),
-
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: tournaments.length,
-                        itemBuilder: (context, index) {
-                          return TournamentCard(
-                            tournament: tournaments[index],
-                            isManager: true,
-                          );
-                        },
+                    return Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: tournaments.length,
+                              itemBuilder: (context, index) {
+                                return TournamentCard(
+                                  tournament: tournaments[index],
+                                  isManager: true,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    );
+                  }
 
-                    _buildCreateTournamentButton(),
-                  ],
-                );
-              }
-
-              return const Center(child: Text('Турниры отсутствуют'));
-            },
+                  return const Center(child: Text('Турниры отсутствуют'));
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -96,15 +100,14 @@ class __ManagerDashboardViewState extends State<_ManagerDashboardView> {
             Text('Панель организатора', style: AppTextStyles.h2),
           ],
         ),
-        const SizedBox(height: 24),
-        Text('Турниры', style: AppTextStyles.bodyL),
+        const SizedBox(height: 16),
       ],
     );
   }
 
   Widget _buildCreateTournamentButton() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: GradientButton(
         text: 'Создать турнир',
         onPressed: () => context.push('/create-tournament'),

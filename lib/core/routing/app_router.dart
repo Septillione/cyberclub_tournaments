@@ -5,6 +5,7 @@ import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/BanScreen/ban_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/login_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
@@ -42,6 +43,15 @@ class AppRouter {
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+
+      GoRoute(
+        path: '/ban',
+        builder: (context, state) {
+          // Получаем сообщение из extra, которое передал ApiClient
+          final message = state.extra as String? ?? '';
+          return BanScreen(banMessage: message);
+        },
+      ),
 
       GoRoute(
         path: '/create-team',

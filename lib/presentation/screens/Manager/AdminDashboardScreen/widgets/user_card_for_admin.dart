@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/widgets/bun_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -124,60 +125,112 @@ class UserCardForAdmin extends StatelessWidget {
     );
   }
 
+  // Внутри UserCardForAdmin
+
   void _showBanDialog(BuildContext context, bool isBanned) {
     final bloc = context.read<AdminDashboardBloc>();
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  isBanned
-                      ? 'Вы уверены что хотите разбанить ${user.nickname}?'
-                      : 'Вы уверены что хотите забанить ${user.nickname}?',
-                  style: AppTextStyles.h3,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isBanned
-                              ? AppColors.greenColor
-                              : AppColors.redColor,
-                        ),
-                        onPressed: () {
-                          bloc.add(AdminToggleBanUser(user.id, !isBanned));
-                          context.pop();
-                        },
-                        child: Text(isBanned ? 'Разбанить' : 'Забанить'),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => context.pop(),
-                        child: Text('Отклонить'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+    if (isBanned) {
+      // --- ДИАЛОГ РАЗБАНА (Простой) ---
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: AppColors.bgSurface,
+          title: Text('Разбанить ${user.nickname}?'),
+          content: const Text('Пользователь снова сможет входить в систему.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Отмена'),
             ),
-          ),
-        );
-      },
-    );
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.greenColor,
+              ),
+              onPressed: () {
+                // Отправляем эвент разбана (вам нужно добавить его в Bloc)
+                bloc.add(AdminUnbanUser(user.id));
+                Navigator.pop(context);
+              },
+              child: const Text('Разбанить'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // --- ДИАЛОГ БАНА (Сложный, с выбором) ---
+      showDialog(
+        context: context,
+        builder: (context) => BanSetupDialog(
+          userName: user.nickname,
+          onConfirm: (reason, days) {
+            // Отправляем эвент бана
+            bloc.add(
+              AdminToggleBanUser(userId: user.id, reason: reason, days: days),
+            );
+          },
+        ),
+      );
+    }
   }
+
+  // void _showBanDialog(BuildContext context, bool isBanned) {
+  //   final bloc = context.read<AdminDashboardBloc>();
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadiusGeometry.circular(16),
+  //         ),
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Text(
+  //                 isBanned
+  //                     ? 'Вы уверены что хотите разбанить ${user.nickname}?'
+  //                     : 'Вы уверены что хотите забанить ${user.nickname}?',
+  //                 style: AppTextStyles.h3,
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //               const SizedBox(height: 24),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: ElevatedButton(
+  //                       style: ElevatedButton.styleFrom(
+  //                         backgroundColor: isBanned
+  //                             ? AppColors.greenColor
+  //                             : AppColors.redColor,
+  //                       ),
+  //                       onPressed: () {
+  //                         // bloc.add(AdminToggleBanUser(user.id));
+  //                         bloc.add(
+  //                           AdminToggleBanUser(user.id, 'TY ZABANIN', 3),
+  //                         );
+  //                         context.pop();
+  //                       },
+  //                       child: Text(isBanned ? 'Разбанить' : 'Забанить'),
+  //                     ),
+  //                   ),
+  //                   const SizedBox(width: 16),
+  //                   Expanded(
+  //                     child: OutlinedButton(
+  //                       onPressed: () => context.pop(),
+  //                       child: Text('Отклонить'),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
