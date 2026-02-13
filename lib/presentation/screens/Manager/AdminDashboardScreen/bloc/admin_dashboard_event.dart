@@ -45,12 +45,16 @@ class AdminToggleBanUser extends AdminDashboardEvent {
   final String reason;
   final int? days;
 
-  AdminToggleBanUser({required this.userId, required this.reason, this.days});
+  const AdminToggleBanUser({
+    required this.userId,
+    required this.reason,
+    this.days,
+  });
 }
 
 class AdminUnbanUser extends AdminDashboardEvent {
   final String userId;
-  AdminUnbanUser(this.userId);
+  const AdminUnbanUser(this.userId);
 }
 
 class AdminCancelTournament extends AdminDashboardEvent {
