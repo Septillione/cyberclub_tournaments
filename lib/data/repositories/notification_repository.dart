@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/utils/error_handler.dart';
 import 'package:cyberclub_tournaments/data/models/NotificationModel/notification_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 
@@ -7,8 +8,12 @@ class NotificationRepository {
     : _apiClient = apiClient;
 
   Future<List<NotificationModel>> fetchNotifications() async {
-    final response = await _apiClient.dio.get('/notifications');
-    final List list = response.data;
-    return list.map((e) => NotificationModel.fromJson(e)).toList();
+    try {
+      final response = await _apiClient.dio.get('/notifications');
+      final List list = response.data;
+      return list.map((e) => NotificationModel.fromJson(e)).toList();
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -40,8 +41,10 @@ class CreateTournamentBloc
         prizes: event.prizes,
       );
       emit(CreateTournamentSuccess());
+    } on AppException catch (e) {
+      emit(CreateTournamentFailure(errorMessage: e.message));
     } catch (e) {
-      emit(CreateTournamentFailure(errorMessage: e.toString()));
+      emit(CreateTournamentFailure(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -67,8 +70,10 @@ class CreateTournamentBloc
       );
       print('Tournament was updated!');
       emit(CreateTournamentSuccess());
+    } on AppException catch (e) {
+      emit(CreateTournamentFailure(errorMessage: e.message));
     } catch (e) {
-      emit(CreateTournamentFailure(errorMessage: e.toString()));
+      emit(CreateTournamentFailure(errorMessage: 'Что-то пошло не так'));
       print('Error updating tournament: $e');
     }
   }
@@ -82,9 +87,11 @@ class CreateTournamentBloc
       await _tournamentRepository.cancelTournament(event.touranmentId);
       print('Tournament was cancelled!');
       emit(CreateTournamentSuccess());
+    } on AppException catch (e) {
+      emit(CreateTournamentFailure(errorMessage: e.message));
     } catch (e) {
       print('Error cancelling tournament: $e');
-      emit(CreateTournamentFailure(errorMessage: e.toString()));
+      emit(CreateTournamentFailure(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

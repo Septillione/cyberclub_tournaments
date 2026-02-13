@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
@@ -43,8 +44,10 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
       final List<TeamModel> teams = await _teamRepository.fetchUserTeams();
       final currentUserId = await _authRepository.getUserId();
       emit(UserTeamsLoaded(teams: teams, currentUserId: currentUserId ?? ''));
+    } on AppException catch (e) {
+      emit(UserTeamsError(e.message));
     } catch (e) {
-      emit(UserTeamsError(e.toString()));
+      emit(UserTeamsError('Что-то пошло не так'));
     }
   }
 
@@ -52,19 +55,16 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
     UserTeamsSearchQueryChanged event,
     Emitter<UserTeamsState> emit,
   ) async {
-    // if (event.query.isEmpty) {
-    //   emit(UserTeamsSearchInitial());
-    //   return;
-    // }
-
     emit(UserTeamsLoading());
     try {
       final teams = await _teamRepository.searchTeams(event.query);
       final currentUserId = await _authRepository.getUserId();
 
       emit(UserTeamsLoaded(teams: teams, currentUserId: currentUserId ?? ''));
+    } on AppException catch (e) {
+      emit(UserTeamsError(e.message));
     } catch (e) {
-      emit(UserTeamsError('$e'));
+      emit(UserTeamsError('Что-то пошло не так'));
     }
   }
 
@@ -91,8 +91,10 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
             successMessage: null,
           ),
         );
+      } on AppException catch (e) {
+        emit(UserTeamsError(e.message));
       } catch (e) {
-        emit(UserTeamsError('$e'));
+        emit(UserTeamsError('Что-то пошло не так'));
       }
     }
   }
@@ -106,8 +108,10 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
       final List<TeamModel> teams = await _teamRepository.fetchUserTeams();
       final currentUserId = await _authRepository.getUserId();
       emit(UserTeamsLoaded(teams: teams, currentUserId: currentUserId ?? ''));
+    } on AppException catch (e) {
+      emit(UserTeamsError(e.message));
     } catch (e) {
-      emit(UserTeamsError(e.toString()));
+      emit(UserTeamsError('Что-то пошло не так'));
     }
   }
 }

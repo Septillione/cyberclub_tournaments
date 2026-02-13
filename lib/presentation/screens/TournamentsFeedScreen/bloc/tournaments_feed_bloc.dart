@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -43,8 +44,10 @@ class TournamentsFeedBloc
           currentFilter: const TournamentFilter(),
         ),
       );
+    } on AppException catch (e) {
+      emit(TournamentsFeedError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentsFeedError(errorMessage: e.toString()));
+      emit(TournamentsFeedError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -64,8 +67,10 @@ class TournamentsFeedBloc
           currentFilter: event.newFilter,
         ),
       );
+    } on AppException catch (e) {
+      emit(TournamentsFeedError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentsFeedError(errorMessage: e.toString()));
+      emit(TournamentsFeedError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -98,8 +103,10 @@ class TournamentsFeedBloc
         ),
       );
       print('Данные были обновлены');
+    } on AppException catch (e) {
+      emit(TournamentsFeedError(errorMessage: e.message));
     } catch (e) {
-      print('Ошибка обновления $e');
+      emit(TournamentsFeedError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -128,8 +135,10 @@ class TournamentsFeedBloc
           currentFilter: newFilter,
         ),
       );
+    } on AppException catch (e) {
+      emit(TournamentsFeedError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentsFeedError(errorMessage: e.toString()));
+      emit(TournamentsFeedError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

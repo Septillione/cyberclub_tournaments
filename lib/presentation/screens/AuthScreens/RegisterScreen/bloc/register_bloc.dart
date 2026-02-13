@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         password: event.password,
       );
       emit(RegisterSuccess());
+    } on AppException catch (e) {
+      emit(RegisterFailure(errorMessage: e.message));
     } catch (e) {
-      emit(RegisterFailure(errorMessage: e.toString()));
+      emit(RegisterFailure(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

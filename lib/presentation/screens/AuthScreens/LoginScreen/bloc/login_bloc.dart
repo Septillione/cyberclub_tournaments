@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       await _authRepository.login(event.email, event.password);
       emit(LoginSuccess());
+    } on AppException catch (e) {
+      emit(LoginFailure(errorMessage: e.message));
     } catch (e) {
-      emit(LoginFailure(errorMessage: e.toString()));
+      emit(LoginFailure(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

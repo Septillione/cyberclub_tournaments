@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/NotificationModel/notification_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/notification_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -25,9 +26,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     try {
       final notifications = await _notificationRepository.fetchNotifications();
       emit(NotificationLoaded(notifications: notifications));
+    } on AppException catch (e) {
+      emit(NotificationError(errorMessage: e.message));
     } catch (e) {
       print("NOTIFICATIONS ERROR: $e");
-      emit(NotificationError(errorMessage: e.toString()));
+      emit(NotificationError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -38,9 +41,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     try {
       final notifications = await _notificationRepository.fetchNotifications();
       emit(NotificationLoaded(notifications: notifications));
+    } on AppException catch (e) {
+      emit(NotificationError(errorMessage: e.message));
     } catch (e) {
       print("NOTIFICATIONS ERROR: $e");
-      emit(NotificationError(errorMessage: e.toString()));
+      emit(NotificationError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

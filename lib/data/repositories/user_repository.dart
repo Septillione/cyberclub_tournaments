@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/utils/error_handler.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
@@ -9,8 +10,12 @@ class UserRepository {
   UserRepository({required ApiClient apiClient}) : _apiClient = apiClient;
 
   Future<UserProfileModel> fetchUserProfile(String userId) async {
-    final response = await _apiClient.dio.get('/users/$userId');
-    return UserProfileModel.fromJson(response.data);
+    try {
+      final response = await _apiClient.dio.get('/users/$userId');
+      return UserProfileModel.fromJson(response.data);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<String?> uploadUserAvatar(String filePath) async {
@@ -33,7 +38,7 @@ class UserRepository {
       return '$baseUrl$relativeUrl';
     } catch (e) {
       print('Upload error: $e');
-      return null;
+      throw ErrorHandler.handle(e);
     }
   }
 
@@ -42,23 +47,31 @@ class UserRepository {
     String? bio,
     String? avatarUrl,
   }) async {
-    await _apiClient.dio.patch(
-      '/users/me',
-      data: {
-        if (nickname != null) 'nickname': nickname,
-        if (bio != null) 'bio': bio,
-        if (avatarUrl != null) 'avatarUrl': avatarUrl,
-      },
-    );
+    try {
+      await _apiClient.dio.patch(
+        '/users/me',
+        data: {
+          if (nickname != null) 'nickname': nickname,
+          if (bio != null) 'bio': bio,
+          if (avatarUrl != null) 'avatarUrl': avatarUrl,
+        },
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> changePassword(String oldPassword, String newPassword) async {
-    print('Old Password: $oldPassword\nNew Password: $newPassword');
-    await _apiClient.dio.patch(
-      '/users/me/password',
-      data: {'oldPassword': oldPassword, 'newPassword': newPassword},
-    );
-    print('Password was changed in repository');
+    try {
+      print('Old Password: $oldPassword\nNew Password: $newPassword');
+      await _apiClient.dio.patch(
+        '/users/me/password',
+        data: {'oldPassword': oldPassword, 'newPassword': newPassword},
+      );
+      print('Password was changed in repository');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<List<TeamUserShort>> fetchUsersForAdminDashboard(String? query) async {
@@ -75,7 +88,7 @@ class UserRepository {
       return list.map((e) => TeamUserShort.fromJson(e)).toList();
     } catch (e) {
       print('Ошибка поиска пользователей: $e');
-      return [];
+      throw ErrorHandler.handle(e);
     }
   }
 
@@ -85,25 +98,37 @@ class UserRepository {
     int? days, // null = навсегда
   }) async {
     // Эндпоинт из BanController: @Post('user')
-    await _apiClient.dio.post(
-      '/ban/user',
-      data: {
-        'userId': userId,
-        'reason': reason,
-        if (days != null) 'days': days,
-      },
-    );
+    try {
+      await _apiClient.dio.post(
+        '/ban/user',
+        data: {
+          'userId': userId,
+          'reason': reason,
+          if (days != null) 'days': days,
+        },
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> unbanUser(String userId) async {
     // Эндпоинт из BanController: @Post('unban/user/:userId')
-    await _apiClient.dio.post('/ban/unban/user/$userId');
+    try {
+      await _apiClient.dio.post('/ban/unban/user/$userId');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> changeUserRole(String userId, String newRole) async {
-    await _apiClient.dio.patch(
-      '/admin/users/$userId/role',
-      data: {'role': newRole},
-    );
+    try {
+      await _apiClient.dio.patch(
+        '/admin/users/$userId/role',
+        data: {'role': newRole},
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 }

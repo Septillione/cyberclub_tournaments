@@ -338,14 +338,30 @@ class _TournamentsFeedScreenState extends State<TournamentsFeedScreen> {
           animSpeedFactor: 5.0,
           showChildOpacityTransition: false,
           onRefresh: () async {
-            final newFilter = state.currentFilter.copyWith(
-              searchQuery: _searchController.text,
-            );
+            final bloc = context.read<TournamentsFeedBloc>();
 
-            context.read<TournamentsFeedBloc>().add(
-              TournamentsFeedRefreshed(newFilter),
-            );
+            final currenState = bloc.state;
+
+            if (currenState is TournamentsFeedLoaded) {
+              final newFilter = currenState.currentFilter.copyWith(
+                searchQuery: _searchController.text,
+              );
+
+              bloc.add(TournamentsFeedRefreshed(newFilter));
+            } else {
+              bloc.add(const TournamentsFeedRefreshed(TournamentFilter()));
+            }
+
             await Future.delayed(const Duration(seconds: 1));
+
+            // final newFilter = state.currentFilter.copyWith(
+            //   searchQuery: _searchController.text,
+            // );
+
+            // context.read<TournamentsFeedBloc>().add(
+            //   TournamentsFeedRefreshed(newFilter),
+            // );
+            // await Future.delayed(const Duration(seconds: 1));
           },
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),

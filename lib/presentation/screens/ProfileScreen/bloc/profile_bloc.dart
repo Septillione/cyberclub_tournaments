@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
@@ -35,8 +36,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         currentUserId ?? '',
       );
       emit(ProfileLoaded(userProfile: userProfile));
+    } on AppException catch (e) {
+      emit(ProfileError(errorMessage: e.message));
     } catch (e) {
-      emit(ProfileError(errorMessage: e.toString()));
+      emit(ProfileError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -52,9 +55,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
       add(ProfileStarted());
       print('Profile was updated');
+    } on AppException catch (e) {
+      emit(ProfileError(errorMessage: e.message));
     } catch (e) {
       print("CRITICAL PROFILE ERROR: $e");
-      emit(ProfileError(errorMessage: e.toString()));
+      emit(ProfileError(errorMessage: 'Что-то пошло не так'));
       add(ProfileStarted());
     }
   }
@@ -69,9 +74,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         event.newPassword,
       );
       print('Password was changed in bloc');
+    } on AppException catch (e) {
+      emit(ProfileError(errorMessage: e.message));
     } catch (e) {
-      print("CRITICAL PASSWORD ERROR: $e");
-      emit(ProfileError(errorMessage: e.toString()));
+      print("CRITICAL PROFILE ERROR: $e");
+      emit(ProfileError(errorMessage: 'Что-то пошло не так'));
       add(ProfileStarted());
     }
   }
@@ -83,8 +90,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       final user = await _userRepository.fetchUserProfile(event.userId);
       emit(ProfileLoaded(userProfile: user));
+    } on AppException catch (e) {
+      emit(ProfileError(errorMessage: e.message));
     } catch (e) {
-      emit(ProfileError(errorMessage: e.toString()));
+      emit(ProfileError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

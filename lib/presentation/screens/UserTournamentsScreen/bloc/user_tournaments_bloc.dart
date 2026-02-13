@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
@@ -57,8 +58,10 @@ class UserTournamentsBloc
           currentUserId: currentUserId ?? '',
         ),
       );
+    } on AppException catch (e) {
+      emit(UserTournamentsError(errorMessage: e.message));
     } catch (e) {
-      emit(UserTournamentsError(errorMessage: e.toString()));
+      emit(UserTournamentsError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -95,8 +98,10 @@ class UserTournamentsBloc
           currentUserId: currentUserId ?? '',
         ),
       );
+    } on AppException catch (e) {
+      emit(UserTournamentsError(errorMessage: e.message));
     } catch (e) {
-      emit(UserTournamentsError(errorMessage: e.toString()));
+      emit(UserTournamentsError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

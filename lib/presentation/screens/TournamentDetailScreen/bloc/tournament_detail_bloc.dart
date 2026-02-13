@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
@@ -56,8 +57,10 @@ class TournamentDetailBloc
       } else {
         emit(TournamentDetailError(errorMessage: 'Турнир не найден'));
       }
+    } on AppException catch (e) {
+      emit(TournamentDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentDetailError(errorMessage: e.toString()));
+      emit(TournamentDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -77,8 +80,10 @@ class TournamentDetailBloc
       );
 
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } on AppException catch (e) {
+      emit(TournamentDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentDetailError(errorMessage: e.toString()));
+      emit(TournamentDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -131,8 +136,10 @@ class TournamentDetailBloc
     try {
       await _tournamentRepository.startTournament(currentState.tournament.id);
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } on AppException catch (e) {
+      emit(TournamentDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentDetailError(errorMessage: e.toString()));
+      emit(TournamentDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -150,8 +157,10 @@ class TournamentDetailBloc
         event.score2,
       );
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } on AppException catch (e) {
+      emit(TournamentDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentDetailError(errorMessage: e.toString()));
+      emit(TournamentDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -168,8 +177,10 @@ class TournamentDetailBloc
         event.loserPosition,
       );
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } on AppException catch (e) {
+      emit(TournamentDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentDetailError(errorMessage: e.toString()));
+      emit(TournamentDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -183,8 +194,10 @@ class TournamentDetailBloc
     try {
       await _tournamentRepository.finishTournament(currentState.tournament.id);
       add(TournamentDetailStarted(tournamentId: currentState.tournament.id));
+    } on AppException catch (e) {
+      emit(TournamentDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TournamentDetailError(errorMessage: e.toString()));
+      emit(TournamentDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

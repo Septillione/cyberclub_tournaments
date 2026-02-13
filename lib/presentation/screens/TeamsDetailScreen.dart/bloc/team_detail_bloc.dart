@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
@@ -51,8 +52,10 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
           currentUserId: currentUserId ?? '',
         ),
       );
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TeamDetailError(errorMessage: e.toString()));
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -67,8 +70,10 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
         final teamId = (state as TeamDetailLoaded).team.id;
         add(TeamDetailStarted(teamId: teamId));
       }
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TeamDetailError(errorMessage: e.toString()));
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -83,8 +88,10 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
         final teamId = (state as TeamDetailLoaded).team.id;
         add(TeamDetailStarted(teamId: teamId));
       }
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TeamDetailError(errorMessage: e.toString()));
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -94,8 +101,10 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
   ) async {
     try {
       await _teamRepository.leaveTeam(event.teamId);
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TeamDetailError(errorMessage: e.toString()));
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -105,8 +114,10 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
   ) async {
     try {
       await _teamRepository.deleteTeam(event.teamId);
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
     } catch (e) {
-      emit(TeamDetailError(errorMessage: e.toString()));
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

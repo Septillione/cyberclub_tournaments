@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
@@ -46,8 +47,10 @@ class TeamSearchBloc extends Bloc<TeamSearchEvent, TeamSearchState> {
       final currentUserId = await _authRepository.getUserId();
 
       emit(TeamSearchLoaded(teams: teams, currentUserId: currentUserId ?? ''));
+    } on AppException catch (e) {
+      emit(TeamSearchError(errorMessage: e.message));
     } catch (e) {
-      emit(TeamSearchError(errorMessage: e.toString()));
+      emit(TeamSearchError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -74,8 +77,10 @@ class TeamSearchBloc extends Bloc<TeamSearchEvent, TeamSearchState> {
             successMessage: null,
           ),
         );
+      } on AppException catch (e) {
+        emit(TeamSearchError(errorMessage: e.message));
       } catch (e) {
-        emit(TeamSearchError(errorMessage: e.toString()));
+        emit(TeamSearchError(errorMessage: 'Что-то пошло не так'));
       }
     }
   }

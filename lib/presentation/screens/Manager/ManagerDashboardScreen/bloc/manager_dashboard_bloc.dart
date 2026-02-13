@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -25,8 +26,10 @@ class ManagerDashboardBloc
       final tournaments = await _tournamentRepository
           .fetchTournamentsForManagerDashboard();
       emit(ManagerDashboardLoaded(tournaments: tournaments));
+    } on AppException catch (e) {
+      emit(ManagerDashboardError(errorMessage: e.message));
     } catch (e) {
-      emit(ManagerDashboardError(errorMessage: e.toString()));
+      emit(ManagerDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }

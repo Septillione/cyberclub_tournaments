@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/utils/error_handler.dart';
 import 'package:cyberclub_tournaments/data/models/JoinRequestModel/join_request_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
@@ -16,40 +17,64 @@ class TeamRepository {
     List<String>? gamesList,
     String? avatarUrl,
   ) async {
-    await _apiClient.dio.post(
-      '/teams',
-      data: {
-        'name': name,
-        'tag': tag,
-        'description': description,
-        'socialMedia': socialMedia,
-        'gamesList': gamesList,
-        'avatarUrl': avatarUrl,
-      },
-    );
+    try {
+      await _apiClient.dio.post(
+        '/teams',
+        data: {
+          'name': name,
+          'tag': tag,
+          'description': description,
+          'socialMedia': socialMedia,
+          'gamesList': gamesList,
+          'avatarUrl': avatarUrl,
+        },
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<List<TeamModel>> fetchUserTeams() async {
-    final response = await _apiClient.dio.get('/teams/my');
-    final List list = response.data;
-    return list.map((json) => TeamModel.fromJson(json)).toList();
+    try {
+      final response = await _apiClient.dio.get('/teams/my');
+      final List list = response.data;
+      return list.map((json) => TeamModel.fromJson(json)).toList();
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<TeamModel> fetchTeamDetails(String teamId) async {
-    final response = await _apiClient.dio.get('/teams/$teamId');
-    return TeamModel.fromJson(response.data);
+    try {
+      final response = await _apiClient.dio.get('/teams/$teamId');
+      return TeamModel.fromJson(response.data);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> joinTeam(String teamId) async {
-    await _apiClient.dio.post('/teams/$teamId/join');
+    try {
+      await _apiClient.dio.post('/teams/$teamId/join');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> leaveTeam(String teamId) async {
-    await _apiClient.dio.post('/teams/$teamId/leave');
+    try {
+      await _apiClient.dio.post('/teams/$teamId/leave');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> deleteTeam(String teamId) async {
-    await _apiClient.dio.post('/teams/$teamId/delete');
+    try {
+      await _apiClient.dio.post('/teams/$teamId/delete');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<List<TeamModel>> searchTeams(String? query) async {
@@ -64,7 +89,7 @@ class TeamRepository {
       final List list = response.data;
       return list.map((json) => TeamModel.fromJson(json)).toList();
     } catch (e) {
-      return [];
+      throw ErrorHandler.handle(e);
     }
   }
 
@@ -78,20 +103,27 @@ class TeamRepository {
       print('USER LIST: $list');
       return list.map((e) => TeamUserShort.fromJson(e)).toList();
     } catch (e) {
-      print('Ошибка поиска пользователей: $e');
-      return [];
+      throw ErrorHandler.handle(e);
     }
   }
 
   Future<void> inviteUserToTeam(String teamId, String userId) async {
-    await _apiClient.dio.post(
-      '/teams/$teamId/invite',
-      data: {'userId': userId},
-    );
+    try {
+      await _apiClient.dio.post(
+        '/teams/$teamId/invite',
+        data: {'userId': userId},
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> sendJoinRequest(String teamId) async {
-    await _apiClient.dio.post('/teams/$teamId/request');
+    try {
+      await _apiClient.dio.post('/teams/$teamId/request');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<List<JoinRequestModel>> fetchJoinRequest(String teamId) async {
@@ -100,17 +132,24 @@ class TeamRepository {
       final List list = response.data;
       return list.map((json) => JoinRequestModel.fromJson(json)).toList();
     } catch (e) {
-      print('Ошибка загрузки заявок $e');
-      return [];
+      throw ErrorHandler.handle(e);
     }
   }
 
   Future<void> acceptJoinRequest(String requestId) async {
-    await _apiClient.dio.post('/teams/requests/$requestId/accept');
+    try {
+      await _apiClient.dio.post('/teams/requests/$requestId/accept');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> rejectJoinRequest(String requestId) async {
-    await _apiClient.dio.post('/teams/requests/$requestId/reject');
+    try {
+      await _apiClient.dio.post('/teams/requests/$requestId/reject');
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<String?> uploadTeamLogo(String filePath) async {
@@ -132,8 +171,7 @@ class TeamRepository {
       print('FULL URL: $baseUrl$relativeUrl');
       return '$baseUrl$relativeUrl';
     } catch (e) {
-      print('Upload error: $e');
-      return null;
+      throw ErrorHandler.handle(e);
     }
   }
 
@@ -146,21 +184,29 @@ class TeamRepository {
     String? socialMedia,
     List<String>? gamesList,
   ) async {
-    final data = <String, dynamic>{};
-    data['name'] = name;
-    data['tag'] = tag;
-    if (avatarUrl != null) data['avatarUrl'] = avatarUrl;
-    if (description != null) data['description'] = description;
-    if (socialMedia != null) data['socialMedia'] = socialMedia;
-    if (gamesList != null) data['gamesList'] = gamesList;
+    try {
+      final data = <String, dynamic>{};
+      data['name'] = name;
+      data['tag'] = tag;
+      if (avatarUrl != null) data['avatarUrl'] = avatarUrl;
+      if (description != null) data['description'] = description;
+      if (socialMedia != null) data['socialMedia'] = socialMedia;
+      if (gamesList != null) data['gamesList'] = gamesList;
 
-    await _apiClient.dio.patch('/teams/$teamId', data: data);
+      await _apiClient.dio.patch('/teams/$teamId', data: data);
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 
   Future<void> banTeam(String teamId, bool isBanned) async {
-    await _apiClient.dio.patch(
-      '/admin/teams/$teamId/ban',
-      data: {'isBanned': isBanned},
-    );
+    try {
+      await _apiClient.dio.patch(
+        '/admin/teams/$teamId/ban',
+        data: {'isBanned': isBanned},
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
   }
 }

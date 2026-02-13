@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,10 @@ class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {
         event.avatarUrl,
       );
       emit(CreateTeamSuccess());
+    } on AppException catch (e) {
+      emit(CreateTeamFailure(errorMessage: e.message));
     } catch (e) {
-      emit(CreateTeamFailure(errorMessage: e.toString()));
+      emit(CreateTeamFailure(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -52,8 +55,10 @@ class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {
       );
       print('Team was updated');
       emit(CreateTeamSuccess());
+    } on AppException catch (e) {
+      emit(CreateTeamFailure(errorMessage: e.message));
     } catch (e) {
-      emit(CreateTeamFailure(errorMessage: e.toString()));
+      emit(CreateTeamFailure(errorMessage: 'Что-то пошло не так'));
       print('Error updating team: $e');
     }
   }

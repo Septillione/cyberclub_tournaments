@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
@@ -69,8 +70,10 @@ class AdminDashboardBloc
           stats: results[3] as Map<String, dynamic>,
         ),
       );
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
-      emit(AdminDashboardError(errorMessage: e.toString()));
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -96,7 +99,10 @@ class AdminDashboardBloc
         final teams = await _teamRepository.searchTeams(event.query);
         emit(currentState.copyWith(teams: teams));
       }
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
       print('Search error: $e');
     }
   }
@@ -108,7 +114,10 @@ class AdminDashboardBloc
     try {
       await _tournamentRepository.deleteTournament(event.tournamentId);
       add(AdminDashboardStarted());
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
       print('Delete tournament error: $e');
     }
   }
@@ -120,38 +129,30 @@ class AdminDashboardBloc
     try {
       await _teamRepository.deleteTeam(event.teamId);
       add(AdminDashboardStarted());
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
       print('Delete team error: $e');
     }
   }
-
-  // Future<void> _onBanUser(
-  //   AdminToggleBanUser event,
-  //   Emitter<AdminDashboardState> emit,
-  // ) async {
-  //   try {
-  //     await _userRepository.banUser(event.userId, event.reason, event.days);
-  //     add(AdminDashboardStarted());
-  //   } catch (e) {
-  //     print('Ban user error: $e');
-  //   }
-  // }
 
   Future<void> _onBanUser(
     AdminToggleBanUser event,
     Emitter<AdminDashboardState> emit,
   ) async {
     try {
-      // emit(Loading...) если нужно
       await _userRepository.banUser(
         userId: event.userId,
         reason: event.reason,
         days: event.days,
       );
-      add(AdminDashboardStarted()); // Перезагружаем список
+      add(AdminDashboardStarted());
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
       print('Ban user error: $e');
-      // emit(Error...)
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -162,8 +163,11 @@ class AdminDashboardBloc
     try {
       await _userRepository.unbanUser(event.userId);
       add(AdminDashboardStarted()); // Перезагружаем список
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
       print('Unban user error: $e');
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -174,8 +178,11 @@ class AdminDashboardBloc
     try {
       await _userRepository.changeUserRole(event.userId, event.newRole);
       add(AdminDashboardStarted());
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
       print('Change user role error: $e');
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -186,8 +193,11 @@ class AdminDashboardBloc
     try {
       await _teamRepository.banTeam(event.teamId, event.ban);
       add(AdminDashboardStarted());
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
       print('Ban team error: $e');
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 
@@ -198,8 +208,11 @@ class AdminDashboardBloc
     try {
       await _tournamentRepository.cancelTournament(event.tournamentId);
       add(AdminDashboardStarted());
+    } on AppException catch (e) {
+      emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
       print('Cancel tournament error: $e');
+      emit(AdminDashboardError(errorMessage: 'Что-то пошло не так'));
     }
   }
 }
