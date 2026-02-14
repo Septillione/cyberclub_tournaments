@@ -21,7 +21,7 @@ import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/public_profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/team_search_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/teams_detail_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/team_detail_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/invite_player_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/tournament_detail_screen.dart';
@@ -343,7 +343,7 @@ class AppRouter {
                         teamRepository: context.read<TeamRepository>(),
                         authRepository: context.read<AuthRepository>(),
                       )..add(TeamDetailStarted(teamId: teamId)),
-                      child: const TeamsDetailScreen(),
+                      child: const TeamDetailScreen(),
                     ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

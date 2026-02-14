@@ -19,10 +19,17 @@ class InvitePlayerScreen extends StatefulWidget {
 }
 
 class _InvitePlayerScreenState extends State<InvitePlayerScreen> {
-  final _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<TeamUserShort> _users = [];
   bool _isLoading = false;
   Timer? _debounce;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
 
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -30,9 +37,7 @@ class _InvitePlayerScreenState extends State<InvitePlayerScreen> {
       if (query.length >= 3) {
         _performSearch(query);
       } else {
-        setState(() {
-          _users = [];
-        });
+        setState(() => _users = []);
       }
     });
   }
@@ -41,12 +46,16 @@ class _InvitePlayerScreenState extends State<InvitePlayerScreen> {
     setState(() {
       _isLoading = true;
     });
-    final users = await context.read<TeamRepository>().searchUser(query);
-    if (mounted) {
-      setState(() {
-        _users = users;
-        _isLoading = false;
-      });
+    try {
+      final users = await context.read<TeamRepository>().searchUser(query);
+      if (mounted) {
+        setState(() {
+          _users = users;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -77,13 +86,6 @@ class _InvitePlayerScreenState extends State<InvitePlayerScreen> {
   }
 
   @override
-  void dispose() {
-    _searchController.dispose();
-    _debounce?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -92,84 +94,136 @@ class _InvitePlayerScreenState extends State<InvitePlayerScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomBackButton(),
-              const SizedBox(height: 16),
-              Text('Пригласить игрока', style: AppTextStyles.h2),
-              const SizedBox(height: 24),
-
-              TextFormField(
+              _SearchHeader(
                 controller: _searchController,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: 'Никнейм игрока...',
-                  prefixIcon: Icon(LucideIcons.search),
-                ),
                 onChanged: _onSearchChanged,
               ),
-
               const SizedBox(height: 24),
-
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator())
-              else if (_users.isEmpty && _searchController.text.length >= 3)
-                const Center(child: Text("Игроки не найдены"))
-              else
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: _users.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final user = _users[index];
-
-                      return Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.bgSurface,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: AppColors.bgMain,
-                              backgroundImage: user.avatarUrl != null
-                                  ? NetworkImage(user.avatarUrl!)
-                                  : null,
-                              child: user.avatarUrl == null
-                                  ? Icon(
-                                      LucideIcons.userRound,
-                                      color: AppColors.textSecondary,
-                                      size: 20,
-                                    )
-                                  : null,
-                            ),
-
-                            const SizedBox(width: 12),
-
-                            Expanded(
-                              child: Text(
-                                user.nickname,
-                                style: AppTextStyles.h3,
-                              ),
-                            ),
-
-                            SizedBox(
-                              width: 130,
-                              height: 40,
-                              child: GradientButton(
-                                text: 'Пригласить',
-                                onPressed: () => _inviteUser(user.id),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+              Expanded(
+                child: _UserList(
+                  isLoading: _isLoading,
+                  users: _users,
+                  searchQuery: _searchController.text,
+                  onInvite: _inviteUser,
                 ),
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SearchHeader extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const _SearchHeader({required this.controller, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const CustomBackButton(),
+        const SizedBox(height: 16),
+        Text('Пригласить игрока', style: AppTextStyles.h2),
+        const SizedBox(height: 24),
+
+        TextFormField(
+          controller: controller,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            labelText: 'Никнейм игрока...',
+            prefixIcon: Icon(LucideIcons.search),
+          ),
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+class _UserList extends StatelessWidget {
+  final bool isLoading;
+  final List<TeamUserShort> users;
+  final String searchQuery;
+  final Function(String userId) onInvite;
+
+  const _UserList({
+    required this.isLoading,
+    required this.users,
+    required this.searchQuery,
+    required this.onInvite,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (users.isEmpty && searchQuery.length >= 3) {
+      return const Center(child: Text("Игроки не найдены"));
+    }
+
+    if (users.isEmpty) {
+      return const Center(child: Text("Введите имя для поиска"));
+    }
+
+    return ListView.separated(
+      itemCount: users.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        return _UserCard(
+          user: users[index],
+          onInvite: () => onInvite(users[index].id),
+        );
+      },
+    );
+  }
+}
+
+class _UserCard extends StatelessWidget {
+  final TeamUserShort user;
+  final VoidCallback onInvite;
+
+  const _UserCard({required this.user, required this.onInvite});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.bgSurface,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.bgMain,
+            backgroundImage:
+                (user.avatarUrl != null && user.avatarUrl!.isNotEmpty)
+                ? NetworkImage(user.avatarUrl!)
+                : null,
+            child: (user.avatarUrl == null || user.avatarUrl!.isEmpty)
+                ? const Icon(
+                    LucideIcons.userRound,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  )
+                : null,
+          ),
+          const SizedBox(width: 12),
+          Expanded(child: Text(user.nickname, style: AppTextStyles.h3)),
+          SizedBox(
+            width: 130,
+            height: 40,
+            child: GradientButton(text: 'Пригласить', onPressed: onInvite),
+          ),
+        ],
       ),
     );
   }
