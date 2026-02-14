@@ -34,6 +34,9 @@ _TeamModel _$TeamModelFromJson(Map<String, dynamic> json) => _TeamModel(
           .toList() ??
       const [],
   isBanned: json['isBanned'] as bool? ?? false,
+  stats: json['stats'] == null
+      ? const TeamStatsModel()
+      : TeamStatsModel.fromJson(json['stats'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
@@ -51,6 +54,7 @@ Map<String, dynamic> _$TeamModelToJson(_TeamModel instance) =>
       'members': instance.members,
       'entries': instance.entries,
       'isBanned': instance.isBanned,
+      'stats': instance.stats,
     };
 
 _TeamMemberModel _$TeamMemberModelFromJson(Map<String, dynamic> json) =>
@@ -115,4 +119,18 @@ Map<String, dynamic> _$TeamEntryModelToJson(_TeamEntryModel instance) =>
       'id': instance.id,
       'status': instance.status,
       'tournament': instance.tournament,
+    };
+
+_TeamStatsModel _$TeamStatsModelFromJson(Map<String, dynamic> json) =>
+    _TeamStatsModel(
+      tournamentsPlayed: (json['tournamentsPlayed'] as num?)?.toInt() ?? 0,
+      tournamentsWon: (json['tournamentsWon'] as num?)?.toInt() ?? 0,
+      winrate: (json['winrate'] as num?)?.toDouble() ?? 0.0,
+    );
+
+Map<String, dynamic> _$TeamStatsModelToJson(_TeamStatsModel instance) =>
+    <String, dynamic>{
+      'tournamentsPlayed': instance.tournamentsPlayed,
+      'tournamentsWon': instance.tournamentsWon,
+      'winrate': instance.winrate,
     };

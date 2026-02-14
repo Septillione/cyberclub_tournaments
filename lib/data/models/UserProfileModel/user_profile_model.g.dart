@@ -20,6 +20,9 @@ _UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       isBanned: json['isBanned'] as bool? ?? false,
+      stats: json['stats'] == null
+          ? const UserStatsModel()
+          : UserStatsModel.fromJson(json['stats'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserProfileModelToJson(_UserProfileModel instance) =>
@@ -32,6 +35,7 @@ Map<String, dynamic> _$UserProfileModelToJson(_UserProfileModel instance) =>
       'bio': instance.bio,
       'entries': instance.entries,
       'isBanned': instance.isBanned,
+      'stats': instance.stats,
     };
 
 const _$UserRoleEnumMap = {
@@ -54,4 +58,18 @@ Map<String, dynamic> _$UserEntryModelToJson(_UserEntryModel instance) =>
       'id': instance.id,
       'status': instance.status,
       'tournament': instance.tournament,
+    };
+
+_UserStatsModel _$UserStatsModelFromJson(Map<String, dynamic> json) =>
+    _UserStatsModel(
+      tournamentsPlayed: (json['tournamentsPlayed'] as num?)?.toInt() ?? 0,
+      tournamentsWon: (json['tournamentsWon'] as num?)?.toInt() ?? 0,
+      winrate: (json['winrate'] as num?)?.toDouble() ?? 0.0,
+    );
+
+Map<String, dynamic> _$UserStatsModelToJson(_UserStatsModel instance) =>
+    <String, dynamic>{
+      'tournamentsPlayed': instance.tournamentsPlayed,
+      'tournamentsWon': instance.tournamentsWon,
+      'winrate': instance.winrate,
     };

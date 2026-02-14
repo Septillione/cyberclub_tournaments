@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfileModel {
 
- String get id; String get nickname; String get email; UserRole get role; String? get avatarUrl; String? get bio; List<UserEntryModel> get entries; bool get isBanned;
+ String get id; String get nickname; String get email; UserRole get role; String? get avatarUrl; String? get bio; List<UserEntryModel> get entries; bool get isBanned; UserStatsModel get stats;
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserProfileModelCopyWith<UserProfileModel> get copyWith => _$UserProfileModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other.entries, entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other.entries, entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned)&&(identical(other.stats, stats) || other.stats == stats));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(entries),isBanned);
+int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(entries),isBanned,stats);
 
 @override
 String toString() {
-  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned)';
+  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned, stats: $stats)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $UserProfileModelCopyWith<$Res>  {
   factory $UserProfileModelCopyWith(UserProfileModel value, $Res Function(UserProfileModel) _then) = _$UserProfileModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned
+ String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned, UserStatsModel stats
 });
 
 
-
+$UserStatsModelCopyWith<$Res> get stats;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$UserProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,Object? stats = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
@@ -75,10 +75,20 @@ as UserRole,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ign
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
 as List<UserEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
+as UserStatsModel,
   ));
 }
-
+/// Create a copy of UserProfileModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserStatsModelCopyWith<$Res> get stats {
+  
+  return $UserStatsModelCopyWith<$Res>(_self.stats, (value) {
+    return _then(_self.copyWith(stats: value));
+  });
+}
 }
 
 
@@ -160,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned,  UserStatsModel stats)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfileModel() when $default != null:
-return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned);case _:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned,_that.stats);case _:
   return orElse();
 
 }
@@ -181,10 +191,10 @@ return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned,  UserStatsModel stats)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileModel():
-return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned);case _:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned,_that.stats);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +211,10 @@ return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String email,  UserRole role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned,  UserStatsModel stats)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileModel() when $default != null:
-return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned);case _:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned,_that.stats);case _:
   return null;
 
 }
@@ -216,7 +226,7 @@ return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_
 @JsonSerializable()
 
 class _UserProfileModel implements UserProfileModel {
-  const _UserProfileModel({required this.id, required this.nickname, required this.email, required this.role, this.avatarUrl, required this.bio, final  List<UserEntryModel> entries = const [], this.isBanned = false}): _entries = entries;
+  const _UserProfileModel({required this.id, required this.nickname, required this.email, required this.role, this.avatarUrl, required this.bio, final  List<UserEntryModel> entries = const [], this.isBanned = false, this.stats = const UserStatsModel()}): _entries = entries;
   factory _UserProfileModel.fromJson(Map<String, dynamic> json) => _$UserProfileModelFromJson(json);
 
 @override final  String id;
@@ -233,6 +243,7 @@ class _UserProfileModel implements UserProfileModel {
 }
 
 @override@JsonKey() final  bool isBanned;
+@override@JsonKey() final  UserStatsModel stats;
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +258,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other._entries, _entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other._entries, _entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned)&&(identical(other.stats, stats) || other.stats == stats));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(_entries),isBanned);
+int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(_entries),isBanned,stats);
 
 @override
 String toString() {
-  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned)';
+  return 'UserProfileModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned, stats: $stats)';
 }
 
 
@@ -267,11 +278,11 @@ abstract mixin class _$UserProfileModelCopyWith<$Res> implements $UserProfileMod
   factory _$UserProfileModelCopyWith(_UserProfileModel value, $Res Function(_UserProfileModel) _then) = __$UserProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned
+ String id, String nickname, String email, UserRole role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned, UserStatsModel stats
 });
 
 
-
+@override $UserStatsModelCopyWith<$Res> get stats;
 
 }
 /// @nodoc
@@ -284,7 +295,7 @@ class __$UserProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,Object? stats = null,}) {
   return _then(_UserProfileModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
@@ -294,11 +305,21 @@ as UserRole,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ign
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
 as List<UserEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
+as UserStatsModel,
   ));
 }
 
-
+/// Create a copy of UserProfileModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserStatsModelCopyWith<$Res> get stats {
+  
+  return $UserStatsModelCopyWith<$Res>(_self.stats, (value) {
+    return _then(_self.copyWith(stats: value));
+  });
+}
 }
 
 
@@ -586,6 +607,275 @@ $TournamentModelCopyWith<$Res> get tournament {
     return _then(_self.copyWith(tournament: value));
   });
 }
+}
+
+
+/// @nodoc
+mixin _$UserStatsModel {
+
+ int get tournamentsPlayed; int get tournamentsWon; double get winrate;
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UserStatsModelCopyWith<UserStatsModel> get copyWith => _$UserStatsModelCopyWithImpl<UserStatsModel>(this as UserStatsModel, _$identity);
+
+  /// Serializes this UserStatsModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserStatsModel&&(identical(other.tournamentsPlayed, tournamentsPlayed) || other.tournamentsPlayed == tournamentsPlayed)&&(identical(other.tournamentsWon, tournamentsWon) || other.tournamentsWon == tournamentsWon)&&(identical(other.winrate, winrate) || other.winrate == winrate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tournamentsPlayed,tournamentsWon,winrate);
+
+@override
+String toString() {
+  return 'UserStatsModel(tournamentsPlayed: $tournamentsPlayed, tournamentsWon: $tournamentsWon, winrate: $winrate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $UserStatsModelCopyWith<$Res>  {
+  factory $UserStatsModelCopyWith(UserStatsModel value, $Res Function(UserStatsModel) _then) = _$UserStatsModelCopyWithImpl;
+@useResult
+$Res call({
+ int tournamentsPlayed, int tournamentsWon, double winrate
+});
+
+
+
+
+}
+/// @nodoc
+class _$UserStatsModelCopyWithImpl<$Res>
+    implements $UserStatsModelCopyWith<$Res> {
+  _$UserStatsModelCopyWithImpl(this._self, this._then);
+
+  final UserStatsModel _self;
+  final $Res Function(UserStatsModel) _then;
+
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? tournamentsPlayed = null,Object? tournamentsWon = null,Object? winrate = null,}) {
+  return _then(_self.copyWith(
+tournamentsPlayed: null == tournamentsPlayed ? _self.tournamentsPlayed : tournamentsPlayed // ignore: cast_nullable_to_non_nullable
+as int,tournamentsWon: null == tournamentsWon ? _self.tournamentsWon : tournamentsWon // ignore: cast_nullable_to_non_nullable
+as int,winrate: null == winrate ? _self.winrate : winrate // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [UserStatsModel].
+extension UserStatsModelPatterns on UserStatsModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserStatsModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserStatsModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _UserStatsModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserStatsModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tournamentsPlayed,  int tournamentsWon,  double winrate)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that.tournamentsPlayed,_that.tournamentsWon,_that.winrate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tournamentsPlayed,  int tournamentsWon,  double winrate)  $default,) {final _that = this;
+switch (_that) {
+case _UserStatsModel():
+return $default(_that.tournamentsPlayed,_that.tournamentsWon,_that.winrate);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tournamentsPlayed,  int tournamentsWon,  double winrate)?  $default,) {final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that.tournamentsPlayed,_that.tournamentsWon,_that.winrate);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _UserStatsModel implements UserStatsModel {
+  const _UserStatsModel({this.tournamentsPlayed = 0, this.tournamentsWon = 0, this.winrate = 0.0});
+  factory _UserStatsModel.fromJson(Map<String, dynamic> json) => _$UserStatsModelFromJson(json);
+
+@override@JsonKey() final  int tournamentsPlayed;
+@override@JsonKey() final  int tournamentsWon;
+@override@JsonKey() final  double winrate;
+
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UserStatsModelCopyWith<_UserStatsModel> get copyWith => __$UserStatsModelCopyWithImpl<_UserStatsModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$UserStatsModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserStatsModel&&(identical(other.tournamentsPlayed, tournamentsPlayed) || other.tournamentsPlayed == tournamentsPlayed)&&(identical(other.tournamentsWon, tournamentsWon) || other.tournamentsWon == tournamentsWon)&&(identical(other.winrate, winrate) || other.winrate == winrate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tournamentsPlayed,tournamentsWon,winrate);
+
+@override
+String toString() {
+  return 'UserStatsModel(tournamentsPlayed: $tournamentsPlayed, tournamentsWon: $tournamentsWon, winrate: $winrate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UserStatsModelCopyWith<$Res> implements $UserStatsModelCopyWith<$Res> {
+  factory _$UserStatsModelCopyWith(_UserStatsModel value, $Res Function(_UserStatsModel) _then) = __$UserStatsModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int tournamentsPlayed, int tournamentsWon, double winrate
+});
+
+
+
+
+}
+/// @nodoc
+class __$UserStatsModelCopyWithImpl<$Res>
+    implements _$UserStatsModelCopyWith<$Res> {
+  __$UserStatsModelCopyWithImpl(this._self, this._then);
+
+  final _UserStatsModel _self;
+  final $Res Function(_UserStatsModel) _then;
+
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? tournamentsPlayed = null,Object? tournamentsWon = null,Object? winrate = null,}) {
+  return _then(_UserStatsModel(
+tournamentsPlayed: null == tournamentsPlayed ? _self.tournamentsPlayed : tournamentsPlayed // ignore: cast_nullable_to_non_nullable
+as int,tournamentsWon: null == tournamentsWon ? _self.tournamentsWon : tournamentsWon // ignore: cast_nullable_to_non_nullable
+as int,winrate: null == winrate ? _self.winrate : winrate // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+
 }
 
 // dart format on

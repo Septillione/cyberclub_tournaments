@@ -20,6 +20,7 @@ abstract class TeamModel with _$TeamModel {
     @Default([]) List<TeamMemberModel> members,
     @Default([]) List<TeamEntryModel> entries,
     @Default(false) bool isBanned,
+    @Default(TeamStatsModel()) TeamStatsModel stats,
   }) = _TeamModel;
 
   factory TeamModel.fromJson(Map<String, dynamic> json) =>
@@ -75,4 +76,16 @@ abstract class TeamEntryModel with _$TeamEntryModel {
 
   factory TeamEntryModel.fromJson(Map<String, dynamic> json) =>
       _$TeamEntryModelFromJson(json);
+}
+
+@freezed
+abstract class TeamStatsModel with _$TeamStatsModel {
+  const factory TeamStatsModel({
+    @Default(0) int tournamentsPlayed,
+    @Default(0) int tournamentsWon,
+    @Default(0.0) double winrate,
+  }) = _TeamStatsModel;
+
+  factory TeamStatsModel.fromJson(Map<String, dynamic> json) =>
+      _$TeamStatsModelFromJson(json);
 }

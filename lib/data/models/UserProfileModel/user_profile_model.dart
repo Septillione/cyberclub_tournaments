@@ -24,6 +24,7 @@ abstract class UserProfileModel with _$UserProfileModel {
     required String? bio,
     @Default([]) List<UserEntryModel> entries,
     @Default(false) bool isBanned,
+    @Default(UserStatsModel()) UserStatsModel stats,
   }) = _UserProfileModel;
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
@@ -40,4 +41,16 @@ abstract class UserEntryModel with _$UserEntryModel {
 
   factory UserEntryModel.fromJson(Map<String, dynamic> json) =>
       _$UserEntryModelFromJson(json);
+}
+
+@freezed
+abstract class UserStatsModel with _$UserStatsModel {
+  const factory UserStatsModel({
+    @Default(0) int tournamentsPlayed,
+    @Default(0) int tournamentsWon,
+    @Default(0.0) double winrate,
+  }) = _UserStatsModel;
+
+  factory UserStatsModel.fromJson(Map<String, dynamic> json) =>
+      _$UserStatsModelFromJson(json);
 }

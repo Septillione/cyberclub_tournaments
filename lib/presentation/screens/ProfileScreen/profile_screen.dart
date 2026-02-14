@@ -29,11 +29,6 @@ class ProfileScreen extends StatelessWidget {
                 case ProfileLoaded():
                   final user = state.userProfile;
 
-                  final tournamentCount = user.entries.length;
-                  final winsCount = 0;
-                  final winrate = tournamentCount > 0
-                      ? ((winsCount / tournamentCount) * 100).toStringAsFixed(0)
-                      : '0';
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -52,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: CardStatistics(
                                       title: 'Турниров',
-                                      value: '8',
+                                      value: '${user.stats.tournamentsPlayed}',
                                       color: AppColors.blueColor,
                                     ),
                                   ),
@@ -60,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: CardStatistics(
                                       title: 'Побед',
-                                      value: '5',
+                                      value: '${user.stats.tournamentsWon}',
                                       color: AppColors.redColor,
                                     ),
                                   ),
@@ -68,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: CardStatistics(
                                       title: 'Winrate',
-                                      value: '62,5%',
+                                      value: '${user.stats.winrate}%',
                                       color: AppColors.greenColor,
                                     ),
                                   ),
@@ -288,51 +283,51 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
-  void _showChangePasswordDialog(BuildContext context) {
-    final oldPasswordController = TextEditingController();
-    final newPasswordController = TextEditingController();
+  // void _showChangePasswordDialog(BuildContext context) {
+  //   final oldPasswordController = TextEditingController();
+  //   final newPasswordController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Сменить пароль'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: oldPasswordController,
-              decoration: const InputDecoration(labelText: 'Старый пароль'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: newPasswordController,
-              decoration: const InputDecoration(labelText: 'Новый пароль'),
-              obscureText: true,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Отмена'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.read<ProfileBloc>().add(
-                ProfilePasswordChangeRequested(
-                  oldPassword: oldPasswordController.text,
-                  newPassword: newPasswordController.text,
-                ),
-              );
-              Navigator.pop(ctx);
-            },
-            child: const Text('Сохранить'),
-          ),
-        ],
-      ),
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (ctx) => AlertDialog(
+  //       title: const Text('Сменить пароль'),
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           TextField(
+  //             controller: oldPasswordController,
+  //             decoration: const InputDecoration(labelText: 'Старый пароль'),
+  //             obscureText: true,
+  //           ),
+  //           const SizedBox(height: 16),
+  //           TextField(
+  //             controller: newPasswordController,
+  //             decoration: const InputDecoration(labelText: 'Новый пароль'),
+  //             obscureText: true,
+  //           ),
+  //         ],
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(ctx),
+  //           child: const Text('Отмена'),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: () {
+  //             context.read<ProfileBloc>().add(
+  //               ProfilePasswordChangeRequested(
+  //                 oldPassword: oldPasswordController.text,
+  //                 newPassword: newPasswordController.text,
+  //               ),
+  //             );
+  //             Navigator.pop(ctx);
+  //           },
+  //           child: const Text('Сохранить'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _showInfoDialog(BuildContext context, String title, String text) {
     showDialog(

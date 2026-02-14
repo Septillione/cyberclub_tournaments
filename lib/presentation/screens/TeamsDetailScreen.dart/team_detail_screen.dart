@@ -338,17 +338,15 @@ class _InfoTab extends StatelessWidget {
       'ru',
     ).format(team.createdAt ?? DateTime.now());
 
-    final tournamentCount = team.entries.length;
-    final winsCount = 0;
-    final winrate = tournamentCount > 0
-        ? ((winsCount / tournamentCount) * 100).toStringAsFixed(0)
-        : '0';
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildStatistics(tournamentCount, winsCount, winrate),
+          _buildStatistics(
+            team.stats.tournamentsPlayed,
+            team.stats.tournamentsWon,
+            team.stats.winrate,
+          ),
           const SizedBox(height: 32),
           _buildSection('Игры', _buildGamesWrap(team.gamesList!)),
           const SizedBox(height: 16),
@@ -370,7 +368,7 @@ class _InfoTab extends StatelessWidget {
     );
   }
 
-  Widget _buildStatistics(int tournaments, int wins, String winrate) {
+  Widget _buildStatistics(int tournaments, int wins, double winrate) {
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
