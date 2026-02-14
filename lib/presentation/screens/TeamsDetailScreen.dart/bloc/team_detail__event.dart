@@ -46,6 +46,26 @@ class TeamDetailJoinRequested extends TeamDetailEvent {
   List<Object> get props => [teamId];
 }
 
+class TeamDetailPromoteTeammate extends TeamDetailEvent {
+  final String teamId;
+  final String userId;
+
+  const TeamDetailPromoteTeammate({required this.teamId, required this.userId});
+
+  @override
+  List<Object> get props => [teamId, userId];
+}
+
+class TeamDetailKickTeammate extends TeamDetailEvent {
+  final String teamId;
+  final String userId;
+
+  const TeamDetailKickTeammate({required this.teamId, required this.userId});
+
+  @override
+  List<Object> get props => [teamId, userId];
+}
+
 class TeamDetailLeaveClicked extends TeamDetailEvent {
   final String teamId;
   const TeamDetailLeaveClicked({required this.teamId});

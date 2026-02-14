@@ -26,38 +26,6 @@ class TournamentsSegmentForAdmin extends StatefulWidget {
 
 class _TournamentsSegmentForAdminState
     extends State<TournamentsSegmentForAdmin> {
-  // List<TournamentModel> _tournaments = [];
-  // bool _isLoading = false;
-  // Timer? _debounce;
-
-  // void _onSearchChanged(String query) {
-  //   if (_debounce?.isActive ?? false) _debounce!.cancel();
-  //   _debounce = Timer(const Duration(milliseconds: 500), () {
-  //     if (query.length >= 3) {
-  //       _performSearch(query);
-  //     } else {
-  //       setState(() {
-  //         _tournaments = [];
-  //       });
-  //     }
-  //   });
-  // }
-
-  // Future<void> _performSearch(String query) async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   final tournaments = await context.read<AdminDashboardBloc>()..add(
-  //     AdminDashboardQueryChanged(query),
-  //   );
-  //   if (mounted) {
-  //     setState(() {
-  //       _tournaments = tournaments;
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
-
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool _isSearching = false;

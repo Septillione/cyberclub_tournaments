@@ -1,20 +1,26 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
+import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+enum _ActionType { promote, kick }
 
 class CardTeammate extends StatelessWidget {
   final TeamMemberModel teammate;
   final String ownerId;
   final String currentUserId;
+  final String teamId;
 
   const CardTeammate({
     super.key,
     required this.teammate,
     required this.ownerId,
     required this.currentUserId,
+    required this.teamId,
   });
 
   @override
@@ -53,12 +59,90 @@ class CardTeammate extends StatelessWidget {
                   ),
                 ),
                 if (isViewerCaptain && !isMyCard) ...[
-                  _TeammateActionsMenu(onPromote: () {}, onKick: () {}),
+                  _TeammateActionsMenu(
+                    onPromote: () => _showTeamMemberDialog(
+                      context,
+                      type: _ActionType.promote,
+                    ),
+                    onKick: () =>
+                        _showTeamMemberDialog(context, type: _ActionType.kick),
+                  ),
                 ],
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showTeamMemberDialog(
+    BuildContext context, {
+    required _ActionType type,
+  }) {
+    final bloc = context.read<TeamDetailBloc>();
+    final isPromote = type == _ActionType.promote;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.bgSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          isPromote ? 'Передать права?' : 'Исключить игрока?',
+          style: AppTextStyles.h3,
+        ),
+
+        content: Text(
+          isPromote
+              ? 'Вы действительно хотите сделать ${teammate.user.nickname} капитаном? Вы потеряете права владельца.'
+              : 'Вы действительно хотите удалить ${teammate.user.nickname} из команды?',
+          style: AppTextStyles.bodyM,
+        ),
+
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Отмена',
+              style: AppTextStyles.bodyM.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isPromote
+                  ? AppColors.accentPrimary
+                  : AppColors.redColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () {
+              if (isPromote) {
+                bloc.add(
+                  TeamDetailPromoteTeammate(
+                    teamId: teamId,
+                    userId: teammate.userId,
+                  ),
+                );
+              } else {
+                bloc.add(
+                  TeamDetailKickTeammate(
+                    teamId: teamId,
+                    userId: teammate.userId,
+                  ),
+                );
+              }
+              Navigator.pop(ctx);
+            },
+            child: Text(
+              isPromote ? 'Передать' : 'Исключить',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }

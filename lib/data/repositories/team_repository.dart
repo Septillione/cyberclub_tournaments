@@ -152,6 +152,28 @@ class TeamRepository {
     }
   }
 
+  Future<void> promoteTeammate(String teamId, String userId) async {
+    try {
+      await _apiClient.dio.post(
+        '/teams/$teamId/promote',
+        data: {'userId': userId},
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
+  Future<void> kickTeammate(String teamId, String userId) async {
+    try {
+      await _apiClient.dio.post(
+        '/teams/$teamId/kick',
+        data: {'userId': userId},
+      );
+    } catch (e) {
+      throw ErrorHandler.handle(e);
+    }
+  }
+
   Future<String?> uploadTeamLogo(String filePath) async {
     try {
       String fileName = filePath.split('/').last;

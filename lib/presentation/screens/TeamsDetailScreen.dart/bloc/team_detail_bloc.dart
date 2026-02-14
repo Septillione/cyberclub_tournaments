@@ -23,6 +23,8 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
     on<TeamDetailStarted>(_onStarted);
     on<AcceptRequestClicked>(_onAcceptRequest);
     on<RejectRequestClicked>(_onRejectRequest);
+    on<TeamDetailPromoteTeammate>(_onPromoteTeammate);
+    on<TeamDetailKickTeammate>(_onKickTeammate);
     on<TeamDetailLeaveClicked>(_onLeaveTeam);
     on<TeamDetailDeleteClicked>(_onDeleteTeam);
   }
@@ -83,6 +85,42 @@ class TeamDetailBloc extends Bloc<TeamDetailEvent, TeamDetailState> {
   ) async {
     try {
       await _teamRepository.rejectJoinRequest(event.requestId);
+
+      if (state is TeamDetailLoaded) {
+        final teamId = (state as TeamDetailLoaded).team.id;
+        add(TeamDetailStarted(teamId: teamId));
+      }
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
+    } catch (e) {
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
+    }
+  }
+
+  Future<void> _onPromoteTeammate(
+    TeamDetailPromoteTeammate event,
+    Emitter<TeamDetailState> emit,
+  ) async {
+    try {
+      await _teamRepository.promoteTeammate(event.teamId, event.userId);
+
+      if (state is TeamDetailLoaded) {
+        final teamId = (state as TeamDetailLoaded).team.id;
+        add(TeamDetailStarted(teamId: teamId));
+      }
+    } on AppException catch (e) {
+      emit(TeamDetailError(errorMessage: e.message));
+    } catch (e) {
+      emit(TeamDetailError(errorMessage: 'Что-то пошло не так'));
+    }
+  }
+
+  Future<void> _onKickTeammate(
+    TeamDetailKickTeammate event,
+    Emitter<TeamDetailState> emit,
+  ) async {
+    try {
+      await _teamRepository.kickTeammate(event.teamId, event.userId);
 
       if (state is TeamDetailLoaded) {
         final teamId = (state as TeamDetailLoaded).team.id;

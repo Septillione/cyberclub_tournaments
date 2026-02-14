@@ -490,6 +490,7 @@ class _RosterTab extends StatelessWidget {
                 teammate: teammate,
                 ownerId: team.ownerId,
                 currentUserId: currentUserId,
+                teamId: team.id,
               );
             },
           ),

@@ -237,20 +237,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-        // CircleAvatar(
-        //   radius: 72,
-        //   backgroundColor: AppColors.bgMain,
-        //   backgroundImage: user.avatarUrl != null
-        //       ? NetworkImage(user.avatarUrl!)
-        //       : null,
-        //   child: user.avatarUrl != null
-        //       ? null
-        //       : const Icon(
-        //           LucideIcons.user,
-        //           size: 48,
-        //           color: AppColors.textSecondary,
-        //         ),
-        // ),
         const SizedBox(width: 16),
         Expanded(
           child: Column(

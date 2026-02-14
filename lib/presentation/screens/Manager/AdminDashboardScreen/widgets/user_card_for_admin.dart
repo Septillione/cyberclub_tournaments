@@ -125,7 +125,6 @@ class UserCardForAdmin extends StatelessWidget {
   }
 
   // Внутри UserCardForAdmin
-
   void _showBanDialog(BuildContext context, bool isBanned) {
     final bloc = context.read<AdminDashboardBloc>();
 
@@ -172,64 +171,4 @@ class UserCardForAdmin extends StatelessWidget {
       );
     }
   }
-
-  // void _showBanDialog(BuildContext context, bool isBanned) {
-  //   final bloc = context.read<AdminDashboardBloc>();
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return Dialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadiusGeometry.circular(16),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               Text(
-  //                 isBanned
-  //                     ? 'Вы уверены что хотите разбанить ${user.nickname}?'
-  //                     : 'Вы уверены что хотите забанить ${user.nickname}?',
-  //                 style: AppTextStyles.h3,
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //               const SizedBox(height: 24),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Expanded(
-  //                     child: ElevatedButton(
-  //                       style: ElevatedButton.styleFrom(
-  //                         backgroundColor: isBanned
-  //                             ? AppColors.greenColor
-  //                             : AppColors.redColor,
-  //                       ),
-  //                       onPressed: () {
-  //                         // bloc.add(AdminToggleBanUser(user.id));
-  //                         bloc.add(
-  //                           AdminToggleBanUser(user.id, 'TY ZABANIN', 3),
-  //                         );
-  //                         context.pop();
-  //                       },
-  //                       child: Text(isBanned ? 'Разбанить' : 'Забанить'),
-  //                     ),
-  //                   ),
-  //                   const SizedBox(width: 16),
-  //                   Expanded(
-  //                     child: OutlinedButton(
-  //                       onPressed: () => context.pop(),
-  //                       child: Text('Отклонить'),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 }
