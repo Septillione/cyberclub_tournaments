@@ -86,7 +86,7 @@ class TeamSearchCard extends StatelessWidget {
                   text: 'Вступить',
                   onPressed: () {
                     context.read<UserTeamsBloc>().add(
-                      UserTeamsSearchJoinRequested(team.id),
+                      TeamsSearchJoinRequested(team.id),
                     );
                   },
                 ),

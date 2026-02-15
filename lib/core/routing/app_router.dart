@@ -19,7 +19,6 @@ import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/profile
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/change_password_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/edit_profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/public_profile_screen.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/team_search_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/team_detail_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/invite_player_screen.dart';
@@ -154,11 +153,6 @@ class AppRouter {
             key: state.pageKey,
           );
         },
-      ),
-
-      GoRoute(
-        path: '/find-team',
-        builder: (context, state) => const TeamSearchScreen(),
       ),
       GoRoute(
         path: '/register',

@@ -1,7 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamSearchScreen/widgets/team_search_card.dart';
+import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_search_card.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/team_card.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/tournament_skeleton_card.dart';
@@ -37,8 +36,15 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
         _searchController.clear();
       });
       _focusNode.unfocus();
-      context.read<UserTeamsBloc>().add(const UserTeamsSearchQueryChanged(''));
+      context.read<UserTeamsBloc>().add(UserTeamsStarted());
     }
+  }
+
+  void _openSearch() {
+    setState(() {
+      _isSearchActive = true;
+    });
+    context.read<UserTeamsBloc>().add(TeamsSearchStarted());
   }
 
   @override
@@ -58,42 +64,14 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
                 Expanded(
                   child: BlocBuilder<UserTeamsBloc, UserTeamsState>(
                     builder: (context, state) {
-                      switch (state) {
-                        case UserTeamsLoading():
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              return const TournamentSkeletonCard();
-                            },
-                          );
-                        case UserTeamsError():
-                          return Center(
-                            child: Text('Ошибка: ${state.errorMessage}'),
-                          );
-                        case UserTeamsLoaded():
-                          if (!_isSearchActive && state.teams.isEmpty) {
-                            return _buildEmptyState(context);
-                          }
-
-                          return LiquidPullToRefresh(
-                            color: AppColors.bgMain,
-                            backgroundColor: AppColors.accentPrimary,
-                            height: 60,
-                            animSpeedFactor: 5.0,
-                            showChildOpacityTransition: false,
-                            onRefresh: () async {
-                              context.read<UserTeamsBloc>().add(
-                                UserTeamsRefreshed(),
-                              );
-                              await Future.delayed(const Duration(seconds: 1));
-                            },
-                            child: _buildTeamList(
-                              state.teams,
-                              state.currentUserId,
-                            ),
-                          );
-                      }
+                      return switch (state) {
+                        UserTeamsLoading() => _buildLoading(),
+                        UserTeamsError() => Center(
+                          child: Text('Ошибка: ${state.errorMessage}'),
+                        ),
+                        UserTeamsLoaded() => _buildContent(context, state),
+                        _ => const SizedBox.shrink(),
+                      };
                     },
                   ),
                 ),
@@ -105,6 +83,7 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
     );
   }
 
+  // App bar
   Widget _buildHeader(BuildContext context) {
     return SizedBox(
       height: 40,
@@ -119,15 +98,10 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        _isSearchActive = !_isSearchActive;
-                      });
-                      if (!_isSearchActive) {
-                        _searchController.clear();
-                        // context.read<UserTeamsBloc>().add(
-                        //   UserTeamsSearchQueryChanged(''),
-                        // );
-                        context.read<UserTeamsBloc>().add(UserTeamsStarted());
+                      if (_isSearchActive) {
+                        _closeSearch();
+                      } else {
+                        _openSearch();
                       }
                     },
                     child: Icon(
@@ -185,7 +159,7 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
                       ),
                       onChanged: (value) {
                         context.read<UserTeamsBloc>().add(
-                          UserTeamsSearchQueryChanged(value),
+                          TeamsSearchQueryChanged(value),
                         );
                       },
                     )
@@ -197,55 +171,93 @@ class _UserTeamsScreenState extends State<UserTeamsScreen> {
     );
   }
 
-  Column _buildEmptyState(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                LucideIcons.handshake200,
-                size: 64,
-                color: AppColors.textDisabled,
-              ),
-              const SizedBox(height: 8),
-              Text('Вы еще не в команде', style: AppTextStyles.h3),
-              const SizedBox(height: 16),
-              Text(
-                'Создайте свою команду или присоединитесь к существующей, чтобы участвовать в командных турнирах.',
-                style: AppTextStyles.button.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  // Списки команд
+  Widget _buildContent(BuildContext context, UserTeamsLoaded state) {
+    if (state.teams.isEmpty) {
+      if (_isSearchActive) {
+        return _buildEmptySearchState();
+      }
+      return _buildEmptyMyTeamsState();
+    }
 
-  Widget _buildTeamList(List<TeamModel> teams, String currentUserId) {
-    if (_isSearchActive == true && _searchController.text == '') {
-      return const Center(child: Text('Поиск команд...'));
-    } else if (_isSearchActive == true) {
+    if (_isSearchActive) {
       return ListView.builder(
-        itemCount: teams.length,
+        itemCount: state.teams.length,
         itemBuilder: (context, index) {
-          final team = teams[index];
-          return TeamSearchCard(team: team, currentUserId: currentUserId);
+          final team = state.teams[index];
+          return TeamSearchCard(team: team, currentUserId: state.currentUserId);
         },
       );
     }
-    return ListView.builder(
-      itemCount: teams.length,
-      itemBuilder: (context, index) {
-        final team = teams[index];
-        return TeamCard(team: team, currentUserId: currentUserId);
+
+    return LiquidPullToRefresh(
+      color: AppColors.bgMain,
+      backgroundColor: AppColors.accentPrimary,
+      height: 60,
+      animSpeedFactor: 5.0,
+      showChildOpacityTransition: false,
+      onRefresh: () async {
+        context.read<UserTeamsBloc>().add(UserTeamsRefreshed());
+        await Future.delayed(const Duration(seconds: 1));
       },
+      child: ListView.builder(
+        itemCount: state.teams.length,
+        itemBuilder: (context, index) {
+          final team = state.teams[index];
+          return TeamCard(team: team, currentUserId: state.currentUserId);
+        },
+      ),
+    );
+  }
+
+  // Состояние загрузки
+  Widget _buildLoading() {
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 3,
+      itemBuilder: (context, index) => const TournamentSkeletonCard(),
+    );
+  }
+
+  // Пусто в Мои команды
+  Widget _buildEmptyMyTeamsState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            LucideIcons.handshake,
+            size: 64,
+            color: AppColors.textDisabled,
+          ),
+          const SizedBox(height: 8),
+          Text('Вы еще не в команде', style: AppTextStyles.h3),
+          const SizedBox(height: 16),
+          Text(
+            'Создайте свою команду или присоединитесь к существующей.',
+            style: AppTextStyles.bodyM.copyWith(color: AppColors.textSecondary),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Пусто в "Поиске"
+  Widget _buildEmptySearchState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            LucideIcons.searchX,
+            size: 64,
+            color: AppColors.textDisabled,
+          ),
+          const SizedBox(height: 8),
+          Text('Команды не найдены', style: AppTextStyles.h3),
+        ],
+      ),
     );
   }
 }

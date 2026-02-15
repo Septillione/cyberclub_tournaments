@@ -10,23 +10,24 @@ abstract class UserTeamsEvent extends Equatable {
 
 class UserTeamsStarted extends UserTeamsEvent {}
 
-class UserTeamsSearchQueryChanged extends UserTeamsEvent {
-  final String query;
-  // final bool isSearching;
+class UserTeamsRefreshed extends UserTeamsEvent {}
 
-  const UserTeamsSearchQueryChanged(this.query);
+class TeamsSearchStarted extends UserTeamsEvent {}
+
+class TeamsSearchQueryChanged extends UserTeamsEvent {
+  final String query;
+
+  const TeamsSearchQueryChanged(this.query);
 
   @override
   List<Object> get props => [query];
 }
 
-class UserTeamsSearchJoinRequested extends UserTeamsEvent {
+class TeamsSearchJoinRequested extends UserTeamsEvent {
   final String teamId;
 
-  const UserTeamsSearchJoinRequested(this.teamId);
+  const TeamsSearchJoinRequested(this.teamId);
 
   @override
   List<Object> get props => [teamId];
 }
-
-class UserTeamsRefreshed extends UserTeamsEvent {}

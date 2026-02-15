@@ -27,16 +27,24 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
        _authRepository = authRepository,
        super(UserTeamsLoading()) {
     on<UserTeamsStarted>(_onStarted);
-    on<UserTeamsSearchQueryChanged>(
+    on<TeamsSearchStarted>(_onSearchStarted);
+    on<TeamsSearchQueryChanged>(
       _onQueryChanged,
       transformer: debounce(_duration),
     );
-    on<UserTeamsSearchJoinRequested>(_onJoinRequested);
+    on<TeamsSearchJoinRequested>(_onJoinRequested);
     on<UserTeamsRefreshed>(_onRefreshed);
+    // on<UserTeamsStarted>(_onStarted);
+    // on<UserTeamsSearchQueryChanged>(
+    //   _onQueryChanged,
+    //   transformer: debounce(_duration),
+    // );
+    // on<UserTeamsSearchJoinRequested>(_onJoinRequested);
+    // on<UserTeamsRefreshed>(_onRefreshed);
   }
 
   Future<void> _onStarted(
-    UserTeamsEvent event,
+    UserTeamsStarted event,
     Emitter<UserTeamsState> emit,
   ) async {
     emit(UserTeamsLoading());
@@ -51,8 +59,25 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
     }
   }
 
+  Future<void> _onSearchStarted(
+    TeamsSearchStarted event,
+    Emitter<UserTeamsState> emit,
+  ) async {
+    emit(UserTeamsLoading());
+    try {
+      final teams = await _teamRepository.searchTeams('');
+      final currentUserId = await _authRepository.getUserId();
+
+      emit(UserTeamsLoaded(teams: teams, currentUserId: currentUserId ?? ''));
+    } on AppException catch (e) {
+      emit(UserTeamsError(e.message));
+    } catch (e) {
+      emit(UserTeamsError('Что-то пошло не так'));
+    }
+  }
+
   Future<void> _onQueryChanged(
-    UserTeamsSearchQueryChanged event,
+    TeamsSearchQueryChanged event,
     Emitter<UserTeamsState> emit,
   ) async {
     emit(UserTeamsLoading());
@@ -69,7 +94,7 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
   }
 
   Future<void> _onJoinRequested(
-    UserTeamsSearchJoinRequested event,
+    TeamsSearchJoinRequested event,
     Emitter<UserTeamsState> emit,
   ) async {
     final currentUserId = await _authRepository.getUserId();
@@ -100,7 +125,7 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
   }
 
   Future<void> _onRefreshed(
-    UserTeamsEvent event,
+    UserTeamsRefreshed event,
     Emitter<UserTeamsState> emit,
   ) async {
     emit(UserTeamsLoading());
