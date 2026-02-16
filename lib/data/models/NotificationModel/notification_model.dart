@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'notification_model.freezed.dart';
 part 'notification_model.g.dart';
 
-enum NotificationType { INVITE, MATCH, SYSTEM }
+enum NotificationType { INVITE, MATCH, SYSTEM, INFO }
 
 @freezed
 abstract class NotificationModel with _$NotificationModel {
@@ -14,6 +14,8 @@ abstract class NotificationModel with _$NotificationModel {
 
     @JsonKey(unknownEnumValue: NotificationType.SYSTEM)
     required NotificationType type,
+
+    Map<String, dynamic>? data,
 
     required bool isRead,
     required DateTime createdAt,

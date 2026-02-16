@@ -16,4 +16,12 @@ class NotificationRepository {
       throw ErrorHandler.handle(e);
     }
   }
+
+  Future<void> acceptInvite(String requestId) async {
+    await _apiClient.dio.post('/teams/invites/$requestId/accept');
+  }
+
+  Future<void> declineInvite(String requestId) async {
+    await _apiClient.dio.post('/teams/invites/$requestId/decline');
+  }
 }

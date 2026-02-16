@@ -16,6 +16,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       super(NotificationLoading()) {
     on<NotificationStarted>(_onStarted);
     on<NotificationRefreshed>(_onRefresh);
+    on<NotificationAcceptInvite>(_onAcceptInvite);
+    on<NotificationDeclineInvite>(_onDeclineInvite);
   }
 
   Future<void> _onStarted(
@@ -41,6 +43,36 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     try {
       final notifications = await _notificationRepository.fetchNotifications();
       emit(NotificationLoaded(notifications: notifications));
+    } on AppException catch (e) {
+      emit(NotificationError(errorMessage: e.message));
+    } catch (e) {
+      print("NOTIFICATIONS ERROR: $e");
+      emit(NotificationError(errorMessage: 'Что-то пошло не так'));
+    }
+  }
+
+  Future<void> _onAcceptInvite(
+    NotificationAcceptInvite event,
+    Emitter<NotificationState> emit,
+  ) async {
+    try {
+      await _notificationRepository.acceptInvite(event.requestId);
+      add(NotificationRefreshed());
+    } on AppException catch (e) {
+      emit(NotificationError(errorMessage: e.message));
+    } catch (e) {
+      print("NOTIFICATIONS ERROR: $e");
+      emit(NotificationError(errorMessage: 'Что-то пошло не так'));
+    }
+  }
+
+  Future<void> _onDeclineInvite(
+    NotificationDeclineInvite event,
+    Emitter<NotificationState> emit,
+  ) async {
+    try {
+      await _notificationRepository.declineInvite(event.requestId);
+      add(NotificationRefreshed());
     } on AppException catch (e) {
       emit(NotificationError(errorMessage: e.message));
     } catch (e) {

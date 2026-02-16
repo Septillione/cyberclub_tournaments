@@ -11,3 +11,13 @@ class NotificationEvent extends Equatable {
 class NotificationStarted extends NotificationEvent {}
 
 class NotificationRefreshed extends NotificationEvent {}
+
+class NotificationAcceptInvite extends NotificationEvent {
+  final String requestId;
+  const NotificationAcceptInvite(this.requestId);
+}
+
+class NotificationDeclineInvite extends NotificationEvent {
+  final String requestId;
+  const NotificationDeclineInvite(this.requestId);
+}

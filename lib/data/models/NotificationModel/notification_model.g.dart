@@ -16,6 +16,7 @@ _NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
         json['type'],
         unknownValue: NotificationType.SYSTEM,
       ),
+      data: json['data'] as Map<String, dynamic>?,
       isRead: json['isRead'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
@@ -26,6 +27,7 @@ Map<String, dynamic> _$NotificationModelToJson(_NotificationModel instance) =>
       'title': instance.title,
       'body': instance.body,
       'type': _$NotificationTypeEnumMap[instance.type]!,
+      'data': instance.data,
       'isRead': instance.isRead,
       'createdAt': instance.createdAt.toIso8601String(),
     };
@@ -34,4 +36,5 @@ const _$NotificationTypeEnumMap = {
   NotificationType.INVITE: 'INVITE',
   NotificationType.MATCH: 'MATCH',
   NotificationType.SYSTEM: 'SYSTEM',
+  NotificationType.INFO: 'INFO',
 };
