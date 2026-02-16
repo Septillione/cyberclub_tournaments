@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/bloc/user_teams_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/UserTeamsScreen/widgets/overlapping_avatars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -18,10 +19,10 @@ class TeamCard extends StatelessWidget {
     print('DEBUG: Team Owner: ${team.ownerId} vs Me: $currentUserId');
 
     final isCaptain = team.ownerId == currentUserId;
-    final avatarUrls = team.members
-        .map((m) => m.user.avatarUrl ?? '')
-        .where((url) => url.isNotEmpty)
-        .toList();
+    // final avatarUrls = team.members
+    //     .map((m) => m.user.avatarUrl ?? '')
+    //     .where((url) => url.isNotEmpty)
+    //     .toList();
 
     return Container(
       decoration: BoxDecoration(
@@ -108,18 +109,16 @@ class TeamCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: avatarUrls.map((url) {
-                      return CircleAvatar(
-                        radius: 16,
-                        backgroundImage: NetworkImage(url),
-                        child: const Icon(
-                          LucideIcons.user,
-                          color: AppColors.textSecondary,
-                        ),
-                      );
-                    }).toList(),
+                  Expanded(
+                    child: OverlappingAvatars(
+                      avatarUrls: team.members
+                          .map((m) => m.user.avatarUrl)
+                          .toList(),
+                      totalCount: team.members.length,
+                      avatarSize: 32.0,
+                    ),
                   ),
+
                   const Icon(
                     LucideIcons.arrowRight,
                     color: AppColors.textPrimary,
@@ -127,16 +126,6 @@ class TeamCard extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     OverlappingAvatars(
-              //       avatarUrls: avatarUrls,
-              //       totalCount: team.count?['members'] ?? team.members.length,
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),

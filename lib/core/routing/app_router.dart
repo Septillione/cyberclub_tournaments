@@ -10,6 +10,7 @@ import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScre
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/splash_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/CreateTeamScreen/create_team_screen.dart';
+import 'package:cyberclub_tournaments/presentation/screens/InviteUserScreen/invite_user_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/admin_dashboard_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/create_tournament_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/ManagerDashboardScreen/manager_dashboard_screen.dart';
@@ -21,7 +22,6 @@ import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/widgets/public_profile_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/bloc/team_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/team_detail_screen.dart';
-import 'package:cyberclub_tournaments/presentation/screens/TeamsDetailScreen.dart/widgets/invite_player_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/bloc/tournament_detail_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentDetailScreen/tournament_detail_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/TournamentsFeedScreen/tournaments_feed_screen.dart';

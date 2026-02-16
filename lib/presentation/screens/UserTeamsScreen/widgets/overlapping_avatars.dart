@@ -20,20 +20,18 @@ class OverlappingAvatars extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayCount = avatarUrls.length;
 
-    return Flexible(
-      child: SizedBox(
-        height: avatarSize,
-        width: (avatarSize * displayCount) - (overlap * (displayCount - 1)),
-        child: Stack(
-          children: List.generate(displayCount, (index) {
-            final avatarUrl = avatarUrls[index];
-      
-            return Positioned(
-              left: index * (avatarSize - overlap),
-              child: _buildAvatar(avatarUrl),
-            );
-          }).reversed.toList(),
-        ),
+    return SizedBox(
+      height: avatarSize,
+      width: (avatarSize * displayCount) - (overlap * (displayCount - 1)),
+      child: Stack(
+        children: List.generate(displayCount, (index) {
+          final avatarUrl = avatarUrls[index];
+
+          return Positioned(
+            left: index * (avatarSize - overlap),
+            child: _buildAvatar(avatarUrl),
+          );
+        }).reversed.toList(),
       ),
     );
   }

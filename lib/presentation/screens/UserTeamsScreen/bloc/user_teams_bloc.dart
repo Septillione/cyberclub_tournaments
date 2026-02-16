@@ -128,7 +128,6 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
     UserTeamsRefreshed event,
     Emitter<UserTeamsState> emit,
   ) async {
-    emit(UserTeamsLoading());
     try {
       final List<TeamModel> teams = await _teamRepository.fetchUserTeams();
       final currentUserId = await _authRepository.getUserId();
