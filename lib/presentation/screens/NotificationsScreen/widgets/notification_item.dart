@@ -17,8 +17,8 @@ class NotificationItem extends StatefulWidget {
 }
 
 class _NotificationItemState extends State<NotificationItem> {
-  bool _isActionInProgress = false;
-  bool _isActionDone = false;
+  final bool _isActionInProgress = false;
+  final bool _isActionDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _NotificationItemState extends State<NotificationItem> {
                             ),
                             onPressed: () {
                               context.read<NotificationBloc>().add(
-                                NotificationAcceptInvite(requestId!),
+                                NotificationAcceptInvite(requestId),
                               );
                             },
                             child: const Text('Принять'),
@@ -116,7 +116,7 @@ class _NotificationItemState extends State<NotificationItem> {
                             ),
                             onPressed: () {
                               context.read<NotificationBloc>().add(
-                                NotificationDeclineInvite(requestId!),
+                                NotificationDeclineInvite(requestId),
                               );
                             },
                             child: const Text('Отклонить'),

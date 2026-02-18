@@ -95,9 +95,8 @@ class UserRepository {
   Future<void> banUser({
     required String userId,
     required String reason,
-    int? days, // null = навсегда
+    int? days,
   }) async {
-    // Эндпоинт из BanController: @Post('user')
     try {
       await _apiClient.dio.post(
         '/ban/user',
@@ -113,7 +112,6 @@ class UserRepository {
   }
 
   Future<void> unbanUser(String userId) async {
-    // Эндпоинт из BanController: @Post('unban/user/:userId')
     try {
       await _apiClient.dio.post('/ban/unban/user/$userId');
     } catch (e) {

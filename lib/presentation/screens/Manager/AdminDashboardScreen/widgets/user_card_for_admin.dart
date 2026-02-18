@@ -87,12 +87,20 @@ class UserCardForAdmin extends StatelessWidget {
                         color: AppColors.redColor,
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        'Забанить',
-                        style: AppTextStyles.bodyM.copyWith(
-                          color: AppColors.textPrimary,
+                      if (user.isBanned)
+                        Text(
+                          'Разбанить',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        )
+                      else
+                        Text(
+                          'Забанить',
+                          style: AppTextStyles.bodyM.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -124,12 +132,10 @@ class UserCardForAdmin extends StatelessWidget {
     );
   }
 
-  // Внутри UserCardForAdmin
   void _showBanDialog(BuildContext context, bool isBanned) {
     final bloc = context.read<AdminDashboardBloc>();
 
     if (isBanned) {
-      // --- ДИАЛОГ РАЗБАНА (Простой) ---
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -146,7 +152,6 @@ class UserCardForAdmin extends StatelessWidget {
                 backgroundColor: AppColors.greenColor,
               ),
               onPressed: () {
-                // Отправляем эвент разбана (вам нужно добавить его в Bloc)
                 bloc.add(AdminUnbanUser(user.id));
                 Navigator.pop(context);
               },
@@ -156,13 +161,11 @@ class UserCardForAdmin extends StatelessWidget {
         ),
       );
     } else {
-      // --- ДИАЛОГ БАНА (Сложный, с выбором) ---
       showDialog(
         context: context,
         builder: (context) => BanSetupDialog(
           userName: user.nickname,
           onConfirm: (reason, days) {
-            // Отправляем эвент бана
             bloc.add(
               AdminToggleBanUser(userId: user.id, reason: reason, days: days),
             );

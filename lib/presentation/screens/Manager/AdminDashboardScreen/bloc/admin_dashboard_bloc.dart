@@ -44,6 +44,7 @@ class AdminDashboardBloc
     on<AdminDeleteTeam>(_onDeleteTeam);
 
     on<AdminToggleBanUser>(_onBanUser);
+    on<AdminUnbanUser>(_onUnbanUser);
     on<AdminChangeUserRole>(_onChangeUserRole);
     on<AdminToggleBanTeam>(_onBanTeam);
     on<AdminCancelTournament>(_onCancelTournament);
@@ -162,7 +163,7 @@ class AdminDashboardBloc
   ) async {
     try {
       await _userRepository.unbanUser(event.userId);
-      add(AdminDashboardStarted()); // Перезагружаем список
+      add(AdminDashboardStarted());
     } on AppException catch (e) {
       emit(AdminDashboardError(errorMessage: e.message));
     } catch (e) {
