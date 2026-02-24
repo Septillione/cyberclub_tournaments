@@ -1,7 +1,4 @@
-import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
-import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
-import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
-import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
+import 'package:cyberclub_tournaments/core/di/injection_container.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/AdminDashboardScreen/bloc/admin_dashboard_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
@@ -23,40 +20,24 @@ class MainNavigation extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TournamentsFeedBloc(
-            tournamentRepository: context.read<TournamentRepository>(),
-          )..add(TournamentsFeedStarted()),
+          create: (_) =>
+              serviceLocator<TournamentsFeedBloc>()
+                ..add(TournamentsFeedStarted()),
         ),
         BlocProvider(
-          create: (context) => UserTournamentsBloc(
-            tournamentRepository: context.read<TournamentRepository>(),
-            authRepository: context.read<AuthRepository>(),
-          )..add(UserTournamentsStarted()),
+          create: (_) =>
+              serviceLocator<UserTournamentsBloc>()
+                ..add(UserTournamentsStarted()),
         ),
         BlocProvider(
-          create: (context) => UserTeamsBloc(
-            teamRepository: context.read<TeamRepository>(),
-            authRepository: context.read<AuthRepository>(),
-          )..add(UserTeamsStarted()),
+          create: (_) =>
+              serviceLocator<UserTeamsBloc>()..add(UserTeamsStarted()),
         ),
         BlocProvider(
-          create: (context) => ProfileBloc(
-            userRepository: context.read<UserRepository>(),
-            authRepository: context.read<AuthRepository>(),
-          )..add(ProfileStarted()),
+          create: (_) => serviceLocator<ProfileBloc>()..add(ProfileStarted()),
         ),
-        BlocProvider(
-          create: (context) => AdminDashboardBloc(
-            tournamentRepository: context.read<TournamentRepository>(),
-            userRepository: context.read<UserRepository>(),
-            teamRepository: context.read<TeamRepository>(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => CreateTournamentBloc(
-            tournamentRepository: context.read<TournamentRepository>(),
-          ),
-        ),
+        BlocProvider(create: (_) => serviceLocator<AdminDashboardBloc>()),
+        BlocProvider(create: (_) => serviceLocator<CreateTournamentBloc>()),
       ],
       child: Scaffold(
         extendBody: true,
@@ -71,18 +52,10 @@ class MainNavigation extends StatelessWidget {
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
-    if (location.startsWith('/tournaments')) {
-      return 0;
-    }
-    if (location.startsWith('/my-tournaments')) {
-      return 1;
-    }
-    if (location.startsWith('/my-teams')) {
-      return 2;
-    }
-    if (location.startsWith('/profile')) {
-      return 3;
-    }
+    if (location.startsWith('/tournaments')) return 0;
+    if (location.startsWith('/my-tournaments')) return 1;
+    if (location.startsWith('/my-teams')) return 2;
+    if (location.startsWith('/profile')) return 3;
     return 0;
   }
 

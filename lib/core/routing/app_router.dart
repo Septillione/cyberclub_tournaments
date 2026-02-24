@@ -1,10 +1,10 @@
 import 'package:cyberclub_tournaments/core/routing/main_navigation.dart';
-import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/domain/entities/team_entity.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/BanScreen/ban_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/LoginScreen/login_screen.dart';
 import 'package:cyberclub_tournaments/presentation/screens/AuthScreens/RegisterScreen/register_screen.dart';
@@ -80,7 +80,7 @@ class AppRouter {
       GoRoute(
         path: '/edit-team',
         pageBuilder: (context, state) {
-          final teamToEdit = state.extra as TeamModel;
+          final teamToEdit = state.extra as TeamEntity;
           return CustomTransitionPage(
             child: CreateTeamScreen(teamToEdit: teamToEdit),
             transitionsBuilder:

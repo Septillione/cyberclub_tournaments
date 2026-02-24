@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/core/utils/error_handler.dart';
+import 'package:cyberclub_tournaments/core/error/error_handler.dart';
 import 'package:cyberclub_tournaments/data/models/auth/auth_dto.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
 import 'package:cyberclub_tournaments/data/services/token_storage.dart';

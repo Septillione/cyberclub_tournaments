@@ -1,0 +1,881 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'user_model.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$UserModel {
+
+ String get id; String get nickname; String get email; String get role; String? get avatarUrl; String? get bio; List<UserEntryModel> get entries; bool get isBanned; UserStatsModel get stats;
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>(this as UserModel, _$identity);
+
+  /// Serializes this UserModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other.entries, entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned)&&(identical(other.stats, stats) || other.stats == stats));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(entries),isBanned,stats);
+
+@override
+String toString() {
+  return 'UserModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned, stats: $stats)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $UserModelCopyWith<$Res>  {
+  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
+@useResult
+$Res call({
+ String id, String nickname, String email, String role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned, UserStatsModel stats
+});
+
+
+$UserStatsModelCopyWith<$Res> get stats;
+
+}
+/// @nodoc
+class _$UserModelCopyWithImpl<$Res>
+    implements $UserModelCopyWith<$Res> {
+  _$UserModelCopyWithImpl(this._self, this._then);
+
+  final UserModel _self;
+  final $Res Function(UserModel) _then;
+
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,Object? stats = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
+as String?,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
+as List<UserEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
+as UserStatsModel,
+  ));
+}
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserStatsModelCopyWith<$Res> get stats {
+  
+  return $UserStatsModelCopyWith<$Res>(_self.stats, (value) {
+    return _then(_self.copyWith(stats: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [UserModel].
+extension UserModelPatterns on UserModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _UserModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _UserModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _UserModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  String role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned,  UserStatsModel stats)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _UserModel() when $default != null:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned,_that.stats);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String nickname,  String email,  String role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned,  UserStatsModel stats)  $default,) {final _that = this;
+switch (_that) {
+case _UserModel():
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned,_that.stats);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String nickname,  String email,  String role,  String? avatarUrl,  String? bio,  List<UserEntryModel> entries,  bool isBanned,  UserStatsModel stats)?  $default,) {final _that = this;
+switch (_that) {
+case _UserModel() when $default != null:
+return $default(_that.id,_that.nickname,_that.email,_that.role,_that.avatarUrl,_that.bio,_that.entries,_that.isBanned,_that.stats);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _UserModel implements UserModel {
+  const _UserModel({required this.id, required this.nickname, required this.email, required this.role, this.avatarUrl, this.bio, final  List<UserEntryModel> entries = const [], this.isBanned = false, this.stats = const UserStatsModel()}): _entries = entries;
+  factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+
+@override final  String id;
+@override final  String nickname;
+@override final  String email;
+@override final  String role;
+@override final  String? avatarUrl;
+@override final  String? bio;
+ final  List<UserEntryModel> _entries;
+@override@JsonKey() List<UserEntryModel> get entries {
+  if (_entries is EqualUnmodifiableListView) return _entries;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_entries);
+}
+
+@override@JsonKey() final  bool isBanned;
+@override@JsonKey() final  UserStatsModel stats;
+
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UserModelCopyWith<_UserModel> get copyWith => __$UserModelCopyWithImpl<_UserModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$UserModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&const DeepCollectionEquality().equals(other._entries, _entries)&&(identical(other.isBanned, isBanned) || other.isBanned == isBanned)&&(identical(other.stats, stats) || other.stats == stats));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,nickname,email,role,avatarUrl,bio,const DeepCollectionEquality().hash(_entries),isBanned,stats);
+
+@override
+String toString() {
+  return 'UserModel(id: $id, nickname: $nickname, email: $email, role: $role, avatarUrl: $avatarUrl, bio: $bio, entries: $entries, isBanned: $isBanned, stats: $stats)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
+  factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String nickname, String email, String role, String? avatarUrl, String? bio, List<UserEntryModel> entries, bool isBanned, UserStatsModel stats
+});
+
+
+@override $UserStatsModelCopyWith<$Res> get stats;
+
+}
+/// @nodoc
+class __$UserModelCopyWithImpl<$Res>
+    implements _$UserModelCopyWith<$Res> {
+  __$UserModelCopyWithImpl(this._self, this._then);
+
+  final _UserModel _self;
+  final $Res Function(_UserModel) _then;
+
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? email = null,Object? role = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? entries = null,Object? isBanned = null,Object? stats = null,}) {
+  return _then(_UserModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
+as String?,entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
+as List<UserEntryModel>,isBanned: null == isBanned ? _self.isBanned : isBanned // ignore: cast_nullable_to_non_nullable
+as bool,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
+as UserStatsModel,
+  ));
+}
+
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserStatsModelCopyWith<$Res> get stats {
+  
+  return $UserStatsModelCopyWith<$Res>(_self.stats, (value) {
+    return _then(_self.copyWith(stats: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$UserEntryModel {
+
+ String get id; String get status; TournamentModel get tournament;
+/// Create a copy of UserEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UserEntryModelCopyWith<UserEntryModel> get copyWith => _$UserEntryModelCopyWithImpl<UserEntryModel>(this as UserEntryModel, _$identity);
+
+  /// Serializes this UserEntryModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserEntryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.tournament, tournament) || other.tournament == tournament));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,status,tournament);
+
+@override
+String toString() {
+  return 'UserEntryModel(id: $id, status: $status, tournament: $tournament)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $UserEntryModelCopyWith<$Res>  {
+  factory $UserEntryModelCopyWith(UserEntryModel value, $Res Function(UserEntryModel) _then) = _$UserEntryModelCopyWithImpl;
+@useResult
+$Res call({
+ String id, String status, TournamentModel tournament
+});
+
+
+$TournamentModelCopyWith<$Res> get tournament;
+
+}
+/// @nodoc
+class _$UserEntryModelCopyWithImpl<$Res>
+    implements $UserEntryModelCopyWith<$Res> {
+  _$UserEntryModelCopyWithImpl(this._self, this._then);
+
+  final UserEntryModel _self;
+  final $Res Function(UserEntryModel) _then;
+
+/// Create a copy of UserEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? status = null,Object? tournament = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,tournament: null == tournament ? _self.tournament : tournament // ignore: cast_nullable_to_non_nullable
+as TournamentModel,
+  ));
+}
+/// Create a copy of UserEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TournamentModelCopyWith<$Res> get tournament {
+  
+  return $TournamentModelCopyWith<$Res>(_self.tournament, (value) {
+    return _then(_self.copyWith(tournament: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [UserEntryModel].
+extension UserEntryModelPatterns on UserEntryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserEntryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _UserEntryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserEntryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _UserEntryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserEntryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _UserEntryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String status,  TournamentModel tournament)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _UserEntryModel() when $default != null:
+return $default(_that.id,_that.status,_that.tournament);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String status,  TournamentModel tournament)  $default,) {final _that = this;
+switch (_that) {
+case _UserEntryModel():
+return $default(_that.id,_that.status,_that.tournament);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String status,  TournamentModel tournament)?  $default,) {final _that = this;
+switch (_that) {
+case _UserEntryModel() when $default != null:
+return $default(_that.id,_that.status,_that.tournament);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _UserEntryModel implements UserEntryModel {
+  const _UserEntryModel({required this.id, required this.status, required this.tournament});
+  factory _UserEntryModel.fromJson(Map<String, dynamic> json) => _$UserEntryModelFromJson(json);
+
+@override final  String id;
+@override final  String status;
+@override final  TournamentModel tournament;
+
+/// Create a copy of UserEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UserEntryModelCopyWith<_UserEntryModel> get copyWith => __$UserEntryModelCopyWithImpl<_UserEntryModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$UserEntryModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserEntryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.status, status) || other.status == status)&&(identical(other.tournament, tournament) || other.tournament == tournament));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,status,tournament);
+
+@override
+String toString() {
+  return 'UserEntryModel(id: $id, status: $status, tournament: $tournament)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UserEntryModelCopyWith<$Res> implements $UserEntryModelCopyWith<$Res> {
+  factory _$UserEntryModelCopyWith(_UserEntryModel value, $Res Function(_UserEntryModel) _then) = __$UserEntryModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String status, TournamentModel tournament
+});
+
+
+@override $TournamentModelCopyWith<$Res> get tournament;
+
+}
+/// @nodoc
+class __$UserEntryModelCopyWithImpl<$Res>
+    implements _$UserEntryModelCopyWith<$Res> {
+  __$UserEntryModelCopyWithImpl(this._self, this._then);
+
+  final _UserEntryModel _self;
+  final $Res Function(_UserEntryModel) _then;
+
+/// Create a copy of UserEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? status = null,Object? tournament = null,}) {
+  return _then(_UserEntryModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,tournament: null == tournament ? _self.tournament : tournament // ignore: cast_nullable_to_non_nullable
+as TournamentModel,
+  ));
+}
+
+/// Create a copy of UserEntryModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TournamentModelCopyWith<$Res> get tournament {
+  
+  return $TournamentModelCopyWith<$Res>(_self.tournament, (value) {
+    return _then(_self.copyWith(tournament: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$UserStatsModel {
+
+ int get tournamentsPlayed; int get tournamentsWon; double get winrate;
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$UserStatsModelCopyWith<UserStatsModel> get copyWith => _$UserStatsModelCopyWithImpl<UserStatsModel>(this as UserStatsModel, _$identity);
+
+  /// Serializes this UserStatsModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserStatsModel&&(identical(other.tournamentsPlayed, tournamentsPlayed) || other.tournamentsPlayed == tournamentsPlayed)&&(identical(other.tournamentsWon, tournamentsWon) || other.tournamentsWon == tournamentsWon)&&(identical(other.winrate, winrate) || other.winrate == winrate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tournamentsPlayed,tournamentsWon,winrate);
+
+@override
+String toString() {
+  return 'UserStatsModel(tournamentsPlayed: $tournamentsPlayed, tournamentsWon: $tournamentsWon, winrate: $winrate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $UserStatsModelCopyWith<$Res>  {
+  factory $UserStatsModelCopyWith(UserStatsModel value, $Res Function(UserStatsModel) _then) = _$UserStatsModelCopyWithImpl;
+@useResult
+$Res call({
+ int tournamentsPlayed, int tournamentsWon, double winrate
+});
+
+
+
+
+}
+/// @nodoc
+class _$UserStatsModelCopyWithImpl<$Res>
+    implements $UserStatsModelCopyWith<$Res> {
+  _$UserStatsModelCopyWithImpl(this._self, this._then);
+
+  final UserStatsModel _self;
+  final $Res Function(UserStatsModel) _then;
+
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? tournamentsPlayed = null,Object? tournamentsWon = null,Object? winrate = null,}) {
+  return _then(_self.copyWith(
+tournamentsPlayed: null == tournamentsPlayed ? _self.tournamentsPlayed : tournamentsPlayed // ignore: cast_nullable_to_non_nullable
+as int,tournamentsWon: null == tournamentsWon ? _self.tournamentsWon : tournamentsWon // ignore: cast_nullable_to_non_nullable
+as int,winrate: null == winrate ? _self.winrate : winrate // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [UserStatsModel].
+extension UserStatsModelPatterns on UserStatsModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserStatsModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserStatsModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _UserStatsModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserStatsModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tournamentsPlayed,  int tournamentsWon,  double winrate)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that.tournamentsPlayed,_that.tournamentsWon,_that.winrate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tournamentsPlayed,  int tournamentsWon,  double winrate)  $default,) {final _that = this;
+switch (_that) {
+case _UserStatsModel():
+return $default(_that.tournamentsPlayed,_that.tournamentsWon,_that.winrate);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tournamentsPlayed,  int tournamentsWon,  double winrate)?  $default,) {final _that = this;
+switch (_that) {
+case _UserStatsModel() when $default != null:
+return $default(_that.tournamentsPlayed,_that.tournamentsWon,_that.winrate);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _UserStatsModel implements UserStatsModel {
+  const _UserStatsModel({this.tournamentsPlayed = 0, this.tournamentsWon = 0, this.winrate = 0.0});
+  factory _UserStatsModel.fromJson(Map<String, dynamic> json) => _$UserStatsModelFromJson(json);
+
+@override@JsonKey() final  int tournamentsPlayed;
+@override@JsonKey() final  int tournamentsWon;
+@override@JsonKey() final  double winrate;
+
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UserStatsModelCopyWith<_UserStatsModel> get copyWith => __$UserStatsModelCopyWithImpl<_UserStatsModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$UserStatsModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserStatsModel&&(identical(other.tournamentsPlayed, tournamentsPlayed) || other.tournamentsPlayed == tournamentsPlayed)&&(identical(other.tournamentsWon, tournamentsWon) || other.tournamentsWon == tournamentsWon)&&(identical(other.winrate, winrate) || other.winrate == winrate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tournamentsPlayed,tournamentsWon,winrate);
+
+@override
+String toString() {
+  return 'UserStatsModel(tournamentsPlayed: $tournamentsPlayed, tournamentsWon: $tournamentsWon, winrate: $winrate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UserStatsModelCopyWith<$Res> implements $UserStatsModelCopyWith<$Res> {
+  factory _$UserStatsModelCopyWith(_UserStatsModel value, $Res Function(_UserStatsModel) _then) = __$UserStatsModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int tournamentsPlayed, int tournamentsWon, double winrate
+});
+
+
+
+
+}
+/// @nodoc
+class __$UserStatsModelCopyWithImpl<$Res>
+    implements _$UserStatsModelCopyWith<$Res> {
+  __$UserStatsModelCopyWithImpl(this._self, this._then);
+
+  final _UserStatsModel _self;
+  final $Res Function(_UserStatsModel) _then;
+
+/// Create a copy of UserStatsModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? tournamentsPlayed = null,Object? tournamentsWon = null,Object? winrate = null,}) {
+  return _then(_UserStatsModel(
+tournamentsPlayed: null == tournamentsPlayed ? _self.tournamentsPlayed : tournamentsPlayed // ignore: cast_nullable_to_non_nullable
+as int,tournamentsWon: null == tournamentsWon ? _self.tournamentsWon : tournamentsWon // ignore: cast_nullable_to_non_nullable
+as int,winrate: null == winrate ? _self.winrate : winrate // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+
+}
+
+// dart format on

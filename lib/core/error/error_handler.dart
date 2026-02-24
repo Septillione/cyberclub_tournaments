@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
+import 'package:cyberclub_tournaments/core/error/app_exception.dart';
 import 'package:dio/dio.dart';
 
 class ErrorHandler {

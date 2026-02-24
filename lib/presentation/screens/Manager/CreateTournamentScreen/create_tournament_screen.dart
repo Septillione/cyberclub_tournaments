@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/tournament_repository.dart';
+import 'package:cyberclub_tournaments/domain/entities/tournament_entity.dart';
 import 'package:cyberclub_tournaments/presentation/screens/Manager/CreateTournamentScreen/bloc/create_tournament_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/gradient_button.dart';
@@ -10,19 +11,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-final Map<Discipline, List<String>> _coverPresets = {
-  Discipline.DOTA2: [
-    'assets/images/covers/dota2/dota2_1.jpeg',
-    'assets/images/covers/dota2/dota2_2.jpg',
-    'assets/images/covers/dota2/dota2_3.jpg',
-  ],
-  Discipline.CS2: [
-    'assets/images/covers/cs2/cs2_1.jpg',
-    // 'assets/images/covers/cs2/cs2_2.jpg',
-    // 'assets/images/covers/cs2/cs2_3.jpg',
-  ],
-  Discipline.MORTAL_KOMBAT: ['assets/images/covers/mk1_1.jpg'],
-};
+// final Map<Discipline, List<String>> _coverPresets = {
+//   Discipline.DOTA2: [
+//     'assets/images/covers/dota2/dota2_1.jpeg',
+//     'assets/images/covers/dota2/dota2_2.jpg',
+//     'assets/images/covers/dota2/dota2_3.jpg',
+//   ],
+//   Discipline.CS2: [
+//     'assets/images/covers/cs2/cs2_1.jpg',
+//     // 'assets/images/covers/cs2/cs2_2.jpg',
+//     // 'assets/images/covers/cs2/cs2_3.jpg',
+//   ],
+//   Discipline.MORTAL_KOMBAT: ['assets/images/covers/mk1_1.jpg'],
+// };
 
 const _defaultCover = '';
 
@@ -33,7 +34,7 @@ class PrizeInput {
 }
 
 class CreateTournamentScreen extends StatelessWidget {
-  final TournamentModel? tournamentToEdit;
+  final TournamentEntity? tournamentToEdit;
   const CreateTournamentScreen({super.key, this.tournamentToEdit});
 
   @override
@@ -48,7 +49,7 @@ class CreateTournamentScreen extends StatelessWidget {
 }
 
 class _CreateTournamentView extends StatefulWidget {
-  final TournamentModel? tournamentToEdit;
+  final TournamentEntity? tournamentToEdit;
   const _CreateTournamentView({required this.tournamentToEdit});
 
   @override

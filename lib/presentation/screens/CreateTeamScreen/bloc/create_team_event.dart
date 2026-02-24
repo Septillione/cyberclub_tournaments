@@ -1,11 +1,8 @@
 part of 'create_team_bloc.dart';
 
-@immutable
 abstract class CreateTeamEvent extends Equatable {
-  const CreateTeamEvent();
-
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class CreateTeamSubmitted extends CreateTeamEvent {
@@ -13,26 +10,26 @@ class CreateTeamSubmitted extends CreateTeamEvent {
   final String tag;
   final String? description;
   final String? socialMedia;
-  final List<String>? gamesList;
   final String? avatarUrl;
+  final List<String> gamesList;
 
-  const CreateTeamSubmitted({
+  CreateTeamSubmitted({
     required this.name,
     required this.tag,
     this.description,
     this.socialMedia,
-    this.gamesList,
     this.avatarUrl,
+    this.gamesList = const [],
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     name,
     tag,
-    ?description,
-    ?socialMedia,
-    ?gamesList,
-    ?avatarUrl,
+    description,
+    socialMedia,
+    avatarUrl,
+    gamesList,
   ];
 }
 
@@ -43,15 +40,26 @@ class UpdateTeamSubmitted extends CreateTeamEvent {
   final String? description;
   final String? socialMedia;
   final String? avatarUrl;
-  final List<String>? gamesList;
+  final List<String> gamesList;
 
-  const UpdateTeamSubmitted({
+  UpdateTeamSubmitted({
     required this.teamId,
     required this.name,
     required this.tag,
     this.description,
     this.socialMedia,
     this.avatarUrl,
-    this.gamesList,
+    this.gamesList = const [],
   });
+
+  @override
+  List<Object?> get props => [
+    teamId,
+    name,
+    tag,
+    description,
+    socialMedia,
+    avatarUrl,
+    gamesList,
+  ];
 }

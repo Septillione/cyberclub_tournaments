@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/core/utils/error_handler.dart';
+import 'package:cyberclub_tournaments/core/error/error_handler.dart';
 import 'package:cyberclub_tournaments/data/models/FilterModel/filter_model.dart';
 import 'package:cyberclub_tournaments/data/models/TournamentModel/tournament_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';

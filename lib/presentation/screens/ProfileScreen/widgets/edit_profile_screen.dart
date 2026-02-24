@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
-import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/user_repository.dart';
+import 'package:cyberclub_tournaments/domain/entities/user_entity.dart';
 import 'package:cyberclub_tournaments/presentation/screens/ProfileScreen/bloc/profile_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/avatar_picker.dart';
 import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  final UserProfileModel userProfile;
+  final UserEntity userProfile;
   const EditProfileScreen({super.key, required this.userProfile});
 
   @override

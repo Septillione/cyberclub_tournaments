@@ -1,20 +1,25 @@
-import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
-import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
+import 'package:cyberclub_tournaments/core/error/app_exception.dart';
+import 'package:cyberclub_tournaments/domain/entities/team_entity.dart';
+import 'package:cyberclub_tournaments/domain/usecases/team/create_team_usecase.dart';
+import 'package:cyberclub_tournaments/domain/usecases/team/update_team_usecase.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'create_team_event.dart';
 part 'create_team_state.dart';
 
 class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {
-  final TeamRepository _teamRepository;
+  final CreateTeamUsecase _createTeamUseCase;
+  final UpdateTeamUseCase _updateTeamUseCase;
 
-  CreateTeamBloc({required TeamRepository teamRepository})
-    : _teamRepository = teamRepository,
-      super(CreateTeamInitial()) {
+  CreateTeamBloc({
+    required CreateTeamUsecase createTeamUseCase,
+    required UpdateTeamUseCase updateTeamUseCase,
+  }) : _createTeamUseCase = createTeamUseCase,
+       _updateTeamUseCase = updateTeamUseCase,
+       super(CreateTeamInitial()) {
     on<CreateTeamSubmitted>(_onCreateTeamSubmitted);
-    on<UpdateTeamSubmitted>(_onUpdateTeam);
+    on<UpdateTeamSubmitted>(_onUpdateTeamSubmitted);
   }
 
   Future<void> _onCreateTeamSubmitted(
@@ -23,43 +28,47 @@ class CreateTeamBloc extends Bloc<CreateTeamEvent, CreateTeamState> {
   ) async {
     emit(CreateTeamLoading());
     try {
-      await _teamRepository.createTeam(
-        event.name,
-        event.tag,
-        event.description,
-        event.socialMedia,
-        event.gamesList,
-        event.avatarUrl,
+      final team = TeamEntity(
+        id: '',
+        name: event.name,
+        tag: event.tag,
+        description: event.description,
+        socialMedia: event.socialMedia,
+        avatarUrl: event.avatarUrl,
+        gamesList: event.gamesList,
+        ownerId: '',
       );
-      emit(CreateTeamSuccess());
+      await _createTeamUseCase(team);
+      emit(CreateTeamSuccess(isEditing: false));
     } on AppException catch (e) {
       emit(CreateTeamFailure(errorMessage: e.message));
     } catch (e) {
-      emit(CreateTeamFailure(errorMessage: 'Что-то пошло не так'));
+      emit(CreateTeamFailure(errorMessage: 'Не удалось создать команду'));
     }
   }
 
-  Future<void> _onUpdateTeam(
+  Future<void> _onUpdateTeamSubmitted(
     UpdateTeamSubmitted event,
     Emitter<CreateTeamState> emit,
   ) async {
+    emit(CreateTeamLoading());
     try {
-      await _teamRepository.updateTeam(
-        event.teamId,
-        event.name,
-        event.tag,
-        event.avatarUrl,
-        event.description,
-        event.socialMedia,
-        event.gamesList,
+      final team = TeamEntity(
+        id: event.teamId,
+        name: event.name,
+        tag: event.tag,
+        description: event.description,
+        socialMedia: event.socialMedia,
+        avatarUrl: event.avatarUrl,
+        gamesList: event.gamesList,
+        ownerId: '',
       );
-      print('Team was updated');
-      emit(CreateTeamSuccess());
+      await _updateTeamUseCase(team);
+      emit(CreateTeamSuccess(isEditing: true));
     } on AppException catch (e) {
       emit(CreateTeamFailure(errorMessage: e.message));
     } catch (e) {
-      emit(CreateTeamFailure(errorMessage: 'Что-то пошло не так'));
-      print('Error updating team: $e');
+      emit(CreateTeamFailure(errorMessage: 'Не удалось обновить команду'));
     }
   }
 }

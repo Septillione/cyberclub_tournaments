@@ -1,7 +1,7 @@
-import 'package:cyberclub_tournaments/core/utils/error_handler.dart';
+import 'package:cyberclub_tournaments/core/error/error_handler.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
-import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
 import 'package:cyberclub_tournaments/data/providers/api_client.dart';
+import 'package:cyberclub_tournaments/datanew/models/User/user_model.dart';
 import 'package:dio/dio.dart';
 
 class UserRepository {
@@ -9,10 +9,10 @@ class UserRepository {
 
   UserRepository({required ApiClient apiClient}) : _apiClient = apiClient;
 
-  Future<UserProfileModel> fetchUserProfile(String userId) async {
+  Future<UserModel> fetchUserProfile(String userId) async {
     try {
       final response = await _apiClient.dio.get('/users/$userId');
-      return UserProfileModel.fromJson(response.data);
+      return UserModel.fromJson(response.data);
     } catch (e) {
       throw ErrorHandler.handle(e);
     }

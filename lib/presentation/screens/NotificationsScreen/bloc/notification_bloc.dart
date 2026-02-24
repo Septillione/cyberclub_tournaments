@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
+import 'package:cyberclub_tournaments/core/error/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/NotificationModel/notification_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/notification_repository.dart';
 import 'package:equatable/equatable.dart';

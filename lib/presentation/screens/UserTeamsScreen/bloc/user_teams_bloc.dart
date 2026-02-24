@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/core/errors/app_exception.dart';
+import 'package:cyberclub_tournaments/core/error/app_exception.dart';
 import 'package:cyberclub_tournaments/data/models/TeamModel/team_model.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cyberclub_tournaments/core/utils/validators.dart'; // Поправь путь на свой
+import 'package:cyberclub_tournaments/core/utils/app_validators.dart'; // Поправь путь на свой
 
 void main() {
   group('Unit Test: Проверка валидации email', () {
