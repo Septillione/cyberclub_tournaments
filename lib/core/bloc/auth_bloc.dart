@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/bloc/auth_event.dart';
 import 'package:cyberclub_tournaments/core/bloc/auth_state.dart';
-import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
+import 'package:cyberclub_tournaments/domain/entities/user_entity.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/get_user_id_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/get_user_role_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/is_logged_in_usecase.dart';

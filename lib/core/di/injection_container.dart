@@ -1,17 +1,16 @@
 import 'package:cyberclub_tournaments/core/bloc/auth_bloc.dart';
 import 'package:cyberclub_tournaments/core/network/api_client.dart';
-import 'package:cyberclub_tournaments/core/routing/app_router.dart';
-import 'package:cyberclub_tournaments/datanew/datasources/auth_local_datasource.dart';
-import 'package:cyberclub_tournaments/datanew/datasources/auth_remote_datasource.dart';
-import 'package:cyberclub_tournaments/datanew/datasources/notification_remote_datasource.dart';
-import 'package:cyberclub_tournaments/datanew/datasources/team_remote_datasource.dart';
-import 'package:cyberclub_tournaments/datanew/datasources/tournament_remote_datasource.dart';
-import 'package:cyberclub_tournaments/datanew/datasources/user_remote_datasource.dart';
-import 'package:cyberclub_tournaments/datanew/repositories/auth_repository_impl.dart';
-import 'package:cyberclub_tournaments/datanew/repositories/notification_repository_impl.dart';
-import 'package:cyberclub_tournaments/datanew/repositories/team_repository_impl.dart';
-import 'package:cyberclub_tournaments/datanew/repositories/tournament_repository_impl.dart';
-import 'package:cyberclub_tournaments/datanew/repositories/user_repository_impl.dart';
+import 'package:cyberclub_tournaments/data/datasources/auth_local_datasource.dart';
+import 'package:cyberclub_tournaments/data/datasources/auth_remote_datasource.dart';
+import 'package:cyberclub_tournaments/data/datasources/notification_remote_datasource.dart';
+import 'package:cyberclub_tournaments/data/datasources/team_remote_datasource.dart';
+import 'package:cyberclub_tournaments/data/datasources/tournament_remote_datasource.dart';
+import 'package:cyberclub_tournaments/data/datasources/user_remote_datasource.dart';
+import 'package:cyberclub_tournaments/data/repositories/auth_repository_impl.dart';
+import 'package:cyberclub_tournaments/data/repositories/notification_repository_impl.dart';
+import 'package:cyberclub_tournaments/data/repositories/team_repository_impl.dart';
+import 'package:cyberclub_tournaments/data/repositories/tournament_repository_impl.dart';
+import 'package:cyberclub_tournaments/data/repositories/user_repository_impl.dart';
 import 'package:cyberclub_tournaments/domain/repositories/auth_repository.dart';
 import 'package:cyberclub_tournaments/domain/repositories/notification_repository.dart';
 import 'package:cyberclub_tournaments/domain/repositories/team_repository.dart';
@@ -63,9 +62,23 @@ import 'package:cyberclub_tournaments/domain/usecases/user/fetch_user_profile_us
 import 'package:cyberclub_tournaments/domain/usecases/user/unban_user_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/update_user_profile_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/upload_user_avatar_usecase.dart';
+import 'package:cyberclub_tournaments/presentation/screens/admin_dashboard/bloc/admin_dashboard_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/auth/login/bloc/login_bloc.dart';
 import 'package:cyberclub_tournaments/presentation/screens/auth/register/bloc/register_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/create_team/bloc/create_team_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/create_tournament/bloc/create_tournament_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/invite_player/bloc/invite_player_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/manager_dashboard/bloc/manager_dashboard_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/notifications/bloc/notification_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/profile/bloc/profile_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/team_detail/bloc/team_detail_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/tournament_detail/bloc/tournament_detail_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/tournaments_feed/bloc/tournaments_feed_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/user_teams/bloc/user_teams_bloc.dart';
+import 'package:cyberclub_tournaments/presentation/screens/user_tournaments/bloc/user_tournaments_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -76,6 +89,8 @@ Future<void> initDependencies() async {
   _initPresentation();
 }
 
+final rootNavigatorKey = GlobalKey<NavigatorState>();
+
 void _initCore() {
   serviceLocator.registerLazySingleton<AuthLocalDataSource>(
     () => AuthLocalDataSourceImpl(),
@@ -85,10 +100,18 @@ void _initCore() {
     () => ApiClient(
       localDataSource: serviceLocator(),
       onBanned: (message) {
-        AppRouter.router.go('/ban', extra: message);
+        final context = rootNavigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).go('/ban', extra: message);
+        }
+        // AppRouter.router.go('/ban', extra: message);
       },
       onUnauthorized: () {
-        AppRouter.router.go('/login');
+        final context = rootNavigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).go('/login');
+        }
+        // AppRouter.router.go('/login');
       },
     ),
   );
@@ -218,7 +241,9 @@ void _initDomain() {
   );
 
   // User UseCases
-  serviceLocator.registerFactory(() => GetUserProfileUseCase(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => FetchUserProfileUsecase(serviceLocator()),
+  );
   serviceLocator.registerFactory(
     () => UpdateUserProfileUseCase(serviceLocator()),
   );
@@ -256,5 +281,98 @@ void _initPresentation() {
   );
   serviceLocator.registerFactory(
     () => RegisterBloc(registerUseCase: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => CreateTeamBloc(
+      createTeam: serviceLocator(),
+      updateTeam: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => InvitePlayerBloc(
+      searchUsers: serviceLocator(),
+      inviteUser: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => AdminDashboardBloc(
+      getTournaments: serviceLocator(),
+      getAdminStats: serviceLocator(),
+      cancelTournament: serviceLocator(),
+      deleteTournament: serviceLocator(),
+      searchTeams: serviceLocator(),
+      deleteTeam: serviceLocator(),
+      banTeam: serviceLocator(),
+      searchUsers: serviceLocator(),
+      banUser: serviceLocator(),
+      unbanUser: serviceLocator(),
+      changeUserRole: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => CreateTournamentBloc(
+      createTournament: serviceLocator(),
+      updateTournament: serviceLocator(),
+      cancelTournament: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => ManagerDashboardBloc(getOrganizedTournaments: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => NotificationBloc(
+      getNotifications: serviceLocator(),
+      acceptInvite: serviceLocator(),
+      declineInvite: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => ProfileBloc(
+      getUserId: serviceLocator(),
+      getUserProfile: serviceLocator(),
+      updateUserProfile: serviceLocator(),
+      changePassword: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => TeamDetailBloc(
+      getTeamDetails: serviceLocator(),
+      getJoinRequests: serviceLocator(),
+      acceptRequest: serviceLocator(),
+      rejectRequest: serviceLocator(),
+      promoteTeammate: serviceLocator(),
+      kickTeammate: serviceLocator(),
+      leaveTeam: serviceLocator(),
+      deleteTeam: serviceLocator(),
+      getUserId: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => TournamentDetailBloc(
+      getTournament: serviceLocator(),
+      joinTournament: serviceLocator(),
+      startTournament: serviceLocator(),
+      finishTournament: serviceLocator(),
+      updateMatchScore: serviceLocator(),
+      disqualifyParticipant: serviceLocator(),
+      getUserId: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => TournamentsFeedBloc(getTournaments: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => UserTeamsBloc(
+      getUserTeams: serviceLocator(),
+      searchTeams: serviceLocator(),
+      sendJoinRequest: serviceLocator(),
+      getUserId: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => UserTournamentsBloc(
+      getUserTournaments: serviceLocator(),
+      getUserId: serviceLocator(),
+    ),
   );
 }

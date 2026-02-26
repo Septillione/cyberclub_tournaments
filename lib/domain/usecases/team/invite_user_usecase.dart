@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
+import 'package:cyberclub_tournaments/domain/repositories/team_repository.dart';
 
 class InviteUserUseCase {
   final TeamRepository _repository;
@@ -6,5 +6,5 @@ class InviteUserUseCase {
   InviteUserUseCase(this._repository);
 
   Future<void> call(String teamId, String userId) =>
-      _repository.inviteUserToTeam(teamId, userId);
+      _repository.inviteUser(teamId, userId);
 }

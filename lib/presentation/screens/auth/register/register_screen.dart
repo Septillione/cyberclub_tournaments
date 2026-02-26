@@ -5,7 +5,7 @@ import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/core/utils/app_validators.dart';
 import 'package:cyberclub_tournaments/presentation/screens/auth/register/bloc/register_bloc.dart';
-import 'package:cyberclub_tournaments/presentation/widgets/custom_back_button.dart';
+import 'package:cyberclub_tournaments/presentation/widgetsnew/custom_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

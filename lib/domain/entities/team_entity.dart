@@ -34,6 +34,14 @@ class TeamEntity extends Equatable {
     this.stats = const TeamStats(),
   });
 
+  bool isMember(String userId) {
+    return members.any((element) => element.userId == userId);
+  }
+
+  bool isOwner(String userId) {
+    return ownerId == userId;
+  }
+
   @override
   List<Object?> get props => [
     id,

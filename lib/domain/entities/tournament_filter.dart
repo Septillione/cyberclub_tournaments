@@ -57,4 +57,14 @@ class TournamentFilter {
       searchQuery: clearSearchQuery ? null : (searchQuery ?? this.searchQuery),
     );
   }
+
+  bool get isEmpty =>
+      discipline == null &&
+      status == null &&
+      teamMode == null &&
+      isOnline == null &&
+      sortOrder == null &&
+      (searchQuery == null || searchQuery!.isEmpty);
+
+  bool get hasActiveFilters => !isEmpty;
 }

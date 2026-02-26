@@ -39,6 +39,14 @@ class NotificationEntity extends Equatable {
     required this.createdAt,
   });
 
+  bool get isInvite => type == NotificationType.invite;
+  bool get isMatch => type == NotificationType.match;
+  bool get isUnread => !isRead;
+
+  String? get requestId => data?['requestId'] as String?;
+  String? get relatedId => data?['id'] as String?;
+  String? get teamId => data?['teamId'] as String?;
+
   @override
   List<Object?> get props => [id, title, body, type, data, isRead, createdAt];
 }

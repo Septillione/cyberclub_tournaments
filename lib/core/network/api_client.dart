@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/datanew/datasources/auth_local_datasource.dart';
+import 'package:cyberclub_tournaments/data/datasources/auth_local_datasource.dart';
 import 'package:dio/dio.dart';
 
 class ApiClient {

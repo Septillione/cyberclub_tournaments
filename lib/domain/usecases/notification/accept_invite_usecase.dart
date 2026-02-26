@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/data/repositories/notification_repository.dart';
+import 'package:cyberclub_tournaments/domain/repositories/notification_repository.dart';
 
 class AcceptInviteUsecase {
   final NotificationRepository _repository;

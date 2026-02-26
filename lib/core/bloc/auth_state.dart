@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/data/models/UserProfileModel/user_profile_model.dart';
+import 'package:cyberclub_tournaments/domain/entities/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthState extends Equatable {

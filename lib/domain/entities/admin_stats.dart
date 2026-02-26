@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 class AdminStats {
-  final TournamentStats tournaments;
-  final UserStats users;
-  final TeamStats teams;
+  final AdminTournamentStats tournaments;
+  final AdminUserStats users;
+  final AdminTeamStats teams;
 
   const AdminStats({
     required this.tournaments,
@@ -10,28 +12,37 @@ class AdminStats {
   });
 }
 
-class TournamentStats {
+class AdminTournamentStats extends Equatable {
   final int total;
   final int live;
   final int open;
 
-  const TournamentStats({
+  AdminTournamentStats({
     required this.total,
     required this.live,
     required this.open,
   });
+
+  @override
+  List<Object?> get props => [total, live, open];
 }
 
-class UserStats {
+class AdminUserStats extends Equatable {
   final int total;
   final int inTeams;
 
-  const UserStats({required this.total, required this.inTeams});
+  AdminUserStats({required this.total, required this.inTeams});
+
+  @override
+  List<Object?> get props => [total, inTeams];
 }
 
-class TeamStats {
+class AdminTeamStats extends Equatable {
   final int total;
   final int active;
 
-  const TeamStats({required this.total, required this.active});
+  const AdminTeamStats({required this.total, required this.active});
+
+  @override
+  List<Object?> get props => [total, active];
 }

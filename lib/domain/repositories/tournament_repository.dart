@@ -7,7 +7,7 @@ abstract class TournamentRepository {
   Future<List<TournamentEntity>> fetchTournaments({TournamentFilter? filter});
   Future<TournamentEntity?> fetchTournamentById(String id);
   Future<List<TournamentEntity>> fetchUserTournaments();
-  // Future<List<TournamentEntity>> fetchOrganizedTournaments();
+  Future<List<TournamentEntity>> fetchOrganizedTournaments();
 
   // Создание и изменение
   Future<void> createTournament(TournamentEntity tournament);

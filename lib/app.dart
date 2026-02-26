@@ -1,6 +1,6 @@
 import 'package:cyberclub_tournaments/core/bloc/auth_bloc.dart';
 import 'package:cyberclub_tournaments/core/di/injection_container.dart';
-import 'package:cyberclub_tournaments/core/routing/router.dart';
+import 'package:cyberclub_tournaments/core/routing/app_router.dart';
 import 'package:cyberclub_tournaments/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

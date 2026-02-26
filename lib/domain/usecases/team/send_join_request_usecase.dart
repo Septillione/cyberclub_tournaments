@@ -1,4 +1,4 @@
-import 'package:cyberclub_tournaments/data/repositories/team_repository.dart';
+import 'package:cyberclub_tournaments/domain/repositories/team_repository.dart';
 
 class SendJoinRequestUseCase {
   final TeamRepository _repository;
