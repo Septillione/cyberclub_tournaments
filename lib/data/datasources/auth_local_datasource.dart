@@ -11,7 +11,10 @@ abstract class AuthLocalDataSource {
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  static const _storage = FlutterSecureStorage();
+  // static const _storage = FlutterSecureStorage();
+  static const _storage = FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
   static const _keyAccessToken = 'access_token';
   static const _keyRefreshToken = 'refresh_token';
 
@@ -26,7 +29,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<String?> getAccessToken() async {
-    return await _storage.read(key: _keyAccessToken);
+    // return await _storage.read(key: _keyAccessToken);
+    print("STORAGE: Пытаюсь прочитать токен..."); // <--- ЛОГ
+    try {
+      final token = await _storage.read(key: _keyAccessToken);
+      print("STORAGE: Токен прочитан: ${token != null}"); // <--- ЛОГ
+      return token;
+    } catch (e) {
+      print("STORAGE ERROR: $e"); // <--- ЛОГ
+      return null;
+    }
   }
 
   @override

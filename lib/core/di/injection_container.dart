@@ -54,6 +54,7 @@ import 'package:cyberclub_tournaments/domain/usecases/tournament/finish_tourname
 import 'package:cyberclub_tournaments/domain/usecases/tournament/get_admin_stats_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/tournament/join_tournament_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/tournament/start_tournament_usecase.dart';
+import 'package:cyberclub_tournaments/domain/usecases/tournament/update_match_score_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/tournament/update_tournament_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/ban_user_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/change_password_usecase.dart';
@@ -83,10 +84,20 @@ import 'package:go_router/go_router.dart';
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
+  // _initCore();
+  // _initData();
+  // _initDomain();
+  // _initPresentation();
+
+  print("DI: Start init"); // <---
   _initCore();
+  print("DI: Core init done"); // <---
   _initData();
+  print("DI: Data init done"); // <---
   _initDomain();
+  print("DI: Domain init done"); // <---
   _initPresentation();
+  print("DI: Presentation init done"); // <---
 }
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -120,7 +131,7 @@ void _initCore() {
 void _initData() {
   // Auth DataSource
   serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(dio: serviceLocator()),
+    () => AuthRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
   );
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
@@ -131,7 +142,7 @@ void _initData() {
 
   // Tournament DataSource
   serviceLocator.registerLazySingleton<TournamentRemoteDataSource>(
-    () => TournamentRemoteDataSourceImpl(dio: serviceLocator()),
+    () => TournamentRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
   );
   serviceLocator.registerLazySingleton<TournamentRepository>(
     () => TournamentRepositoryImpl(dataSource: serviceLocator()),
@@ -139,7 +150,7 @@ void _initData() {
 
   // Team DataSource
   serviceLocator.registerLazySingleton<TeamRemoteDataSource>(
-    () => TeamRemoteDataSourceImpl(dio: serviceLocator()),
+    () => TeamRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
   );
   serviceLocator.registerLazySingleton<TeamRepository>(
     () => TeamRepositoryImpl(dataSource: serviceLocator()),
@@ -147,7 +158,7 @@ void _initData() {
 
   // User DataSource
   serviceLocator.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSourceImpl(dio: serviceLocator()),
+    () => UserRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
   );
   serviceLocator.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(dataSource: serviceLocator()),
@@ -155,7 +166,8 @@ void _initData() {
 
   // Notification DataSource
   serviceLocator.registerLazySingleton<NotificationRemoteDataSource>(
-    () => NotificationRemoteDataSourceImpl(dio: serviceLocator()),
+    () =>
+        NotificationRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
   );
   serviceLocator.registerLazySingleton<NotificationRepository>(
     () => NotificationRepositoryImpl(dataSource: serviceLocator()),
@@ -201,7 +213,7 @@ void _initDomain() {
     () => FinishTournamentUsecase(serviceLocator()),
   );
   serviceLocator.registerFactory(
-    () => UpdateTournamentUsecase(serviceLocator()),
+    () => UpdateMatchScoreUsecase(serviceLocator()),
   );
   serviceLocator.registerFactory(
     () => DisqualifyParticipantUsecase(serviceLocator()),
@@ -214,7 +226,6 @@ void _initDomain() {
     () => FetchTeamDetailsUsecase(serviceLocator()),
   );
   serviceLocator.registerFactory(() => SearchTeamsUsecase(serviceLocator()));
-  serviceLocator.registerFactory(() => SearchUsersUsecase(serviceLocator()));
   serviceLocator.registerFactory(() => CreateTeamUsecase(serviceLocator()));
   serviceLocator.registerFactory(() => UpdateTeamUseCase(serviceLocator()));
   serviceLocator.registerFactory(() => DeleteTeamUsecase(serviceLocator()));

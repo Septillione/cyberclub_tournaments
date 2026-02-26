@@ -41,15 +41,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckRequested event,
     Emitter<AuthState> emit,
   ) async {
+    print('AUTH BLOC: Проверка авторизации началась...');
     emit(AuthLoading());
     try {
       final loggedIn = await _isLoggedIn();
+      print('AUTH BLOC: Результат проверки: $loggedIn');
       if (loggedIn) {
         await _emitAuthenticated(emit);
+        print('AUTH BLOC: Состояние -> Authenticated');
       } else {
         emit(AuthUnauthenticated());
+        print('AUTH BLOC: Состояние -> Unauthenticated');
       }
     } catch (e) {
+      print('AUTH BLOC ERROR: $e');
       emit(AuthUnauthenticated());
     }
   }

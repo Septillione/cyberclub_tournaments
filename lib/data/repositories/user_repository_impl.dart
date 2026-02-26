@@ -6,9 +6,9 @@ import 'package:cyberclub_tournaments/domain/entities/user_entity.dart';
 import 'package:cyberclub_tournaments/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final UserRemoteDataSourceImpl _dataSource;
+  final UserRemoteDataSource _dataSource;
 
-  UserRepositoryImpl({required UserRemoteDataSourceImpl dataSource})
+  UserRepositoryImpl({required UserRemoteDataSource dataSource})
     : _dataSource = dataSource;
 
   @override

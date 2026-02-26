@@ -40,25 +40,97 @@ class AppRouter {
     debugLogDiagnostics: true,
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
 
+    // redirect: (context, state) {
+    //   final authState = authBloc.state;
+    //   final location = state.matchedLocation;
+
+    //   final isAuthRoute =
+    //       location == RouteNames.login ||
+    //       location == RouteNames.register ||
+    //       location == RouteNames.splash;
+
+    //   if (authState is AuthLoading || authState is AuthInitial) {
+    //     return RouteNames.splash;
+    //   }
+
+    //   if (authState is AuthUnauthenticated) {
+    //     return isAuthRoute ? null : RouteNames.login;
+    //   }
+
+    //   if (authState is AuthAuthenticated) {
+    //     if (isAuthRoute) return RouteNames.tournaments;
+    //   }
+
+    //   return null;
+    // },
+
+    // redirect: (context, state) {
+    //   final authState = authBloc.state;
+    //   final location = state.matchedLocation;
+
+    //   final isAuthRoute =
+    //       location == RouteNames.login ||
+    //       location == RouteNames.register ||
+    //       location == RouteNames.splash;
+
+    //   // Если загрузка — ничего не делаем, остаемся на splash (который initialLocation)
+    //   if (authState is AuthInitial || authState is AuthLoading) {
+    //     // Если мы уже на splash — null (не редиректим)
+    //     if (location == RouteNames.splash) return null;
+    //     return RouteNames.splash;
+    //   }
+
+    //   // Если не авторизован
+    //   if (authState is AuthUnauthenticated) {
+    //     // Если мы уже на логине/регистрации — не редиректим
+    //     if (isAuthRoute) return null;
+    //     return RouteNames.login;
+    //   }
+
+    //   // Если авторизован
+    //   if (authState is AuthAuthenticated) {
+    //     // Если пытаемся зайти на auth экраны — редирект в приложение
+    //     if (isAuthRoute) {
+    //       return RouteNames.tournaments;
+    //     }
+    //   }
+
+    //   return null;
+    // },
     redirect: (context, state) {
       final authState = authBloc.state;
       final location = state.matchedLocation;
 
-      final isAuthRoute =
-          location == RouteNames.login ||
-          location == RouteNames.register ||
-          location == RouteNames.splash;
-
-      if (authState is AuthLoading || authState is AuthInitial) {
-        return RouteNames.splash;
+      // 1. Если загрузка - идем на сплэш (если еще не там)
+      if (authState is AuthInitial || authState is AuthLoading) {
+        if (location != RouteNames.splash) return RouteNames.splash;
+        return null;
       }
 
+      // 2. Если не авторизован
       if (authState is AuthUnauthenticated) {
-        return isAuthRoute ? null : RouteNames.login;
+        // Если мы на сплэше - КИДАЕМ НА ЛОГИН
+        if (location == RouteNames.splash) {
+          return RouteNames.login;
+        }
+
+        // Если мы на логине или регистрации - остаемся
+        if (location == RouteNames.login || location == RouteNames.register) {
+          return null;
+        }
+
+        // Если пытались зайти внутрь - кидаем на логин
+        return RouteNames.login;
       }
 
+      // 3. Если авторизован
       if (authState is AuthAuthenticated) {
-        if (isAuthRoute) return RouteNames.tournaments;
+        // Если мы на сплэше, логине или регистрации - пускаем внутрь
+        if (location == RouteNames.splash ||
+            location == RouteNames.login ||
+            location == RouteNames.register) {
+          return RouteNames.tournaments;
+        }
       }
 
       return null;

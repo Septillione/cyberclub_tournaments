@@ -1,17 +1,37 @@
 import 'package:cyberclub_tournaments/app.dart';
 import 'package:cyberclub_tournaments/core/bloc/auth_bloc.dart';
 import 'package:cyberclub_tournaments/core/bloc/auth_event.dart';
+import 'package:cyberclub_tournaments/core/bloc/bloc_observer.dart';
 import 'package:cyberclub_tournaments/core/di/injection_container.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await initializeDateFormatting('ru_RU', null);
+
+  // await initDependencies();
+
+  // print('MAIN: Запуск проверки авторизации');
+  // serviceLocator<AuthBloc>().add(AuthCheckRequested());
+
+  // runApp(const MainApp());
+
+  print("MAIN: App started");
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('ru_Ru', null);
+  await initializeDateFormatting('ru_RU', null);
+
+  // 1. Подключаем Observer
+  Bloc.observer = SimpleBlocObserver();
 
   await initDependencies();
 
-  serviceLocator<AuthBloc>().add(AuthCheckRequested());
+  print("MAIN: Dependencies initialized");
+
+  final authBloc = serviceLocator<AuthBloc>();
+  authBloc.add(AuthCheckRequested());
+  print("MAIN: AuthCheckRequested added");
 
   runApp(const MainApp());
 }
