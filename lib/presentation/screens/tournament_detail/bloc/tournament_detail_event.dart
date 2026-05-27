@@ -53,4 +53,6 @@ class MatchDisqualified extends TournamentDetailEvent {
   List<Object?> get props => [matchId, loserPosition];
 }
 
+class TournamentJoinTeamRequested extends TournamentDetailEvent {}
+
 class TournamentFinishRequested extends TournamentDetailEvent {}

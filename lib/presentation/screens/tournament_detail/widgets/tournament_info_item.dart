@@ -36,7 +36,7 @@ class TournamentInfoItem extends StatelessWidget {
               Text(title, style: AppTextStyles.bodyM),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Flexible(
             child: Text(
               bodyText,

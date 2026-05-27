@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/core/error/error_handler.dart';
+import 'package:cyberclub_tournaments/data/models/tournament/create_tournament_request.dart';
 import 'package:cyberclub_tournaments/data/models/tournament/tournament_model.dart';
 import 'package:dio/dio.dart';
 
@@ -7,11 +8,15 @@ abstract class TournamentRemoteDataSource {
   Future<TournamentModel?> fetchTournamentById(String id);
   Future<List<TournamentModel>> fetchUserTournaments();
   Future<List<TournamentModel>> fetchOrganizedTournaments();
-  Future<void> createTournament(Map<String, dynamic> data);
+  Future<void> createTournament(CreateTournamentRequest request);
   Future<void> updateTournament(String id, Map<String, dynamic> data);
   Future<void> deleteTournament(String id);
   Future<void> cancelTournament(String id);
-  Future<void> joinTournament(String tournamentId, {String? teamId});
+  Future<void> joinTournament(
+    String tournamentId, {
+    String? teamId,
+    List<String>? rosterIds,
+  });
   Future<void> startTournament(String tournamentId);
   Future<void> finishTournament(String tournamentId);
   Future<void> updateMatchScore(String matchId, int score1, int score2);
@@ -70,9 +75,9 @@ class TournamentRemoteDataSourceImpl implements TournamentRemoteDataSource {
   }
 
   @override
-  Future<void> createTournament(Map<String, dynamic> data) async {
+  Future<void> createTournament(CreateTournamentRequest request) async {
     try {
-      await _dio.post('/tournaments', data: data);
+      await _dio.post('/tournaments', data: request.toJson());
     } catch (e) {
       throw ErrorHandler.handle(e);
     }
@@ -106,12 +111,17 @@ class TournamentRemoteDataSourceImpl implements TournamentRemoteDataSource {
   }
 
   @override
-  Future<void> joinTournament(String tournamentId, {String? teamId}) async {
+  Future<void> joinTournament(
+    String tournamentId, {
+    String? teamId,
+    List<String>? rosterIds,
+  }) async {
     try {
-      await _dio.post(
-        '/tournaments/$tournamentId/join',
-        data: {if (teamId != null) 'teamId': teamId},
-      );
+      final data = <String, dynamic>{};
+      if (teamId != null) data['teamId'] = teamId;
+      if (rosterIds != null) data['rosterIds'] = rosterIds;
+
+      await _dio.post('/tournaments/$tournamentId/join', data: data);
     } catch (e) {
       throw ErrorHandler.handle(e);
     }

@@ -92,6 +92,12 @@ _TournamentEntryItemModel _$TournamentEntryItemModelFromJson(
   id: json['id'] as String,
   userId: json['userId'] as String,
   teamId: json['teamId'] as String?,
+  user: json['user'] == null
+      ? null
+      : TeamUserShortModel.fromJson(json['user'] as Map<String, dynamic>),
+  team: json['team'] == null
+      ? null
+      : TeamShortInfoModel.fromJson(json['team'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TournamentEntryItemModelToJson(
@@ -100,6 +106,8 @@ Map<String, dynamic> _$TournamentEntryItemModelToJson(
   'id': instance.id,
   'userId': instance.userId,
   'teamId': instance.teamId,
+  'user': instance.user,
+  'team': instance.team,
 };
 
 _MatchItemModel _$MatchItemModelFromJson(Map<String, dynamic> json) =>

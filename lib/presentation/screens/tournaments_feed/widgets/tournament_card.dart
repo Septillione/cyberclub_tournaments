@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/utils/image_provider_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +26,7 @@ class TournamentCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(24),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.push('/tournaments/${tournament.id}'),
+        onTap: () => context.push('/tournament/${tournament.id}'),
         borderRadius: BorderRadius.circular(24),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
@@ -58,8 +59,11 @@ class _HeaderImage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(tournament.imageUrl),
+            image: ImageProviderHelper.getImage(tournament.imageUrl),
             fit: BoxFit.cover,
+            onError: (exception, stackTrace) {
+              print('Error loading image: $exception');
+            },
           ),
         ),
         child: Container(

@@ -20,7 +20,7 @@ class UpcomingTournamentCard extends StatelessWidget {
     final date = DateFormat('d MMMM, HH:mm', 'ru').format(tournament.startDate);
 
     return InkWell(
-      onTap: () => context.push('/tournaments/${tournament.id}'),
+      onTap: () => context.push('/tournament/${tournament.id}'),
       borderRadius: BorderRadius.circular(24),
       child: Container(
         padding: const EdgeInsets.all(16),

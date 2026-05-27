@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/domain/entities/team_entity.dart';
 import 'package:equatable/equatable.dart';
 
 enum Discipline {
@@ -247,13 +248,17 @@ class TournamentEntryItem extends Equatable {
   final String id;
   final String userId;
   final String? teamId;
+  final TeamUserShort? user;
+  final TeamShortInfo? team;
 
   const TournamentEntryItem({
     required this.id,
     required this.userId,
     this.teamId,
+    this.user,
+    this.team,
   });
 
   @override
-  List<Object?> get props => [id, userId, teamId];
+  List<Object?> get props => [id, userId, teamId, user, team];
 }

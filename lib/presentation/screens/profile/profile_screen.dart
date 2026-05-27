@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/core/bloc/auth_event.dart';
+import 'package:cyberclub_tournaments/presentation/widgetsnew/tournament_skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
             builder: (context, state) {
               return switch (state) {
                 ProfileLoading() => const Center(
-                  child: CircularProgressIndicator(),
+                  child: TournamentSkeletonCard(),
                 ),
                 ProfileError(:final errorMessage) => Center(
                   child: Text('Ошибка: $errorMessage'),

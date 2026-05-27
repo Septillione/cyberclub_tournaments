@@ -1,5 +1,6 @@
 import 'package:cyberclub_tournaments/core/bloc/auth_event.dart';
 import 'package:cyberclub_tournaments/core/bloc/auth_state.dart';
+import 'package:cyberclub_tournaments/core/di/injection_container.dart';
 import 'package:cyberclub_tournaments/domain/entities/user_entity.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/get_user_id_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/get_user_role_usecase.dart';
@@ -7,6 +8,7 @@ import 'package:cyberclub_tournaments/domain/usecases/auth/is_logged_in_usecase.
 import 'package:cyberclub_tournaments/domain/usecases/auth/login_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/logout_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/auth/register_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -31,6 +33,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
        _getRole = getRole,
        _getUserId = getUserId,
        super(AuthInitial()) {
+    // if (useMockData) {
+    //   // Если используем моки, не проверяем токен, а сразу логинимся
+    //   // с фейковыми данными. GoRouter увидит это и не кинет на /login.
+    //   emit(AuthAuthenticated(userId: 'user_1', role: UserRole.user));
+    // } else {
+    //   // Иначе, если это не мок-режим, отправляем событие на проверку
+    //   add(AuthCheckRequested());
+    // }
     on<AuthCheckRequested>(_onCheckRequested);
     on<AuthLoginRequested>(_onLoginRequested);
     on<AuthRegisterRequested>(_onRegisterRequested);
@@ -41,23 +51,53 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckRequested event,
     Emitter<AuthState> emit,
   ) async {
-    print('AUTH BLOC: Проверка авторизации началась...');
+    // Если включен мок-режим, сразу выдаем 'Authenticated' и выходим
+    if (useMockData) {
+      debugPrint('MOCK AUTH: Пропускаем проверку, сразу логинимся.');
+      emit(AuthAuthenticated(userId: 'user_1', role: UserRole.user));
+      return; // <-- Важно! Выходим из метода.
+    }
+
+    // Этот код выполнится только если useMockData = false
+    debugPrint('AUTH BLOC: Проверка авторизации началась...');
     emit(AuthLoading());
     try {
       final loggedIn = await _isLoggedIn();
-      print('AUTH BLOC: Результат проверки: $loggedIn');
+      debugPrint('AUTH BLOC: Результат проверки: $loggedIn');
       if (loggedIn) {
         await _emitAuthenticated(emit);
-        print('AUTH BLOC: Состояние -> Authenticated');
+        debugPrint('AUTH BLOC: Состояние -> Authenticated');
       } else {
         emit(AuthUnauthenticated());
-        print('AUTH BLOC: Состояние -> Unauthenticated');
+        debugPrint('AUTH BLOC: Состояние -> Unauthenticated');
       }
     } catch (e) {
-      print('AUTH BLOC ERROR: $e');
+      debugPrint('AUTH BLOC ERROR: $e');
       emit(AuthUnauthenticated());
     }
   }
+
+  // Future<void> _onCheckRequested(
+  //   AuthCheckRequested event,
+  //   Emitter<AuthState> emit,
+  // ) async {
+  //   print('AUTH BLOC: Проверка авторизации началась...');
+  //   emit(AuthLoading());
+  //   try {
+  //     final loggedIn = await _isLoggedIn();
+  //     print('AUTH BLOC: Результат проверки: $loggedIn');
+  //     if (loggedIn) {
+  //       await _emitAuthenticated(emit);
+  //       print('AUTH BLOC: Состояние -> Authenticated');
+  //     } else {
+  //       emit(AuthUnauthenticated());
+  //       print('AUTH BLOC: Состояние -> Unauthenticated');
+  //     }
+  //   } catch (e) {
+  //     print('AUTH BLOC ERROR: $e');
+  //     emit(AuthUnauthenticated());
+  //   }
+  // }
 
   Future<void> _onLoginRequested(
     AuthLoginRequested event,

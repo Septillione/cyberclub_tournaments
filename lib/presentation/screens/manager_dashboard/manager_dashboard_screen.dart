@@ -39,14 +39,14 @@ class _ManagerDashboardView extends StatelessWidget {
       child: Scaffold(
         floatingActionButton: _CreateButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: SafeArea(
+        body: const SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               children: [
-                const _Header(),
-                const SizedBox(height: 16),
-                const Expanded(child: _TournamentsList()),
+                _Header(),
+                SizedBox(height: 16),
+                Expanded(child: _TournamentsList()),
               ],
             ),
           ),

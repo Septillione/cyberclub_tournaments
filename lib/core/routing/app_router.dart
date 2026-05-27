@@ -216,6 +216,50 @@ class AppRouter {
           );
         },
       ),
+      GoRoute(
+        path: '/tournament/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return _slideTransition(
+            state: state,
+            child: TournamentDetailScreen(tournamentId: id),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/teams/:teamId',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final teamId = state.pathParameters['teamId']!;
+          return _slideTransition(
+            state: state,
+            child: TeamDetailScreen(teamId: teamId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/profile/edit',
+        pageBuilder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+          final userProfile = extras['user'] as UserEntity;
+          return _slideTransition(
+            state: state,
+            child: EditProfileScreen(userProfile: userProfile),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/profile/:userId',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          return _slideTransition(
+            state: state,
+            child: PublicProfileScreen(userId: userId),
+          );
+        },
+      ),
 
       // Shell route
       ShellRoute(
@@ -225,15 +269,15 @@ class AppRouter {
             path: RouteNames.tournaments,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: TournamentsFeedScreen()),
-            routes: [
-              GoRoute(
-                path: ':id',
-                builder: (context, state) {
-                  final id = state.pathParameters['id']!;
-                  return TournamentDetailScreen(tournamentId: id);
-                },
-              ),
-            ],
+            // routes: [
+            //   GoRoute(
+            //     path: ':id',
+            //     builder: (context, state) {
+            //       final id = state.pathParameters['id']!;
+            //       return TournamentDetailScreen(tournamentId: id);
+            //     },
+            //   ),
+            // ],
           ),
           GoRoute(
             path: RouteNames.myTournaments,
@@ -244,42 +288,42 @@ class AppRouter {
             path: RouteNames.myTeams,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: UserTeamsScreen()),
-            routes: [
-              GoRoute(
-                path: ':teamId',
-                builder: (context, state) {
-                  final teamId = state.pathParameters['teamId']!;
-                  return TeamDetailScreen(teamId: teamId);
-                },
-              ),
-            ],
+            // routes: [
+            //   GoRoute(
+            //     path: ':teamId',
+            //     builder: (context, state) {
+            //       final teamId = state.pathParameters['teamId']!;
+            //       return TeamDetailScreen(teamId: teamId);
+            //     },
+            //   ),
+            // ],
           ),
           GoRoute(
             path: RouteNames.profile,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: ProfileScreen()),
-            routes: [
-              GoRoute(
-                path: 'edit',
-                pageBuilder: (context, state) {
-                  final extras = state.extra as Map<String, dynamic>;
-                  final userProfile = extras['user'] as UserEntity;
-                  return _slideTransition(
-                    state: state,
-                    child: EditProfileScreen(userProfile: userProfile),
-                  );
-                },
-              ),
-              GoRoute(
-                path: ':userId',
-                pageBuilder: (context, state) {
-                  final userId = state.pathParameters['userId']!;
-                  return _slideTransition(
-                    state: state,
-                    child: PublicProfileScreen(userId: userId),
-                  );
-                },
-              ),
+            routes: const [
+              // GoRoute(
+              //   path: 'edit',
+              //   pageBuilder: (context, state) {
+              //     final extras = state.extra as Map<String, dynamic>;
+              //     final userProfile = extras['user'] as UserEntity;
+              //     return _slideTransition(
+              //       state: state,
+              //       child: EditProfileScreen(userProfile: userProfile),
+              //     );
+              //   },
+              // ),
+              // GoRoute(
+              //   path: ':userId',
+              //   pageBuilder: (context, state) {
+              //     final userId = state.pathParameters['userId']!;
+              //     return _slideTransition(
+              //       state: state,
+              //       child: PublicProfileScreen(userId: userId),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ],
@@ -292,7 +336,7 @@ class AppRouter {
     required Widget child,
   }) {
     return CustomTransitionPage(
-      key: state.pageKey,
+      // key: state.pageKey,
       child: child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(1.0, 0.0);

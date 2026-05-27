@@ -1,8 +1,8 @@
+import 'package:cyberclub_tournaments/core/utils/image_provider_helper.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
 import 'package:cyberclub_tournaments/domain/entities/team_entity.dart';
@@ -20,8 +20,15 @@ class TeamSearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("USER ID: $currentUserId");
+    print("TEAM OWNER ID: ${team.ownerId}");
+    print("TEAM MEMBERS: ${team.members.map((m) => m.userId).toList()}");
+
     final isMember = team.isMember(currentUserId);
     final isOwner = team.isOwner(currentUserId);
+
+    print("IS MEMBER: $isMember");
+    print("IS OWNER: $isOwner");
 
     final games = team.gamesList ?? [];
 
@@ -32,7 +39,7 @@ class TeamSearchCard extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
-        onTap: () => context.push('/my-teams/${team.id}'),
+        onTap: () => context.push('/teams/${team.id}'),
         borderRadius: BorderRadius.circular(24),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -44,16 +51,9 @@ class TeamSearchCard extends StatelessWidget {
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: AppColors.bgMain,
-                    backgroundImage: team.avatarUrl != null
-                        ? NetworkImage(team.avatarUrl!)
-                        : null,
-                    child: team.avatarUrl == null
-                        ? const Icon(
-                            LucideIcons.shield,
-                            color: AppColors.textSecondary,
-                            size: 20,
-                          )
-                        : null,
+                    backgroundImage: ImageProviderHelper.getImage(
+                      team.avatarUrl,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Text(

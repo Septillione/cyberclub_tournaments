@@ -55,7 +55,7 @@ class _Avatar extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(3),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: AppColors.bgMain,
         ),

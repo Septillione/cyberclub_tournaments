@@ -77,10 +77,14 @@ class TournamentsFeedBloc
       );
     } on AppException catch (e) {
       emit(TournamentsFeedError(errorMessage: e.message));
-    } catch (_) {
+    } catch (e, stackTrace) {
+      // ✅ Добавляем stackTrace
+      print('!!! TournamentsFeedBloc CRASH (Unknown) !!!');
+      print('ERROR: $e');
+      print('STACKTRACE: $stackTrace');
       emit(
         const TournamentsFeedError(
-          errorMessage: 'Не удалось загрузить турниры',
+          errorMessage: 'Произошла неизвестная ошибка',
         ),
       );
     }

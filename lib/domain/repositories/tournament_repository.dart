@@ -16,7 +16,11 @@ abstract class TournamentRepository {
   Future<void> cancelTournament(String tournamentId);
 
   // Участие
-  Future<void> joinTournament(String tournamentId, {String? teamId});
+  Future<void> joinTournament(
+    String tournamentId, {
+    String? teamId,
+    List<String>? rosterIds,
+  });
 
   // Управление турниром
   Future<void> startTournament(String tournamentId);

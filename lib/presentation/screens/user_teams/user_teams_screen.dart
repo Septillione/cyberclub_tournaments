@@ -156,25 +156,45 @@ class _Header extends StatelessWidget {
               Text('Мои команды', style: AppTextStyles.h2),
               Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
+                  GestureDetector(
+                    onTap: onSearchToggle,
+                    child: Icon(
                       isSearchActive ? LucideIcons.x : LucideIcons.search,
                       color: AppColors.textSecondary,
                     ),
-                    onPressed: onSearchToggle,
                   ),
-                  IconButton(
-                    icon: const Icon(
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    child: const Icon(
                       LucideIcons.circleFadingPlus,
                       color: AppColors.textSecondary,
                     ),
-                    onPressed: () async {
+                    onTap: () async {
                       await context.push('/create-team');
                       if (context.mounted) {
                         context.read<UserTeamsBloc>().add(UserTeamsStarted());
                       }
                     },
                   ),
+                  // IconButton(
+                  //   icon: Icon(
+                  //     isSearchActive ? LucideIcons.x : LucideIcons.search,
+                  //     color: AppColors.textSecondary,
+                  //   ),
+                  //   onPressed: onSearchToggle,
+                  // ),
+                  // IconButton(
+                  //   icon: const Icon(
+                  //     LucideIcons.circleFadingPlus,
+                  //     color: AppColors.textSecondary,
+                  //   ),
+                  //   onPressed: () async {
+                  //     await context.push('/create-team');
+                  //     if (context.mounted) {
+                  //       context.read<UserTeamsBloc>().add(UserTeamsStarted());
+                  //     }
+                  //   },
+                  // ),
                 ],
               ),
             ],
@@ -250,6 +270,7 @@ class _Content extends StatelessWidget {
       backgroundColor: AppColors.accentPrimary,
       height: 60,
       showChildOpacityTransition: false,
+      animSpeedFactor: 8.0,
       onRefresh: onRefresh,
       child: ListView.builder(
         itemCount: state.teams.length,

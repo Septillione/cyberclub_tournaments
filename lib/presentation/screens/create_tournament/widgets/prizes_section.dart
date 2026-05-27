@@ -83,7 +83,7 @@ class _PrizeRow extends StatelessWidget {
           ),
           IconButton(
             onPressed: onRemove,
-            icon: Icon(LucideIcons.trash, color: AppColors.redColor),
+            icon: const Icon(LucideIcons.trash, color: AppColors.redColor),
           ),
         ],
       ),

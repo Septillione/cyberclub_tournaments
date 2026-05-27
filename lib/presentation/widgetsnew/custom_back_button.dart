@@ -8,18 +8,19 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.pop(),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppColors.bgSurface.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: const Icon(
-          LucideIcons.arrowLeft,
-          size: 24,
-          color: AppColors.textPrimary,
+    return Material(
+      color: AppColors.bgSurface.withOpacity(0.8),
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => context.pop(),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: const Icon(
+            LucideIcons.arrowLeft,
+            size: 24,
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
     );

@@ -116,6 +116,7 @@ class _CreateTeamViewState extends State<_CreateTeamView> {
           gamesList: gamesList,
         ),
       );
+      context.pop();
     }
   }
 

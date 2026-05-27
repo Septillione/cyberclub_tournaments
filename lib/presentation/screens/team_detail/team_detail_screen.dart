@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/utils/image_provider_helper.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/card_statistics.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/gradient_button.dart';
@@ -201,8 +202,10 @@ class _SettingsMenu extends StatelessWidget {
         context.push('/edit-team', extra: team);
       case 'delete':
         bloc.add(TeamDetailDeleteClicked(teamId: team.id));
+        context.pop();
       case 'leave':
         bloc.add(TeamDetailLeaveClicked(teamId: team.id));
+        context.pop();
     }
   }
 }
@@ -247,27 +250,51 @@ class _TeamAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: [AppColors.gradientDark, AppColors.gradientLight],
+    return Stack(
+      children: [
+        Container(
+          height: 146,
+          padding: const EdgeInsets.all(3),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [AppColors.gradientDark, AppColors.gradientLight],
+            ),
+          ),
+          child: Container(
+            height: 120,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.bgMain,
+            ),
+          ),
         ),
-      ),
-      child: CircleAvatar(
-        radius: 64,
-        backgroundColor: AppColors.bgMain,
-        backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
-        child: avatarUrl == null
-            ? const Icon(
-                LucideIcons.users,
-                size: 40,
-                color: AppColors.textSecondary,
-              )
-            : null,
-      ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 9),
+            child: CircleAvatar(
+              radius: 64,
+              backgroundColor: AppColors.bgMain,
+              backgroundImage: ImageProviderHelper.getImage(avatarUrl),
+            ),
+          ),
+        ),
+      ],
     );
+    // return Container(
+    //   padding: const EdgeInsets.all(3),
+    //   decoration: const BoxDecoration(
+    //     shape: BoxShape.circle,
+    //     gradient: LinearGradient(
+    //       colors: [AppColors.gradientDark, AppColors.gradientLight],
+    //     ),
+    //   ),
+    //   child: CircleAvatar(
+    //     radius: 64,
+    //     backgroundColor: AppColors.bgMain,
+    //     backgroundImage: ImageProviderHelper.getImage(avatarUrl),
+    //   ),
+    // );
   }
 }
 

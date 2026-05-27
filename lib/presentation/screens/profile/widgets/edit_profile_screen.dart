@@ -17,8 +17,6 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Получаем существующий блок профиля
-    // или создаём новый если передан через extra
     return _EditProfileView(userProfile: userProfile);
   }
 }

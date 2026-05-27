@@ -6,6 +6,10 @@ import 'package:cyberclub_tournaments/data/datasources/notification_remote_datas
 import 'package:cyberclub_tournaments/data/datasources/team_remote_datasource.dart';
 import 'package:cyberclub_tournaments/data/datasources/tournament_remote_datasource.dart';
 import 'package:cyberclub_tournaments/data/datasources/user_remote_datasource.dart';
+import 'package:cyberclub_tournaments/data/mock/auth_mock_datasource_impl.dart';
+import 'package:cyberclub_tournaments/data/mock/team_mock_datasource_impl.dart';
+import 'package:cyberclub_tournaments/data/mock/tournament_mock_datasource_impl.dart';
+import 'package:cyberclub_tournaments/data/mock/user_mock_datasource_impl.dart';
 import 'package:cyberclub_tournaments/data/repositories/auth_repository_impl.dart';
 import 'package:cyberclub_tournaments/data/repositories/notification_repository_impl.dart';
 import 'package:cyberclub_tournaments/data/repositories/team_repository_impl.dart';
@@ -60,6 +64,7 @@ import 'package:cyberclub_tournaments/domain/usecases/user/ban_user_usecase.dart
 import 'package:cyberclub_tournaments/domain/usecases/user/change_password_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/change_user_role_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/fetch_user_profile_usecase.dart';
+import 'package:cyberclub_tournaments/domain/usecases/user/search_users_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/unban_user_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/update_user_profile_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/user/upload_user_avatar_usecase.dart';
@@ -81,6 +86,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+const bool useMockData = false;
+
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
@@ -89,15 +96,15 @@ Future<void> initDependencies() async {
   // _initDomain();
   // _initPresentation();
 
-  print("DI: Start init"); // <---
+  debugPrint("DI: Start init"); // <---
   _initCore();
-  print("DI: Core init done"); // <---
+  debugPrint("DI: Core init done"); // <---
   _initData();
-  print("DI: Data init done"); // <---
+  debugPrint("DI: Data init done"); // <---
   _initDomain();
-  print("DI: Domain init done"); // <---
+  debugPrint("DI: Domain init done"); // <---
   _initPresentation();
-  print("DI: Presentation init done"); // <---
+  debugPrint("DI: Presentation init done"); // <---
 }
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -130,9 +137,13 @@ void _initCore() {
 
 void _initData() {
   // Auth DataSource
-  serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
-  );
+  serviceLocator.registerLazySingleton<AuthRemoteDataSource>(() {
+    if (useMockData) {
+      debugPrint("DI: Using MOCK AuthDataSource");
+      return AuthMockDataSourceImpl();
+    }
+    return AuthRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio);
+  });
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       remoteDataSource: serviceLocator(),
@@ -141,30 +152,42 @@ void _initData() {
   );
 
   // Tournament DataSource
-  serviceLocator.registerLazySingleton<TournamentRemoteDataSource>(
-    () => TournamentRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
-  );
+  serviceLocator.registerLazySingleton<TournamentRemoteDataSource>(() {
+    if (useMockData) {
+      debugPrint("DI: Using MOCK TournamentDataSource");
+      return TournamentMockDataSourceImpl();
+    }
+    return TournamentRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio);
+  });
   serviceLocator.registerLazySingleton<TournamentRepository>(
     () => TournamentRepositoryImpl(dataSource: serviceLocator()),
   );
 
   // Team DataSource
-  serviceLocator.registerLazySingleton<TeamRemoteDataSource>(
-    () => TeamRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
-  );
+  serviceLocator.registerLazySingleton<TeamRemoteDataSource>(() {
+    if (useMockData) {
+      debugPrint("DI: Using MOCK TeamDataSource");
+      return TeamMockDataSourceImpl();
+    }
+    return TeamRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio);
+  });
   serviceLocator.registerLazySingleton<TeamRepository>(
     () => TeamRepositoryImpl(dataSource: serviceLocator()),
   );
 
   // User DataSource
-  serviceLocator.registerLazySingleton<UserRemoteDataSource>(
-    () => UserRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
-  );
+  serviceLocator.registerLazySingleton<UserRemoteDataSource>(() {
+    if (useMockData) {
+      debugPrint("DI: Using MOCK UserDataSource");
+      return UserMockDataSourceImpl();
+    }
+    return UserRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio);
+  });
   serviceLocator.registerLazySingleton<UserRepository>(
     () => UserRepositoryImpl(dataSource: serviceLocator()),
   );
 
-  // Notification DataSource
+  // Notification DataSource (оставим пока реальный, но он будет падать с ошибкой, если его вызвать)
   serviceLocator.registerLazySingleton<NotificationRemoteDataSource>(
     () =>
         NotificationRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
@@ -173,6 +196,52 @@ void _initData() {
     () => NotificationRepositoryImpl(dataSource: serviceLocator()),
   );
 }
+
+// void _initData() {
+//   // Auth DataSource
+//   serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
+//     () => AuthRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
+//   );
+//   serviceLocator.registerLazySingleton<AuthRepository>(
+//     () => AuthRepositoryImpl(
+//       remoteDataSource: serviceLocator(),
+//       localDataSource: serviceLocator(),
+//     ),
+//   );
+
+//   // Tournament DataSource
+//   serviceLocator.registerLazySingleton<TournamentRemoteDataSource>(
+//     () => TournamentRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
+//   );
+//   serviceLocator.registerLazySingleton<TournamentRepository>(
+//     () => TournamentRepositoryImpl(dataSource: serviceLocator()),
+//   );
+
+//   // Team DataSource
+//   serviceLocator.registerLazySingleton<TeamRemoteDataSource>(
+//     () => TeamRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
+//   );
+//   serviceLocator.registerLazySingleton<TeamRepository>(
+//     () => TeamRepositoryImpl(dataSource: serviceLocator()),
+//   );
+
+//   // User DataSource
+//   serviceLocator.registerLazySingleton<UserRemoteDataSource>(
+//     () => UserRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
+//   );
+//   serviceLocator.registerLazySingleton<UserRepository>(
+//     () => UserRepositoryImpl(dataSource: serviceLocator()),
+//   );
+
+//   // Notification DataSource
+//   serviceLocator.registerLazySingleton<NotificationRemoteDataSource>(
+//     () =>
+//         NotificationRemoteDataSourceImpl(dio: serviceLocator<ApiClient>().dio),
+//   );
+//   serviceLocator.registerLazySingleton<NotificationRepository>(
+//     () => NotificationRepositoryImpl(dataSource: serviceLocator()),
+//   );
+// }
 
 void _initDomain() {
   // Auth UseCases
@@ -226,6 +295,9 @@ void _initDomain() {
     () => FetchTeamDetailsUsecase(serviceLocator()),
   );
   serviceLocator.registerFactory(() => SearchTeamsUsecase(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => SearchPlayersForTeamUseCase(serviceLocator()),
+  );
   serviceLocator.registerFactory(() => CreateTeamUsecase(serviceLocator()));
   serviceLocator.registerFactory(() => UpdateTeamUseCase(serviceLocator()));
   serviceLocator.registerFactory(() => DeleteTeamUsecase(serviceLocator()));
@@ -262,7 +334,7 @@ void _initDomain() {
   serviceLocator.registerFactory(
     () => UploadUserAvatarUseCase(serviceLocator()),
   );
-  serviceLocator.registerFactory(() => SearchUsersUsecase(serviceLocator()));
+  serviceLocator.registerFactory(() => SearchUsersUseCase(serviceLocator()));
   serviceLocator.registerFactory(() => BanUserUseCase(serviceLocator()));
   serviceLocator.registerFactory(() => UnbanUserUseCase(serviceLocator()));
   serviceLocator.registerFactory(() => ChangeUserRoleUseCase(serviceLocator()));
@@ -301,7 +373,7 @@ void _initPresentation() {
   );
   serviceLocator.registerFactory(
     () => InvitePlayerBloc(
-      searchUsers: serviceLocator(),
+      searchUsers: serviceLocator<SearchPlayersForTeamUseCase>(),
       inviteUser: serviceLocator(),
     ),
   );
@@ -367,6 +439,7 @@ void _initPresentation() {
       updateMatchScore: serviceLocator(),
       disqualifyParticipant: serviceLocator(),
       getUserId: serviceLocator(),
+      getUserTeams: serviceLocator(),
     ),
   );
   serviceLocator.registerFactory(

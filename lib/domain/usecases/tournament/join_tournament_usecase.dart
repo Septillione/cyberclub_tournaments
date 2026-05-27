@@ -5,7 +5,15 @@ class JoinTournamentUsecase {
 
   JoinTournamentUsecase(this._repository);
 
-  Future<void> call(String tournamentId, {String? teamId}) {
-    return _repository.joinTournament(tournamentId, teamId: teamId);
+  Future<void> call(
+    String tournamentId, {
+    String? teamId,
+    List<String>? rosterIds,
+  }) {
+    return _repository.joinTournament(
+      tournamentId,
+      teamId: teamId,
+      rosterIds: rosterIds,
+    );
   }
 }

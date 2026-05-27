@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/core/utils/image_provider_helper.dart';
 import 'package:cyberclub_tournaments/presentation/screens/user_teams/widgets/overlapping_avatars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +27,8 @@ class TeamCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
         onTap: () async {
-          await context.push('/my-teams/${team.id}');
+          // await context.push('/my-teams/${team.id}');
+          await context.push('/teams/${team.id}');
           if (context.mounted) {
             context.read<UserTeamsBloc>().add(UserTeamsStarted());
           }
@@ -42,15 +44,9 @@ class TeamCard extends StatelessWidget {
                   CircleAvatar(
                     radius: 36,
                     backgroundColor: AppColors.bgMain,
-                    backgroundImage: team.avatarUrl != null
-                        ? NetworkImage(team.avatarUrl!)
-                        : null,
-                    child: team.avatarUrl == null
-                        ? const Icon(
-                            LucideIcons.shield,
-                            color: AppColors.textSecondary,
-                          )
-                        : null,
+                    backgroundImage: ImageProviderHelper.getImage(
+                      team.avatarUrl,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Column(

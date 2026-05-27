@@ -48,6 +48,17 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
     Emitter<UserTeamsState> emit,
   ) async {
     emit(UserTeamsLoading());
+    await _loadUserTeams(emit);
+  }
+
+  Future<void> _onRefreshed(
+    UserTeamsRefreshed event,
+    Emitter<UserTeamsState> emit,
+  ) async {
+    await _loadUserTeams(emit);
+  }
+
+  Future<void> _loadUserTeams(Emitter<UserTeamsState> emit) async {
     try {
       final teams = await _getUserTeams();
       final userId = await _getUserId();
@@ -57,13 +68,6 @@ class UserTeamsBloc extends Bloc<UserTeamsEvent, UserTeamsState> {
     } catch (_) {
       emit(const UserTeamsError('Ошибка загрузки команд'));
     }
-  }
-
-  Future<void> _onRefreshed(
-    UserTeamsRefreshed event,
-    Emitter<UserTeamsState> emit,
-  ) async {
-    await _onStarted(UserTeamsStarted(), emit);
   }
 
   Future<void> _onSearchStarted(

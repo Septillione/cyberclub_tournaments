@@ -17,7 +17,7 @@ class FinishedTournamentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.push('/tournaments/${tournament.id}'),
+      onTap: () => context.push('/tournament/${tournament.id}'),
       borderRadius: BorderRadius.circular(24),
       child: Container(
         padding: const EdgeInsets.all(16),

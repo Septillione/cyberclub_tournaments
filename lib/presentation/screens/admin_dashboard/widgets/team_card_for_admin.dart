@@ -15,7 +15,7 @@ class TeamCardForAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.push('/my-teams/${team.id}'),
+      onTap: () => context.push('/teams/${team.id}'),
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.all(12),

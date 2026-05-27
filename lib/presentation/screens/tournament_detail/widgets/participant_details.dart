@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
@@ -26,18 +27,33 @@ class ParticipantsDetails extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: entries.length,
+            padding: EdgeInsets.zero,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final entry = entries[index];
+
+              String name;
+              String? avatarUrl;
+              VoidCallback onTap;
+
+              if (isTeam && entry.team != null) {
+                name = entry.team!.name;
+                avatarUrl = entry.team!.avatarUrl;
+                onTap = () => context.push('/teams/${entry.team!.id}');
+              } else if (entry.user != null) {
+                name = entry.user!.nickname;
+                avatarUrl = entry.user!.avatarUrl;
+                onTap = () => context.push('/profile/${entry.user!.id}');
+              } else {
+                name = 'Неизвестный участник';
+                avatarUrl = null;
+                onTap = () {};
+              }
+
               return _ParticipantCard(
-                name: isTeam
-                    ? 'Команда ${entry.teamId}'
-                    : 'Игрок ${entry.userId}',
-                // Здесь нужно подтянуть реальные имена
-                // В API `entries` должны возвращать `team` или `user` object
-                // Пока оставил заглушку
-                avatarUrl: null,
-                onTap: () {},
+                name: name,
+                avatarUrl: avatarUrl,
+                onTap: onTap,
               );
             },
           ),

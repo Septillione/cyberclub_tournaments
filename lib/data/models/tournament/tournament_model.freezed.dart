@@ -894,7 +894,7 @@ as String,
 /// @nodoc
 mixin _$TournamentEntryItemModel {
 
- String get id; String get userId; String? get teamId;
+ String get id; String get userId; String? get teamId; TeamUserShortModel? get user; TeamShortInfoModel? get team;
 /// Create a copy of TournamentEntryItemModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -907,16 +907,16 @@ $TournamentEntryItemModelCopyWith<TournamentEntryItemModel> get copyWith => _$To
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentEntryItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.teamId, teamId) || other.teamId == teamId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TournamentEntryItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.teamId, teamId) || other.teamId == teamId)&&(identical(other.user, user) || other.user == user)&&(identical(other.team, team) || other.team == team));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,teamId);
+int get hashCode => Object.hash(runtimeType,id,userId,teamId,user,team);
 
 @override
 String toString() {
-  return 'TournamentEntryItemModel(id: $id, userId: $userId, teamId: $teamId)';
+  return 'TournamentEntryItemModel(id: $id, userId: $userId, teamId: $teamId, user: $user, team: $team)';
 }
 
 
@@ -927,11 +927,11 @@ abstract mixin class $TournamentEntryItemModelCopyWith<$Res>  {
   factory $TournamentEntryItemModelCopyWith(TournamentEntryItemModel value, $Res Function(TournamentEntryItemModel) _then) = _$TournamentEntryItemModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String userId, String? teamId
+ String id, String userId, String? teamId, TeamUserShortModel? user, TeamShortInfoModel? team
 });
 
 
-
+$TeamUserShortModelCopyWith<$Res>? get user;$TeamShortInfoModelCopyWith<$Res>? get team;
 
 }
 /// @nodoc
@@ -944,15 +944,41 @@ class _$TournamentEntryItemModelCopyWithImpl<$Res>
 
 /// Create a copy of TournamentEntryItemModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? teamId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? teamId = freezed,Object? user = freezed,Object? team = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,teamId: freezed == teamId ? _self.teamId : teamId // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as TeamUserShortModel?,team: freezed == team ? _self.team : team // ignore: cast_nullable_to_non_nullable
+as TeamShortInfoModel?,
   ));
 }
+/// Create a copy of TournamentEntryItemModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamUserShortModelCopyWith<$Res>? get user {
+    if (_self.user == null) {
+    return null;
+  }
 
+  return $TeamUserShortModelCopyWith<$Res>(_self.user!, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of TournamentEntryItemModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamShortInfoModelCopyWith<$Res>? get team {
+    if (_self.team == null) {
+    return null;
+  }
+
+  return $TeamShortInfoModelCopyWith<$Res>(_self.team!, (value) {
+    return _then(_self.copyWith(team: value));
+  });
+}
 }
 
 
@@ -1034,10 +1060,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String? teamId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String? teamId,  TeamUserShortModel? user,  TeamShortInfoModel? team)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TournamentEntryItemModel() when $default != null:
-return $default(_that.id,_that.userId,_that.teamId);case _:
+return $default(_that.id,_that.userId,_that.teamId,_that.user,_that.team);case _:
   return orElse();
 
 }
@@ -1055,10 +1081,10 @@ return $default(_that.id,_that.userId,_that.teamId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String? teamId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String? teamId,  TeamUserShortModel? user,  TeamShortInfoModel? team)  $default,) {final _that = this;
 switch (_that) {
 case _TournamentEntryItemModel():
-return $default(_that.id,_that.userId,_that.teamId);case _:
+return $default(_that.id,_that.userId,_that.teamId,_that.user,_that.team);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1075,10 +1101,10 @@ return $default(_that.id,_that.userId,_that.teamId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String? teamId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String? teamId,  TeamUserShortModel? user,  TeamShortInfoModel? team)?  $default,) {final _that = this;
 switch (_that) {
 case _TournamentEntryItemModel() when $default != null:
-return $default(_that.id,_that.userId,_that.teamId);case _:
+return $default(_that.id,_that.userId,_that.teamId,_that.user,_that.team);case _:
   return null;
 
 }
@@ -1090,12 +1116,14 @@ return $default(_that.id,_that.userId,_that.teamId);case _:
 @JsonSerializable()
 
 class _TournamentEntryItemModel implements TournamentEntryItemModel {
-  const _TournamentEntryItemModel({required this.id, required this.userId, this.teamId});
+  const _TournamentEntryItemModel({required this.id, required this.userId, this.teamId, this.user, this.team});
   factory _TournamentEntryItemModel.fromJson(Map<String, dynamic> json) => _$TournamentEntryItemModelFromJson(json);
 
 @override final  String id;
 @override final  String userId;
 @override final  String? teamId;
+@override final  TeamUserShortModel? user;
+@override final  TeamShortInfoModel? team;
 
 /// Create a copy of TournamentEntryItemModel
 /// with the given fields replaced by the non-null parameter values.
@@ -1110,16 +1138,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentEntryItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.teamId, teamId) || other.teamId == teamId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TournamentEntryItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.teamId, teamId) || other.teamId == teamId)&&(identical(other.user, user) || other.user == user)&&(identical(other.team, team) || other.team == team));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,teamId);
+int get hashCode => Object.hash(runtimeType,id,userId,teamId,user,team);
 
 @override
 String toString() {
-  return 'TournamentEntryItemModel(id: $id, userId: $userId, teamId: $teamId)';
+  return 'TournamentEntryItemModel(id: $id, userId: $userId, teamId: $teamId, user: $user, team: $team)';
 }
 
 
@@ -1130,11 +1158,11 @@ abstract mixin class _$TournamentEntryItemModelCopyWith<$Res> implements $Tourna
   factory _$TournamentEntryItemModelCopyWith(_TournamentEntryItemModel value, $Res Function(_TournamentEntryItemModel) _then) = __$TournamentEntryItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userId, String? teamId
+ String id, String userId, String? teamId, TeamUserShortModel? user, TeamShortInfoModel? team
 });
 
 
-
+@override $TeamUserShortModelCopyWith<$Res>? get user;@override $TeamShortInfoModelCopyWith<$Res>? get team;
 
 }
 /// @nodoc
@@ -1147,16 +1175,42 @@ class __$TournamentEntryItemModelCopyWithImpl<$Res>
 
 /// Create a copy of TournamentEntryItemModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? teamId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? teamId = freezed,Object? user = freezed,Object? team = freezed,}) {
   return _then(_TournamentEntryItemModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,teamId: freezed == teamId ? _self.teamId : teamId // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as TeamUserShortModel?,team: freezed == team ? _self.team : team // ignore: cast_nullable_to_non_nullable
+as TeamShortInfoModel?,
   ));
 }
 
+/// Create a copy of TournamentEntryItemModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamUserShortModelCopyWith<$Res>? get user {
+    if (_self.user == null) {
+    return null;
+  }
 
+  return $TeamUserShortModelCopyWith<$Res>(_self.user!, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of TournamentEntryItemModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamShortInfoModelCopyWith<$Res>? get team {
+    if (_self.team == null) {
+    return null;
+  }
+
+  return $TeamShortInfoModelCopyWith<$Res>(_self.team!, (value) {
+    return _then(_self.copyWith(team: value));
+  });
+}
 }
 
 

@@ -34,7 +34,7 @@ class BracketDetails extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   LucideIcons.network,
                   size: 64,
                   color: AppColors.textDisabled,

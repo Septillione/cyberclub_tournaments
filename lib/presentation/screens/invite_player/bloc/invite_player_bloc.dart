@@ -1,8 +1,8 @@
+import 'package:cyberclub_tournaments/domain/usecases/team/search_users_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_transform/stream_transform.dart';
 import 'package:cyberclub_tournaments/domain/entities/team_entity.dart';
-import 'package:cyberclub_tournaments/domain/usecases/team/search_users_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/team/invite_user_usecase.dart';
 
 part 'invite_player_event.dart';
@@ -15,11 +15,11 @@ EventTransformer<Event> _debounce<Event>(Duration duration) {
 }
 
 class InvitePlayerBloc extends Bloc<InvitePlayerEvent, InvitePlayerState> {
-  final SearchUsersUsecase _searchUsers;
+  final SearchPlayersForTeamUseCase _searchUsers;
   final InviteUserUseCase _inviteUser;
 
   InvitePlayerBloc({
-    required SearchUsersUsecase searchUsers,
+    required SearchPlayersForTeamUseCase searchUsers,
     required InviteUserUseCase inviteUser,
   }) : _searchUsers = searchUsers,
        _inviteUser = inviteUser,

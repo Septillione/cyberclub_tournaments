@@ -1,5 +1,6 @@
 import 'package:cyberclub_tournaments/data/datasources/tournament_remote_datasource.dart';
 import 'package:cyberclub_tournaments/data/mappers/tournament_mapper.dart';
+import 'package:cyberclub_tournaments/data/models/tournament/create_tournament_request.dart';
 import 'package:cyberclub_tournaments/domain/entities/admin_stats.dart';
 import 'package:cyberclub_tournaments/domain/entities/tournament_entity.dart';
 import 'package:cyberclub_tournaments/domain/entities/tournament_filter.dart';
@@ -41,8 +42,23 @@ class TournamentRepositoryImpl implements TournamentRepository {
 
   @override
   Future<void> createTournament(TournamentEntity tournament) async {
-    final model = TournamentMapper.toModel(tournament);
-    await _dataSource.createTournament(model.toJson());
+    final request = CreateTournamentRequest(
+      title: tournament.title,
+      description: tournament.description,
+      rules: tournament.rules,
+      discipline: TournamentMapper.disciplineToJson(tournament.discipline),
+      startDate: tournament.startDate,
+      maxParticipants: tournament.participants.max,
+      bracketType: TournamentMapper.bracketTypeToJson(tournament.bracketType),
+      teamMode: TournamentMapper.teamModeToJson(tournament.teamMode),
+      isOnline: tournament.isOnline,
+      address: tournament.address,
+      imageUrl: tournament.imageUrl,
+      prizes: tournament.prizes
+          .map((p) => {'label': p.label, 'amount': p.amount})
+          .toList(),
+    );
+    await _dataSource.createTournament(request);
   }
 
   @override
@@ -62,8 +78,16 @@ class TournamentRepositoryImpl implements TournamentRepository {
   }
 
   @override
-  Future<void> joinTournament(String tournamentId, {String? teamId}) async {
-    await _dataSource.joinTournament(tournamentId, teamId: teamId);
+  Future<void> joinTournament(
+    String tournamentId, {
+    String? teamId,
+    List<String>? rosterIds,
+  }) async {
+    await _dataSource.joinTournament(
+      tournamentId,
+      teamId: teamId,
+      rosterIds: rosterIds,
+    );
   }
 
   @override
@@ -130,7 +154,7 @@ class TournamentRepositoryImpl implements TournamentRepository {
       params['isOnline'] = filter.isOnline.toString();
     }
     if (filter.sortOrder != null) {
-      params['sortOrder'] = filter.sortOrder!.name;
+      params['sortOrder'] = filter.sortOrder!.toQueryParam();
     }
     if (filter.searchQuery != null && filter.searchQuery!.isNotEmpty) {
       params['search'] = filter.searchQuery;

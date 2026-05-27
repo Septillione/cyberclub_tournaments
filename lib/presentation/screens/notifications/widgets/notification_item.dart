@@ -24,7 +24,7 @@ class NotificationItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _NotificationHeader(notification: notification),
-          if (showButtons) _ActionButtons(requestId: requestId!),
+          if (showButtons) _ActionButtons(requestId: requestId),
         ],
       ),
     );

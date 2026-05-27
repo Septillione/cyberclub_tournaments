@@ -32,3 +32,39 @@ class TournamentDetailError extends TournamentDetailState {
   @override
   List<Object?> get props => [errorMessage];
 }
+
+class TeamSelectionLoading extends TournamentDetailLoaded {
+  const TeamSelectionLoading({
+    required super.tournament,
+    required super.currentUserId,
+    required super.bracketRounds,
+  });
+}
+
+class TeamSelectionLoaded extends TournamentDetailLoaded {
+  final List<TeamEntity> userTeams;
+
+  const TeamSelectionLoaded({
+    required this.userTeams,
+    required super.bracketRounds,
+    required super.currentUserId,
+    required super.tournament,
+  });
+
+  @override
+  List<Object?> get props => [super.props, userTeams];
+}
+
+class TeamSelectionError extends TournamentDetailLoaded {
+  final String error;
+
+  const TeamSelectionError({
+    required this.error,
+    required super.tournament,
+    required super.currentUserId,
+    required super.bracketRounds,
+  });
+
+  @override
+  List<Object?> get props => [super.props, error];
+}

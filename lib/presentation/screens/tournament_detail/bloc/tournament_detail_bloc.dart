@@ -1,4 +1,6 @@
 import 'package:cyberclub_tournaments/core/error/app_exception.dart';
+import 'package:cyberclub_tournaments/domain/entities/team_entity.dart';
+import 'package:cyberclub_tournaments/domain/usecases/team/fetch_user_teams_usecase.dart';
 import 'package:cyberclub_tournaments/domain/usecases/tournament/fetch_tournament_by_id_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +25,7 @@ class TournamentDetailBloc
   final UpdateMatchScoreUsecase _updateMatchScore;
   final DisqualifyParticipantUsecase _disqualifyParticipant;
   final GetUserIdUseCase _getUserId;
+  final FetchUserTeamsUsecase _getUserTeams;
 
   TournamentDetailBloc({
     required FetchTournamentByIdUsecase getTournament,
@@ -32,6 +35,7 @@ class TournamentDetailBloc
     required UpdateMatchScoreUsecase updateMatchScore,
     required DisqualifyParticipantUsecase disqualifyParticipant,
     required GetUserIdUseCase getUserId,
+    required FetchUserTeamsUsecase getUserTeams,
   }) : _getTournament = getTournament,
        _joinTournament = joinTournament,
        _startTournament = startTournament,
@@ -39,6 +43,7 @@ class TournamentDetailBloc
        _updateMatchScore = updateMatchScore,
        _disqualifyParticipant = disqualifyParticipant,
        _getUserId = getUserId,
+       _getUserTeams = getUserTeams,
        super(TournamentDetailLoading()) {
     on<TournamentDetailStarted>(_onStarted);
     on<TournamentRegisterRequested>(_onRegisterRequested);
@@ -46,7 +51,53 @@ class TournamentDetailBloc
     on<MatchScoreUpdated>(_onScoreUpdated);
     on<MatchDisqualified>(_onDisqualified);
     on<TournamentFinishRequested>(_onFinishRequested);
+    on<TournamentJoinTeamRequested>(_onJoinTeamRequested);
   }
+
+  // Future<void> _onStarted(
+  //   TournamentDetailStarted event,
+  //   Emitter<TournamentDetailState> emit,
+  // ) async {
+  //   emit(TournamentDetailLoading());
+  //   try {
+  //     final tournament = await _getTournament(event.tournamentId);
+  //     final userId = await _getUserId();
+
+  //     if (userId == null) {
+  //       emit(
+  //         const TournamentDetailError(
+  //           errorMessage:
+  //               'Сессия истекла. Пожалуйста, перезагрузите приложение.',
+  //         ),
+  //       );
+  //       return;
+  //     }
+
+  //     if (tournament != null) {
+  //       final rounds = _mapBracketMatchesToUI(tournament.matches);
+  //       emit(
+  //         TournamentDetailLoaded(
+  //           tournament: tournament,
+  //           bracketRounds: rounds,
+  //           currentUserId: userId,
+  //         ),
+  //       );
+  //     } else {
+  //       emit(const TournamentDetailError(errorMessage: 'Турнир не найден'));
+  //     }
+  //   } on AppException catch (e) {
+  //     emit(TournamentDetailError(errorMessage: e.message));
+  //   } catch (e, stackTrace) {
+  //     print('!!! TournamentDetailBloc CRASH !!!');
+  //     print('ERROR: $e');
+  //     print('STACK TRACE: $stackTrace');
+  //     emit(
+  //       const TournamentDetailError(
+  //         errorMessage: 'Произошла неизвестная ошибка',
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<void> _onStarted(
     TournamentDetailStarted event,
@@ -54,25 +105,46 @@ class TournamentDetailBloc
   ) async {
     emit(TournamentDetailLoading());
     try {
-      final tournament = await _getTournament(event.tournamentId);
+      print("BLOC: 1. Получаю ID пользователя...");
       final userId = await _getUserId();
+      print("BLOC: 2. ID пользователя получен: $userId");
+
+      if (userId == null) {
+        emit(const TournamentDetailError(errorMessage: 'Сессия истекла'));
+        return;
+      }
+
+      print("BLOC: 3. Запрашиваю турнир с ID: ${event.tournamentId}");
+      final tournament = await _getTournament(event.tournamentId);
+      print("BLOC: 4. Турнир получен. ID: ${tournament?.id}");
 
       if (tournament != null) {
+        print("BLOC: 5. Маплю сетку...");
         final rounds = _mapBracketMatchesToUI(tournament.matches);
+        print("BLOC: 6. Сетка смаплена. Раундов: ${rounds.length}");
+
         emit(
           TournamentDetailLoaded(
             tournament: tournament,
             bracketRounds: rounds,
-            currentUserId: userId ?? '',
+            currentUserId: userId,
           ),
         );
+        print("BLOC: 7. Состояние TournamentDetailLoaded отправлено");
       } else {
         emit(const TournamentDetailError(errorMessage: 'Турнир не найден'));
       }
     } on AppException catch (e) {
+      print("BLOC CRASH (AppException): ${e.message}");
       emit(TournamentDetailError(errorMessage: e.message));
-    } catch (_) {
-      emit(const TournamentDetailError(errorMessage: 'Ошибка загрузки'));
+    } catch (e, stackTrace) {
+      print("BLOC CRASH (Unknown): $e");
+      print("STACKTRACE: $stackTrace");
+      emit(
+        const TournamentDetailError(
+          errorMessage: 'Произошла неизвестная ошибка',
+        ),
+      );
     }
   }
 
@@ -85,7 +157,11 @@ class TournamentDetailBloc
 
     try {
       emit(TournamentDetailLoading());
-      await _joinTournament(current.tournament.id, teamId: event.teamId);
+      await _joinTournament(
+        current.tournament.id,
+        teamId: event.teamId,
+        rosterIds: event.rosterIds,
+      );
       add(TournamentDetailStarted(current.tournament.id));
     } on AppException catch (e) {
       emit(TournamentDetailError(errorMessage: e.message));
@@ -183,6 +259,43 @@ class TournamentDetailBloc
       emit(TournamentDetailError(errorMessage: e.message));
     } catch (_) {
       emit(const TournamentDetailError(errorMessage: 'Ошибка операции'));
+    }
+  }
+
+  Future<void> _onJoinTeamRequested(
+    TournamentJoinTeamRequested event,
+    Emitter<TournamentDetailState> emit,
+  ) async {
+    final current = state;
+    if (current is! TournamentDetailLoaded) return;
+
+    emit(
+      TeamSelectionLoading(
+        tournament: current.tournament,
+        currentUserId: current.currentUserId,
+        bracketRounds: current.bracketRounds,
+      ),
+    );
+
+    try {
+      final teams = await _getUserTeams();
+      emit(
+        TeamSelectionLoaded(
+          userTeams: teams,
+          bracketRounds: current.bracketRounds,
+          currentUserId: current.currentUserId,
+          tournament: current.tournament,
+        ),
+      );
+    } catch (e) {
+      emit(
+        TeamSelectionError(
+          error: 'Ошибка загрузки команды',
+          tournament: current.tournament,
+          currentUserId: current.currentUserId,
+          bracketRounds: current.bracketRounds,
+        ),
+      );
     }
   }
 }

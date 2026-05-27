@@ -78,6 +78,23 @@ class TeamUserShort extends Equatable {
   List<Object?> get props => [id, nickname, avatarUrl, isBanned];
 }
 
+class TeamShortInfo extends Equatable {
+  final String id;
+  final String name;
+  final String tag;
+  final String? avatarUrl;
+
+  const TeamShortInfo({
+    required this.id,
+    required this.name,
+    required this.tag,
+    this.avatarUrl,
+  });
+
+  @override
+  List<Object?> get props => [id, name, tag, avatarUrl];
+}
+
 class TeamMember extends Equatable {
   final String id;
   final String userId;

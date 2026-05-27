@@ -17,7 +17,7 @@ class AdminTournamentStats extends Equatable {
   final int live;
   final int open;
 
-  AdminTournamentStats({
+  const AdminTournamentStats({
     required this.total,
     required this.live,
     required this.open,
@@ -31,7 +31,7 @@ class AdminUserStats extends Equatable {
   final int total;
   final int inTeams;
 
-  AdminUserStats({required this.total, required this.inTeams});
+  const AdminUserStats({required this.total, required this.inTeams});
 
   @override
   List<Object?> get props => [total, inTeams];

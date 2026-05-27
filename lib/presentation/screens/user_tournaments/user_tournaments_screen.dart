@@ -72,6 +72,7 @@ class _Content extends StatelessWidget {
       backgroundColor: AppColors.accentPrimary,
       height: 60,
       showChildOpacityTransition: false,
+      animSpeedFactor: 8.0,
       onRefresh: () async {
         context.read<UserTournamentsBloc>().add(UserTournamentsRefreshed());
       },

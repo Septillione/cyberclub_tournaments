@@ -24,15 +24,15 @@ class TournamentSkeletonCard extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
+            const Padding(
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _SkeletonBar(width: double.infinity, height: 24),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   _SkeletonBar(width: 100, height: 20),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _SkeletonBar(width: 200, height: 16),
                 ],
               ),

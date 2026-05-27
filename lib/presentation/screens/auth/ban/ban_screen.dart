@@ -20,7 +20,11 @@ class BanScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(LucideIcons.shieldBan, size: 80, color: AppColors.redColor),
+            const Icon(
+              LucideIcons.shieldBan,
+              size: 80,
+              color: AppColors.redColor,
+            ),
             const SizedBox(height: 24),
             Text(
               'Доступ ограничен',

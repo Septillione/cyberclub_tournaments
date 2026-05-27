@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/mappers/team_mapper.dart';
 import 'package:cyberclub_tournaments/data/models/tournament/tournament_model.dart';
 import 'package:cyberclub_tournaments/domain/entities/tournament_entity.dart';
 
@@ -23,15 +24,7 @@ class TournamentMapper {
       prizes: model.prizes
           .map((p) => PrizeItem(label: p.label, amount: p.amount))
           .toList(),
-      entries: model.entries
-          .map(
-            (e) => TournamentEntryItem(
-              id: e.id,
-              userId: e.userId,
-              teamId: e.teamId,
-            ),
-          )
-          .toList(),
+      entries: model.entries.map((e) => _entryToEntity(e)).toList(),
       matches: model.matches
           .map(
             (m) => MatchEntity(
@@ -70,15 +63,7 @@ class TournamentMapper {
       prizes: entity.prizes
           .map((p) => PrizeItemModel(label: p.label, amount: p.amount))
           .toList(),
-      entries: entity.entries
-          .map(
-            (e) => TournamentEntryItemModel(
-              id: e.id,
-              userId: e.userId,
-              teamId: e.teamId,
-            ),
-          )
-          .toList(),
+      entries: entity.entries.map((e) => _entryToModel(e)).toList(),
       matches: entity.matches
           .map(
             (m) => MatchItemModel(
@@ -176,5 +161,33 @@ class TournamentMapper {
       case TournamentStatus.cancelled:
         return 'CANCELLED';
     }
+  }
+
+  static TournamentEntryItem _entryToEntity(TournamentEntryItemModel model) {
+    return TournamentEntryItem(
+      id: model.id,
+      userId: model.userId,
+      teamId: model.teamId,
+      user: model.user != null
+          ? TeamMapper.userShortToEntity(model.user!)
+          : null,
+      team: model.team != null
+          ? TeamMapper.shortInfoToEntity(model.team!)
+          : null,
+    );
+  }
+
+  static TournamentEntryItemModel _entryToModel(TournamentEntryItem entity) {
+    return TournamentEntryItemModel(
+      id: entity.id,
+      userId: entity.userId,
+      teamId: entity.teamId,
+      user: entity.user != null
+          ? TeamMapper.userShortToModel(entity.user!)
+          : null,
+      team: entity.team != null
+          ? TeamMapper.shortInfoToModel(entity.team!)
+          : null,
+    );
   }
 }

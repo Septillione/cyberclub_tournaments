@@ -1,4 +1,5 @@
 import 'package:cyberclub_tournaments/core/di/injection_container.dart';
+import 'package:cyberclub_tournaments/presentation/screens/create_tournament/widgets/cover_selector.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/gradient_button.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,94 @@ import 'package:cyberclub_tournaments/presentation/screens/create_tournament/wid
 import 'package:cyberclub_tournaments/presentation/screens/create_tournament/widgets/tournament_format_fields.dart';
 import 'package:cyberclub_tournaments/presentation/screens/create_tournament/widgets/tournament_schedule_fields.dart';
 import 'package:cyberclub_tournaments/presentation/screens/create_tournament/widgets/prizes_section.dart';
+
+final Map<Discipline, List<String>> _coverPresets = {
+  Discipline.dota2: [
+    'assets/images/covers/dota2/dota2_1.jpeg',
+    'assets/images/covers/dota2/dota2_2.jpg',
+    'assets/images/covers/dota2/dota2_3.jpg',
+  ],
+  Discipline.cs2: [
+    'assets/images/covers/cs2/cs2_1.jpg',
+    'assets/images/covers/cs2/cs2_2.jpg',
+    'assets/images/covers/cs2/cs2_3.jpg',
+  ],
+  Discipline.mortalKombat: [
+    'assets/images/covers/mk1/mk1_1.jpg',
+    'assets/images/covers/mk1/mk1_2.jpg',
+    'assets/images/covers/mk1/mk1_3.jpeg',
+  ],
+  Discipline.apexLegends: [
+    'assets/images/covers/apex_legends/apex_1.jpg',
+    'assets/images/covers/apex_legends/apex_2.jpg',
+    'assets/images/covers/apex_legends/apex_3.jpg',
+  ],
+  Discipline.brawlStars: [
+    'assets/images/covers/brawl_stars/brawlstars_1.jpg',
+    'assets/images/covers/brawl_stars/brawlstars_2.jpg',
+    'assets/images/covers/brawl_stars/brawlstars_3.jpg',
+  ],
+  Discipline.callOfDutyWarzone: [
+    'assets/images/covers/call_of_duty_warzone/cdw_1.jpg',
+    'assets/images/covers/call_of_duty_warzone/cdw_2.jpg',
+    'assets/images/covers/call_of_duty_warzone/cdw_3.jpg',
+  ],
+  Discipline.clashRoyale: [
+    'assets/images/covers/clash_royal/clashroayl_1.jpg',
+    'assets/images/covers/clash_royal/clashroayl_2.png',
+    'assets/images/covers/clash_royal/clashroayl_3.png',
+  ],
+  Discipline.fifa: [
+    'assets/images/covers/fifa/fifa_1.jpg',
+    'assets/images/covers/fifa/fifa_2.jpg',
+    'assets/images/covers/fifa/fifa_3.jpg',
+  ],
+  Discipline.fortnite: [
+    'assets/images/covers/fortnite/fortnite_1.jpg',
+    'assets/images/covers/fortnite/fortnite_2.jpg',
+    'assets/images/covers/fortnite/fortnite_3.jpg',
+  ],
+  Discipline.leagueOfLegends: [
+    'assets/images/covers/league_of_legends/lol_1.jpeg',
+    'assets/images/covers/league_of_legends/lol_2.jpg',
+    'assets/images/covers/league_of_legends/lol_3.jpg',
+  ],
+  Discipline.overwatch2: [
+    'assets/images/covers/overwatch/overwatch_1.jpeg',
+    'assets/images/covers/overwatch/overwatch_2.jpg',
+    'assets/images/covers/overwatch/overwatch_3.jpeg',
+  ],
+  Discipline.pubg: [
+    'assets/images/covers/pubg/pubg_1.jpg',
+    'assets/images/covers/pubg/pubg_2.png',
+    'assets/images/covers/pubg/pubg_3.jpg',
+  ],
+  Discipline.starcraft2: [
+    'assets/images/covers/starcraft2/starcraft2_1.jpg',
+    'assets/images/covers/starcraft2/starcraft2_2.jpg',
+    'assets/images/covers/starcraft2/starcraft2_3.jpg',
+  ],
+  Discipline.tetris: [
+    'assets/images/covers/tetris/tetris_1.jpg',
+    'assets/images/covers/tetris/tetris_2.jpg',
+    'assets/images/covers/tetris/tetris_3.jpg',
+  ],
+  Discipline.valorant: [
+    'assets/images/covers/valorant/valorant_1.jpg',
+    'assets/images/covers/valorant/valorant_2.jpg',
+    'assets/images/covers/valorant/valorant_3.jpg',
+  ],
+  Discipline.warface: [
+    'assets/images/covers/warface/warface_1.jpg',
+    'assets/images/covers/warface/warface_2.jpeg',
+    'assets/images/covers/warface/warface_3.jpg',
+  ],
+  Discipline.worldOfTanks: [
+    'assets/images/covers/world_of_tanks/wot_1.jpg',
+    'assets/images/covers/world_of_tanks/wot_2.jpg',
+    'assets/images/covers/world_of_tanks/wot_3.jpg',
+  ],
+};
 
 class CreateTournamentScreen extends StatelessWidget {
   final TournamentEntity? tournamentToEdit;
@@ -49,6 +138,7 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
   int _maxParticipants = 16;
   bool _isOnline = true;
   String _imageUrl = '';
+  // String _selectedImageUrl = '';
 
   DateTime _startDate = DateTime.now().add(const Duration(days: 1));
   TimeOfDay _startTime = const TimeOfDay(hour: 18, minute: 0);
@@ -65,6 +155,10 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
   void initState() {
     super.initState();
     _initFormData();
+
+    if (widget.tournamentToEdit == null) {
+      _updateCoverForNewTournament();
+    }
   }
 
   @override
@@ -95,6 +189,11 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
     _prizes = t.prizes
         .map((p) => PrizeInput(label: p.label, amount: p.amount))
         .toList();
+  }
+
+  void _updateCoverForNewTournament() {
+    final presets = _coverPresets[_discipline] ?? [];
+    _imageUrl = presets.isNotEmpty ? presets.first : '';
   }
 
   Future<void> _pickDate() async {
@@ -230,6 +329,13 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
           children: [
             _Header(isEditing: _isEditing),
             const SizedBox(height: 16),
+            CoverSelector(
+              discipline: _discipline,
+              selectedImageUrl: _imageUrl,
+              onImageSelected: (url) => setState(() => _imageUrl = url),
+              presets: _coverPresets,
+            ),
+            const SizedBox(height: 32),
             TournamentBasicFields(
               titleController: _titleController,
               descriptionController: _descriptionController,
@@ -241,7 +347,11 @@ class _CreateTournamentViewState extends State<_CreateTournamentView> {
               teamMode: _teamMode,
               bracketType: _bracketType,
               maxParticipants: _maxParticipants,
-              onDisciplineChanged: (v) => setState(() => _discipline = v),
+              onDisciplineChanged: (v) => setState(() {
+                _discipline = v;
+                final presets = _coverPresets[v] ?? [];
+                _imageUrl = presets.isNotEmpty ? presets.first : '';
+              }),
               onTeamModeChanged: (v) => setState(() => _teamMode = v),
               onBracketTypeChanged: (v) => setState(() => _bracketType = v),
               onMaxParticipantsChanged: (v) =>

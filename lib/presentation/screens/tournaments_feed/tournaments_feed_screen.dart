@@ -127,23 +127,41 @@ class _Header extends StatelessWidget {
                 Text('CyberClub', style: AppTextStyles.h2),
                 Row(
                   children: [
-                    IconButton(
-                      icon: Icon(
+                    GestureDetector(
+                      child: Icon(
                         isSearchActive ? LucideIcons.x : LucideIcons.search,
                         color: AppColors.textSecondary,
                       ),
-                      onPressed: () {
+                      onTap: () {
                         onSearchToggle();
                         if (!isSearchActive) controller.clear();
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      child: const Icon(
                         LucideIcons.bell,
                         color: AppColors.textSecondary,
                       ),
-                      onPressed: () => context.push('/notifications'),
+                      onTap: () => context.push('/notifications'),
                     ),
+                    // IconButton(
+                    //   icon: Icon(
+                    //     isSearchActive ? LucideIcons.x : LucideIcons.search,
+                    //     color: AppColors.textSecondary,
+                    //   ),
+                    //   onPressed: () {
+                    //     onSearchToggle();
+                    //     if (!isSearchActive) controller.clear();
+                    //   },
+                    // ),
+                    // IconButton(
+                    //   icon: const Icon(
+                    //     LucideIcons.bell,
+                    //     color: AppColors.textSecondary,
+                    //   ),
+                    //   onPressed: () => context.push('/notifications'),
+                    // ),
                   ],
                 ),
               ],
@@ -243,6 +261,7 @@ class _Filters extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useRootNavigator: true,
+      useSafeArea: true,
       builder: (_) => FilterBottomSheet(
         currentFilter: currentFilter,
         onApply: (f) =>
@@ -295,9 +314,9 @@ class _TournamentsList extends StatelessWidget {
       backgroundColor: AppColors.accentPrimary,
       height: 60,
       showChildOpacityTransition: false,
+      animSpeedFactor: 8.0,
       onRefresh: () async {
         context.read<TournamentsFeedBloc>().add(
-          // Здесь можно передать текущий фильтр если нужно
           const TournamentsFeedRefreshed(TournamentFilter()),
         );
       },

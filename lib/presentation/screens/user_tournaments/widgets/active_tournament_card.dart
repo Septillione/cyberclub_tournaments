@@ -21,7 +21,7 @@ class ActiveTournamentCard extends StatelessWidget {
     final nextMatch = _getNextMatch(tournament, myName);
 
     return InkWell(
-      onTap: () => context.push('/tournaments/${tournament.id}'),
+      onTap: () => context.push('/tournament/${tournament.id}'),
       borderRadius: BorderRadius.circular(24),
       child: Container(
         height: 237,
@@ -96,8 +96,8 @@ class _NextMatchInfo extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(LucideIcons.hourglass, color: AppColors.textSecondary),
-            SizedBox(height: 8),
+            const Icon(LucideIcons.hourglass, color: AppColors.textSecondary),
+            const SizedBox(height: 8),
             Text("Ожидание соперника...", style: AppTextStyles.caption),
           ],
         ),

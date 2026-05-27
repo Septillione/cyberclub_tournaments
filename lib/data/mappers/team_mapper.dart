@@ -108,4 +108,22 @@ class TeamMapper {
       winrate: entity.winrate,
     );
   }
+
+  static TeamShortInfo shortInfoToEntity(TeamShortInfoModel model) {
+    return TeamShortInfo(
+      id: model.id,
+      name: model.name,
+      tag: model.tag,
+      avatarUrl: model.avatarUrl,
+    );
+  }
+
+  static TeamShortInfoModel shortInfoToModel(TeamShortInfo entity) {
+    return TeamShortInfoModel(
+      id: entity.id,
+      name: entity.name,
+      tag: entity.tag,
+      avatarUrl: entity.avatarUrl,
+    );
+  }
 }

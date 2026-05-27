@@ -1,3 +1,4 @@
+import 'package:cyberclub_tournaments/data/models/team/team_model.dart';
 import 'package:cyberclub_tournaments/domain/entities/tournament_entity.dart'
     as entity;
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -157,6 +158,8 @@ abstract class TournamentEntryItemModel with _$TournamentEntryItemModel {
     required String id,
     required String userId,
     String? teamId,
+    TeamUserShortModel? user,
+    TeamShortInfoModel? team,
   }) = _TournamentEntryItemModel;
 
   factory TournamentEntryItemModel.fromJson(Map<String, dynamic> json) =>

@@ -1,5 +1,6 @@
 import 'package:cyberclub_tournaments/presentation/widgetsnew/custom_back_button.dart';
 import 'package:cyberclub_tournaments/presentation/widgetsnew/segmented_button_details.dart';
+import 'package:cyberclub_tournaments/presentation/widgetsnew/tournament_skeleton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cyberclub_tournaments/core/di/injection_container.dart';
@@ -44,7 +45,7 @@ class _AdminDashboardViewState extends State<_AdminDashboardView> {
             builder: (context, state) {
               return switch (state) {
                 AdminDashboardLoading() => const Center(
-                  child: CircularProgressIndicator(),
+                  child: TournamentSkeletonCard(),
                 ),
                 AdminDashboardError(:final errorMessage) => Center(
                   child: Text(errorMessage),
@@ -92,7 +93,7 @@ class _Header extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const CustomBackButton(),
-            Text('Панель администратора', style: AppTextStyles.h2),
+            Text('Панель администратора', style: AppTextStyles.h3),
           ],
         ),
         const SizedBox(height: 24),

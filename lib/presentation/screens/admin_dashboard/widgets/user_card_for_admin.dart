@@ -2,6 +2,7 @@ import 'package:cyberclub_tournaments/domain/entities/user_entity.dart';
 import 'package:cyberclub_tournaments/presentation/screens/admin_dashboard/widgets/ban_setup_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cyberclub_tournaments/core/theme/app_colors.dart';
 import 'package:cyberclub_tournaments/core/theme/app_text_styles.dart';
@@ -15,19 +16,22 @@ class UserCardForAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.bgSurface,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          _UserAvatar(avatarUrl: user.avatarUrl),
-          const SizedBox(width: 12),
-          Expanded(child: Text(user.nickname, style: AppTextStyles.h3)),
-          _AdminPopupMenu(user: user),
-        ],
+    return InkWell(
+      onTap: () => context.push('/profile/${user.id}'),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppColors.bgSurface,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            _UserAvatar(avatarUrl: user.avatarUrl),
+            const SizedBox(width: 12),
+            Expanded(child: Text(user.nickname, style: AppTextStyles.h3)),
+            _AdminPopupMenu(user: user),
+          ],
+        ),
       ),
     );
   }
